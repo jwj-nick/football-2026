@@ -62,10 +62,38 @@
 
 ---
 
-## 4. 확장 가이드 ② — 실시간 결과 자동수집 (API, 서버 필요) ★
+## 4. 결과 자동수집 — ✅ 구현됨 (GitHub Actions 방식)
 
-> 이게 미션 5. 여기서부터는 **서버(서버리스 함수)** 개념이 들어온다.
-> 전체 React 정식화 맥락은 `CLAUDE_CODE_MIGRATION.md`에 있고, 아래는 그 핵심 요약.
+> GitHub Pages는 정적 호스팅이라 **서버리스 함수가 없다.** 그래서 마이그레이션 가이드의
+> Vercel 프록시 대신, **GitHub Actions(예약 실행)가 결과를 긁어 `data/results.json`으로
+> 커밋 → 앱이 그 JSON을 읽는** 방식으로 구현했다. (키는 Actions Secret에 숨겨져 안전, CORS 무관)
+
+```
+[GitHub Actions cron] → scripts/fetch-results.mjs → [football-data.org]
+        └ 키는 Secret · 팀명 한글 매핑 · data/results.json 커밋
+[브라우저] → data/results.json (정적 파일) → 화면/순위에 병합
+```
+
+구성 파일:
+- `scripts/fetch-results.mjs` — 일정(js/data.js) 읽기 → API 호출 → 영문→한글 팀명 매핑 → `data/results.json` 생성.
+- `.github/workflows/update-results.yml` — 2시간마다(cron) + 수동 실행(Run workflow). 변경분만 커밋·푸시.
+- `js/app.js` — 로드 시 `data/results.json`을 읽어 **수동 입력 > 자동** 규칙으로 병합(`eff()`), 순위 재계산.
+- `data/results.json` — 현재 결과(초기엔 수동 스냅샷, 이후 Actions가 갱신).
+
+### ⚙️ 켜는 법 (한 번만 — 본인/아들이 직접)
+1. **무료 API 키 발급**: https://www.football-data.org/client/register → 이메일로 토큰 수령.
+2. **GitHub Secret 등록**: 저장소 → Settings → Secrets and variables → Actions → New repository secret
+   - 이름 `FOOTBALL_API_KEY`, 값 = 발급받은 토큰.
+3. **워크플로우 권한**: Settings → Actions → General → Workflow permissions → **Read and write** 허용.
+4. **첫 실행**: Actions 탭 → "경기 결과 자동 갱신" → **Run workflow**. 이후엔 2시간마다 자동.
+   - 실행 로그에 `매핑 안 된 팀명: …` 경고가 보이면 `scripts/fetch-results.mjs`의 `TEAM`에 그 영문명을 추가.
+> 키를 안 넣어도 앱은 **현재 스냅샷 + 수동 입력**으로 정상 동작한다. 키를 넣으면 그때부터 자동.
+
+---
+
+## 4-구. (참고) 원래 설계 — 서버리스 프록시 방식
+
+> 아래는 Vercel 등으로 옮길 때의 참고 설계. 전체 React 정식화 맥락은 `CLAUDE_CODE_MIGRATION.md`.
 
 ### 4.1 왜 브라우저가 API를 직접 부르면 안 되나
 1. **키 노출** — API 키를 브라우저 코드에 넣으면 누구나 소스 보고 훔친다.

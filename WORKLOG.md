@@ -14,6 +14,21 @@
 
 ---
 
+## 2026-06-20  결과 자동수집(GitHub Actions) + 현재 결과 스냅샷
+
+- **한 일:**
+  - GitHub Pages(정적)에 맞춘 자동수집: **Actions cron → `scripts/fetch-results.mjs` → `data/results.json` 커밋 → 앱이 읽기**.
+  - `js/app.js`에 자동/수동 **병합 로직**(`eff()`): 같은 경기에 수동 입력 있으면 우선, 없으면 자동. 순위·표·매치업 모두 병합값 사용. 상단에 "🔄 자동 결과 N경기 반영" 상태줄.
+  - `.github/workflows/update-results.yml`(2시간 cron + 수동), `scripts/fetch-results.mjs`(영문→한글 팀명 매핑 포함).
+  - **현재 결과 스냅샷**: 웹(CBS Sports)에서 확인한 조별리그 32경기 결과를 `data/results.json`에 시드. 32건 전부 실제 일정 matchId와 대조 검증 통과.
+  - `WORKFLOW.md`에 켜는 법(무료 키 발급→Secret `FOOTBALL_API_KEY`→권한→Run workflow) 문서화.
+- **왜:** "수동 말고 자동" 요청. Pages엔 서버리스가 없어 Vercel 프록시 대신 Actions 방식 채택(키 안전·CORS 무관).
+- **확인:** app.js 문법 OK, 병합 순위 검증(멕시코 6/한국 3, 실제와 일치), 결과 matchId 32건 일정 일치, 숨은 제어문자 0.
+- **남은 일(사용자):** football-data.org 무료 키 발급 후 Secret 등록하면 그때부터 자동 갱신. 미등록 시에도 스냅샷+수동으로 정상.
+- **다음(작업 예정):** 다이어그램(mermaid) 렌더 버그 전수 수정, host-cities 지도/고도/심화, data-football 전문가 심화.
+
+---
+
 ## 2026-06-20  GitHub Pages 배포 + 탐구 확장(행정/국제 분야, 허브 신규 2종)
 
 - **한 일:**

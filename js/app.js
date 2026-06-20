@@ -44,6 +44,13 @@ function note(t, warn) {
   setTimeout(function () { n.textContent = ""; }, 2500);
 }
 
+/* ---- 자동 수집 결과 (data/results.json) ---------------------------------
+ * GitHub Actions가 외부 API에서 긁어와 data/results.json에 채워 둔다.
+ * 화면/순위 계산은 "효과값"을 쓴다: 같은 경기에 수동 입력이 있으면 그게 우선,
+ * 없으면 자동 결과 사용 (= 손으로 고친 값을 자동이 덮지 않는다). */
+let autoResults = {};
+function eff() { return Object.assign({}, autoResults, results); } // 수동(results)이 자동을 덮어씀
+
 let editMode = false; // "결과입력" 버튼을 켰는지 여부
 
 /* ---- 필터 메뉴 채우기 -----------------------------------------------------
@@ -83,15 +90,19 @@ function scoreCell(d) {
     return '<input class="sin" type="number" min="0" data-id="' + id + '" data-s="h" value="' + (r ? r.h : "") + '"> : ' +
            '<input class="sin" type="number" min="0" data-id="' + id + '" data-s="a" value="' + (r ? r.a : "") + '">';
   }
-  if (r && r.h !== "" && r.a !== "" && r.h != null && r.a != null) {
-    return '<span class="score">' + r.h + " : " + r.a + "</span>";
+  // 표시는 효과값(수동 우선, 없으면 자동)
+  const e = eff()[id];
+  if (e && e.h !== "" && e.a !== "" && e.h != null && e.a != null) {
+    const isAuto = !(r && r.h != null && r.h !== ""); // 수동값이 없으면 자동으로 채워진 것
+    return '<span class="score' + (isAuto ? " auto" : "") + '" title="' +
+           (isAuto ? "자동 수집 결과" : "직접 입력한 결과") + '">' + e.h + " : " + e.a + "</span>";
   }
   return '<span class="tbd">예정</span>';
 }
 
 // "매치업" 칸: 이긴 팀을 초록색으로 강조
 function muCell(d) {
-  const r = results[matchId(d)];
+  const r = eff()[matchId(d)];
   const noteHtml = d.note ? '<span class="note">(' + d.note + ")</span>" : "";
   let h = d.home, a = d.away;
   if (r && r.h != null && r.a != null && r.h !== "" && r.a !== "") {
@@ -192,7 +203,7 @@ function renderStandings() {
   grid.innerHTML = groups.map(function (g) {
     // 이 조의 경기만 골라서 standings.js의 계산 함수에 넘긴다
     const matches = GS.filter(d => d.g === g);
-    const arr = calcStandings(matches, results); // ← 계산은 전부 저쪽에서!
+    const arr = calcStandings(matches, eff()); // ← 계산은 전부 저쪽에서! (수동+자동 병합값)
 
     const rows = arr.map(function (x, i) {
       // 승점 막대: 한 조 3경기라 최대 9점 → 9점 대비 몇 %인지로 막대 길이
@@ -255,3 +266,25 @@ document.querySelectorAll(".tab").forEach(t =>
 renderGS();
 renderStandings();
 renderR32();
+
+/* 자동 결과를 불러와 병합 후 다시 그린다.
+ * data/results.json은 GitHub Actions가 주기적으로 갱신한다(WORKFLOW.md 참고).
+ * 로컬에서 file://로 열면 fetch가 막힐 수 있는데, 그땐 조용히 수동 입력 모드로 동작. */
+(function loadAutoResults() {
+  fetch("data/results.json?_=" + Date.now(), { cache: "no-store" })
+    .then(function (res) { return res.ok ? res.json() : null; })
+    .then(function (json) {
+      if (!json) return;
+      autoResults = json.results || {};
+      const s = document.getElementById("autoStatus");
+      if (s) {
+        const n = Object.keys(autoResults).length;
+        s.innerHTML = n
+          ? "🔄 자동 결과 " + n + "경기 반영됨" + (json.updatedAt ? " · 갱신 " + json.updatedAt.slice(0, 10) : "")
+          : "";
+      }
+      renderGS();
+      renderStandings();
+    })
+    .catch(function () { /* 오프라인/로컬: 수동 입력 모드로 진행 */ });
+})();

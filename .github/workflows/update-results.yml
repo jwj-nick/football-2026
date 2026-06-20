@@ -1,0 +1,43 @@
+name: 경기 결과 자동 갱신
+
+# 언제 실행되나:
+#  1) 예약: 대회 기간 동안 2시간마다 (UTC 기준 cron)
+#  2) 수동: Actions 탭에서 "Run workflow" 버튼으로 즉시 실행 가능
+on:
+  schedule:
+    - cron: "0 */2 * * *"
+  workflow_dispatch:
+
+# 결과 JSON을 커밋해야 하므로 쓰기 권한 필요
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 코드 가져오기
+        uses: actions/checkout@v4
+
+      - name: Node 설치
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: 결과 긁어오기
+        env:
+          FOOTBALL_API_KEY: ${{ secrets.FOOTBALL_API_KEY }}
+        run: node scripts/fetch-results.mjs
+
+      - name: 변경분 있으면 커밋 & 푸시
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain data/results.json)" ]]; then
+            git add data/results.json
+            git commit -m "chore: 경기 결과 자동 갱신 ($(date -u +%Y-%m-%dT%H:%MZ))"
+            git push
+            echo "결과 갱신 푸시 완료"
+          else
+            echo "변경 없음 — 커밋 생략"
+          fi
