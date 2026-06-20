@@ -15,11 +15,17 @@
   .groupsel .lab{font-size:.8rem;color:var(--muted);font-weight:700;margin-right:2px;}
   .groupsel button{min-width:38px;padding:7px 10px;border:1px solid var(--line);background:#fff;border-radius:9px;font-weight:700;font-size:.85rem;cursor:pointer;color:var(--primary);}
   .groupsel button.on{background:var(--gold);color:#3a2c00;border-color:var(--gold);}
+  .gstage{position:relative;}
   #globe3d{height:500px;border-radius:14px;overflow:hidden;background:#0b1020;border:1px solid var(--line);}
-  #globe2dWrap{height:500px;border-radius:14px;overflow:hidden;background:#0b1020;border:1px solid var(--line);display:none;}
+  #globe2dWrap{height:500px;border-radius:14px;overflow:hidden;background:#0b1020;border:1px solid var(--line);display:none;position:relative;}
   #globe2d{width:100%;height:100%;display:block;cursor:grab;}
   #globe2d:active{cursor:grabbing;}
-  #globe2d text{font:700 12px 'Segoe UI',sans-serif;paint-order:stroke;stroke:#000;stroke-width:3px;stroke-linejoin:round;}
+  #globe2d text{font:700 12px 'Segoe UI','Apple SD Gothic Neo',sans-serif;paint-order:stroke;stroke:#000;stroke-width:3px;stroke-linejoin:round;}
+  /* 3D 라벨용 HTML 요소 */
+  .glabel{font:700 12px 'Segoe UI','Apple SD Gothic Neo',sans-serif;color:#fff;padding:2px 7px;border-radius:8px;white-space:nowrap;transform:translate(-50%,-160%);box-shadow:0 1px 5px rgba(0,0,0,.6);pointer-events:none;}
+  /* 줌 버튼 (색칠 지구본) */
+  .zoombtns{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px;z-index:5;}
+  .zoombtns button{width:34px;height:34px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.55);color:#fff;font-size:1.1rem;font-weight:800;cursor:pointer;}
   .glegend{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0;font-size:.78rem;}
   .glegend span{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:3px 10px;}
   .glegend i{width:11px;height:11px;border-radius:50%;display:inline-block;}
@@ -58,20 +64,28 @@
   <!-- 조 선택 -->
   <div class="groupsel" id="groupSel"><span class="lab">조 선택:</span></div>
 
-  <!-- 3D (Globe.gl) -->
-  <div id="globe3d"><div class="gloading">지구본을 불러오는 중… (인터넷 연결 필요)</div></div>
-  <!-- 2D (D3 orthographic) -->
-  <div id="globe2dWrap"><svg id="globe2d"></svg></div>
+  <div class="gstage">
+    <!-- 3D (Globe.gl) -->
+    <div id="globe3d"><div class="gloading">지구본을 불러오는 중… (인터넷 연결 필요)</div></div>
+    <!-- 2D (D3 orthographic) -->
+    <div id="globe2dWrap">
+      <div class="zoombtns">
+        <button id="zin" title="확대">＋</button>
+        <button id="zout" title="축소">－</button>
+      </div>
+      <svg id="globe2d"></svg>
+    </div>
+  </div>
 
   <p class="maphint" id="globeHint" style="font-size:.78rem;color:var(--muted);margin:8px 2px;">
-    🖱️ 드래그하면 지구가 돌아가고, 손을 떼면 천천히 자동 회전해. 조를 고르면 4개국만 색깔·이름으로 보여(전체로 돌아가려면 "전체").
+    🖱️ 드래그로 회전, 손 떼면 자동 회전. <b>휠(또는 ＋／－)로 확대·축소</b>. 조를 고르면 4개국만 색깔·이름으로 보여.
   </p>
 
   <div class="glegend" id="legend"></div>
 
   <div class="note" id="globeNote">
-    🌍 <b>3D 지구본</b>은 각국 수도 위치에 점을 찍고, 조를 고르면 그 4개국에 <b>이름표</b>와 <b>나라별 색</b>이 붙고 북미 개최지로 곡선이 날아가.
-    🗺️ <b>색칠 지구본</b>은 나라 자체를 칠해(개최국은 노란색), 조를 고르면 4개국을 <b>나라별 색</b>으로 칠하고 이름표를 붙여.
+    🌍 <b>3D 지구본</b>은 각국 수도에 점을 찍고, 조를 고르면 그 4개국에 <b>이름표(HTML)</b>와 <b>나라별 색</b>이 붙고 북미 개최지로 곡선이 날아가.
+    🗺️ <b>색칠 지구본</b>은 나라 자체를 칠해(개최국은 노란색), 조를 고르면 4개국을 <b>나라별 색</b>으로 칠하고 이름표를 붙여. 휠로 확대돼.
   </div>
   <div class="warn" id="d3note" style="display:none">
     ⚠️ 색칠 지구본 참고: 잉글랜드·스코틀랜드는 지도 데이터상 <b>영국(UK)으로 합쳐져</b> 표시되고, 쿠라소·카보베르데처럼 아주 작은 섬나라는 윤곽이 안 보일 수 있어. (점·이름으로 정확히 보려면 3D 지구본을 써!)
@@ -161,9 +175,7 @@ var GROUPS = ["A","B","C","D","E","F","G","H","I","J","K","L"];
 
 var selectedGroup = null; // null = 전체
 
-// 현재 화면에 보일 국가들
 function displayed(){ return selectedGroup ? COUNTRIES.filter(function(c){return c.g===selectedGroup;}) : COUNTRIES; }
-// 조 선택 시 그 4개국의 색(나라별 다름), 전체일 땐 조 색/개최국 색
 function colorOf(c, list){
   if (selectedGroup) return COUNTRY4[list.indexOf(c) % 4];
   return c.host ? HOST_YELLOW : GROUP_COLOR[c.g];
@@ -196,7 +208,6 @@ function colorOf(c, list){
 
 function selectGroup(g){
   selectedGroup = g;
-  // 버튼 on 표시
   document.querySelectorAll('#groupSel button').forEach(function(b){
     b.classList.toggle('on', (b.dataset.g||"") === (g||""));
   });
@@ -205,7 +216,7 @@ function selectGroup(g){
   updateGlobe2D();
 }
 
-/* ===== 범례 (상태에 따라 달라짐) ===== */
+/* ===== 범례 ===== */
 function renderLegend(){
   var L = document.getElementById('legend');
   if (selectedGroup){
@@ -234,9 +245,17 @@ function init3D(){
     .pointLat('lat').pointLng('lon')
     .pointAltitude(function(d){ return d.host ? 0.12 : 0.07; })
     .pointRadius(function(d){ return d.host ? 0.7 : 0.5; })
+    .pointColor(function(d){ return d._color || (d.host ? HOST_YELLOW : GROUP_COLOR[d.g]); })
     .pointLabel(function(d){ return '<div style="font:600 13px sans-serif;color:#fff;background:rgba(0,0,0,.7);padding:4px 8px;border-radius:6px">'+d.flag+' '+d.ko+' ('+d.g+'조)'+(d.host?' · 개최국':'')+'</div>'; })
-    .labelLat('lat').labelLng('lon').labelText('ko')
-    .labelSize(1.5).labelDotRadius(0.5).labelResolution(2).labelAltitude(0.01)
+    // 이름표는 HTML 요소로 (한글 폰트 정상 렌더 — labelText는 한글이 깨짐)
+    .htmlLat('lat').htmlLng('lon').htmlAltitude(0.02)
+    .htmlElement(function(d){
+      var el = document.createElement('div');
+      el.className = 'glabel';
+      el.style.background = d._color || GROUP_COLOR[d.g];
+      el.textContent = d.flag + ' ' + d.ko;
+      return el;
+    })
     .arcColor('color').arcStroke(0.5)
     .arcDashLength(0.4).arcDashGap(0.25).arcDashAnimateTime(1800).arcAltitudeAutoScale(0.5);
   world.width(el.clientWidth).height(500);
@@ -249,60 +268,61 @@ function init3D(){
 function updateGlobe3D(){
   if (!world) return;
   var list = displayed();
-  world.pointsData(list)
-    .pointColor(function(d){ return colorOf(d, list); })
-    // 조 선택 시에만 이름표를 띄움(전체 48개면 너무 빽빽)
-    .labelsData(selectedGroup ? list : [])
-    .labelColor(function(d){ return colorOf(d, list); });
+  list.forEach(function(c){ c._color = colorOf(c, list); }); // 색 미리 계산
+  world.pointsData(list);
+  // 조 선택 시에만 이름표(HTML) 표시 — 전체 48개면 너무 빽빽
+  world.htmlElementsData(selectedGroup ? list : []);
   var arcs = list.filter(function(c){ return !c.host; }).map(function(c){
-    return { startLat:c.lat, startLng:c.lon, endLat:HOST_CENTER.lat, endLng:HOST_CENTER.lng,
-             color: selectedGroup ? colorOf(c, list) : GROUP_COLOR[c.g] };
+    return { startLat:c.lat, startLng:c.lon, endLat:HOST_CENTER.lat, endLng:HOST_CENTER.lng, color: c._color };
   });
   world.arcsData(arcs);
 }
 
-/* ===== 2) D3 정사영(orthographic) 국가 색칠 지구본 ===== */
-var d2ready = false, d2projection, d2path, d2countriesSel, d2labelG, d2redraw;
+/* ===== 2) D3 정사영(orthographic) 국가 색칠 지구본 (+ 줌) ===== */
+var d2ready = false, d2projection, d2path, d2countriesSel, d2labelG, d2redraw, d2sea, d2base = 240, d2k = 1;
+function applyZoom(factor){ d2k = Math.max(0.6, Math.min(6, d2k * factor)); if (d2redraw) d2redraw(); }
 function init2D(){
   if (d2ready || !window.d3 || !window.topojson) return;
   var wrap = document.getElementById('globe2dWrap');
   var W = wrap.clientWidth || 600, H = 500;
+  d2base = Math.min(W, H) / 2 - 10;
   var svg = d3.select('#globe2d').attr('viewBox', '0 0 '+W+' '+H);
-  d2projection = d3.geoOrthographic().scale(Math.min(W,H)/2 - 10).translate([W/2, H/2]).rotate([90, -20]);
+  d2projection = d3.geoOrthographic().scale(d2base).translate([W/2, H/2]).rotate([90, -20]);
   d2path = d3.geoPath(d2projection);
 
-  svg.append('circle').attr('cx',W/2).attr('cy',H/2).attr('r',d2projection.scale()).attr('fill','#13294b');
+  d2sea = svg.append('circle').attr('cx',W/2).attr('cy',H/2).attr('r',d2base).attr('fill','#13294b');
   var graticule = d3.geoGraticule10();
-  var gPath = svg.append('path').datum(graticule).attr('d',d2path).attr('fill','none').attr('stroke','#2a4a78').attr('stroke-width',0.4);
+  var gPath = svg.append('path').datum(graticule).attr('fill','none').attr('stroke','#2a4a78').attr('stroke-width',0.4);
 
   d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(function(topo){
     var feats = topojson.feature(topo, topo.objects.countries).features;
     d2countriesSel = svg.append('g').selectAll('path').data(feats).enter().append('path')
-      .attr('d', d2path).attr('stroke', '#0b1020').attr('stroke-width', 0.3);
-    d2labelG = svg.append('g'); // 이름표 그룹
+      .attr('stroke', '#0b1020').attr('stroke-width', 0.3);
+    d2labelG = svg.append('g');
 
     d2redraw = function(){
+      d2projection.scale(d2base * d2k);
+      d2sea.attr('r', d2base * d2k);
       gPath.attr('d', d2path);
       d2countriesSel.attr('d', d2path);
-      // 이름표 위치/표시 갱신 (지구 뒷면이면 숨김)
       var r = d2projection.rotate(), center = [-r[0], -r[1]];
-      d2labelG.selectAll('text').attr('transform', function(d){
-        var p = d2projection([d.lon, d.lat]); return 'translate('+p[0]+','+p[1]+')';
-      }).attr('display', function(d){
-        return d3.geoDistance([d.lon, d.lat], center) > Math.PI/2 ? 'none' : null;
-      });
+      d2labelG.selectAll('text')
+        .attr('transform', function(d){ var p = d2projection([d.lon, d.lat]); return 'translate('+p[0]+','+p[1]+')'; })
+        .attr('display', function(d){ return d3.geoDistance([d.lon, d.lat], center) > Math.PI/2 ? 'none' : null; });
     };
 
-    // 드래그 회전
     var v0, r0, autoOn = true, last = 0;
     svg.call(d3.drag()
       .on('start', function(e){ v0=[e.x,e.y]; r0=d2projection.rotate(); autoOn=false; })
       .on('drag', function(e){
-        var k = 0.5;
+        var k = 0.5 / d2k; // 확대할수록 회전 민감도 낮춤
         d2projection.rotate([r0[0] + (e.x - v0[0])*k, r0[1] - (e.y - v0[1])*k]);
         d2redraw();
       })
       .on('end', function(){ autoOn=true; }));
+    // 휠 줌
+    d3.select('#globe2d').on('wheel', function(e){ e.preventDefault(); applyZoom(e.deltaY < 0 ? 1.15 : 0.87); }, { passive:false });
+    // 자동 회전
     d3.timer(function(t){
       if (!autoOn) { last = t; return; }
       var r = d2projection.rotate(); r[0] += (t - last) * 0.006; last = t;
@@ -322,11 +342,10 @@ function updateGlobe2D(){
   list.forEach(function(c){ colorByIso[c.iso] = colorOf(c, list); });
   d2countriesSel.attr('fill', function(d){
     var id = +d.id;
-    if (colorByIso[id]) return colorByIso[id];      // 표시 대상국
-    if (!selectedGroup) return '#24416e';           // 전체보기: 비출전국은 어둡게
-    return '#1a3050';                               // 조보기: 나머지 더 어둡게
+    if (colorByIso[id]) return colorByIso[id];
+    if (!selectedGroup) return '#24416e';
+    return '#1a3050';
   });
-  // 이름표: 조 선택 시에만
   var labelData = selectedGroup ? list : [];
   var sel = d2labelG.selectAll('text').data(labelData, function(d){ return d.iso + d.ko; });
   sel.exit().remove();
@@ -336,6 +355,8 @@ function updateGlobe2D(){
     .text(function(d){ return d.flag + ' ' + d.ko; });
   if (d2redraw) d2redraw();
 }
+document.getElementById('zin').onclick = function(){ applyZoom(1.3); };
+document.getElementById('zout').onclick = function(){ applyZoom(1/1.3); };
 
 /* ===== 토글 ===== */
 var b3 = document.getElementById('btn3d'), b2 = document.getElementById('btn2d');
@@ -350,7 +371,6 @@ function show(which){
 b3.onclick = function(){ show('3d'); };
 b2.onclick = function(){ show('2d'); };
 
-// 시작: 3D
 window.addEventListener('load', function(){ init3D(); });
 </script>
 
