@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>모델과 AI — 데이터가 '의사결정'이 되기까지</title>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/explore.css">
+<style>
+  /* 이 페이지에서만 쓰는 소량 스타일 */
+  .feat{list-style:none;margin:12px 0;padding:0;}
+  .feat li{display:flex;align-items:center;gap:10px;margin:6px 0;font-size:.9rem;}
+  .feat .name{flex:0 0 130px;font-weight:700;color:var(--primary);}
+  .feat .bar{flex:1;height:14px;background:#eceff3;border-radius:7px;overflow:hidden;}
+  .feat .bar i{display:block;height:100%;background:linear-gradient(90deg,#234e9c,#e0a800);}
+  .feat .num{flex:0 0 42px;text-align:right;color:var(--muted);font-size:.8rem;}
+  .formula{background:#0d1b2a;color:#e6edf3;border-radius:10px;padding:12px 14px;margin:12px 0;
+    font-family:'Consolas','Courier New',monospace;font-size:.84rem;overflow:auto;line-height:1.6;}
+  .formula .hl{color:#e0a800;}
+  .formula .cm{color:#7d8da1;}
+  .crossbox{background:linear-gradient(135deg,#1a3d7c,#234e9c);color:#fff;border-radius:14px;padding:18px 20px;margin:16px 0;}
+  .crossbox h3{color:#fff;margin-top:0;}
+  .crossbox b{color:#ffe08a;}
+</style>
+</head>
+<body>
+
+<nav class="sitenav">
+  <a class="brand" href="../index.html">⚽ 월드컵 2026</a>
+  <div class="navlinks">
+    <a href="../index.html">일정·결과</a>
+    <a href="../learn/index.html">배우기</a>
+    <a class="active" href="index.html">탐구</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">EXPLORE · 모델 / AI 심화</div>
+    <h1>🧠 모델과 AI — 데이터가 '의사결정'이 되기까지</h1>
+    <p>기초편이 "무엇을 재는가"였다면, 여기는 <b>"기계가 어떻게 그걸 배우고, 그 답이 어떻게 코치 손에 닿는가"</b>다.
+       지도학습·공간 가치 모델·트래킹 파이프라인을 거쳐, 결국 <b>AI 모델 × 반도체(NPU)</b>라는 아빠의 세계와 만난다.</p>
+  </div>
+
+  <p class="lead">
+    기초편에서 xG는 "과거 슛을 학습해 새 슛의 골 확률을 추정한다"고 했다. 그 '학습'이 바로 <b>머신러닝</b>이다.
+    이 페이지는 그 안을 연다 — 어렵지만, 한 번 보면 "데이터 분석"과 "AI 엔지니어링"이 사실 같은 강의 상류·하류임을 알게 된다.
+  </p>
+
+  <!-- ===================================================================== -->
+  <h2>1. xG 모델은 어떻게 만드나 — 지도학습의 정석 예제</h2>
+
+  <div class="term">
+    💬 <b>지도학습(supervised learning)</b>이란? <b>'정답이 붙은 예시'를 잔뜩 보여주며 기계를 훈련</b>시키는 방식이야.
+    xG라면 "이 슛(입력) → 골이었나/아니었나(정답)" 쌍을 수십만 개 주면, 기계가 "어떤 입력이 골과 잘 연결되나"를 스스로 찾아낸다.
+  </div>
+
+  <p>xG 모델은 머신러닝 교과서의 <b>이진 분류(binary classification)</b> 문제 그 자체다. 구조는 이렇다:</p>
+  <ul>
+    <li><b>입력(특징, feature):</b> 슛 거리·각도·신체부위·상황·압박 … (기초편의 그 변수들)</li>
+    <li><b>출력(label/타깃):</b> 그 슛이 <b>골=1 / 노골=0</b> 이었는가</li>
+    <li><b>모델이 내놓는 것:</b> 0~1 사이의 <b>골 확률</b> (= 그 슛의 xG)</li>
+  </ul>
+
+  <h3>(a) 첫 모델 — 로지스틱 회귀(logistic regression)</h3>
+  <div class="term">
+    💬 <b>로지스틱 회귀</b>란? 입력들을 가중치로 더한 뒤, <b>시그모이드</b>라는 S자 함수에 통과시켜
+    결과를 항상 <b>0~1(확률)</b>로 짜내는 가장 기본적인 분류 모델이야. "거리가 멀수록 골 확률이 부드럽게 떨어진다" 같은 관계를 곡선으로 학습한다.
+  </div>
+  <div class="formula">
+<span class="cm"># 아주 단순화한 모습 (직관용)</span>
+z   = w0 + w1·<span class="hl">거리</span> + w2·<span class="hl">각도</span> + w3·<span class="hl">헤더여부</span> + ...
+<span class="hl">P(골)</span> = 1 / (1 + e<sup>-z</sup>)      <span class="cm"># 시그모이드 → 항상 0~1</span>
+<span class="cm"># 학습 = 데이터에 가장 잘 맞는 가중치 w0,w1,w2... 를 찾는 일</span>
+  </div>
+
+  <h3>(b) 발전 — 그래디언트 부스팅(XGBoost류)</h3>
+  <div class="term">
+    💬 <b>그래디언트 부스팅(gradient boosting)</b>이란? 작은 <b>결정 트리(if-else 질문 나무)</b>를 <b>여러 개 순차로 쌓되,
+    앞 모델이 틀린 부분을 다음 모델이 집중 보정</b>하는 방식이야. <b>XGBoost·LightGBM</b>이 대표 구현이고, 표 형태 데이터에서 매우 강하다.
+    로지스틱 회귀가 못 잡는 <b>특징 간 복잡한 상호작용</b>("좁은 각 + 헤더 + 압박"의 결합 효과)을 잘 잡아 현대 xG의 주력이 됐다.
+  </div>
+
+  <h3>(c) 빠지면 안 되는 것 — 과적합과 검증</h3>
+  <div class="term">
+    💬 <b>과적합(overfitting)</b>이란? 모델이 학습 데이터를 <b>'외워버려서'</b>, 본 적 없는 새 경기에서는 오히려 못 맞히는 현상이야.
+    시험 문제집 답만 통째로 외운 학생이 새 문제엔 약한 것과 똑같다.
+  </div>
+  <p>
+    그래서 데이터를 <b>훈련셋(train)</b>과 <b>시험셋(test)</b>으로 나눈다. 훈련셋으로만 배우고, <b>한 번도 안 본 시험셋</b>으로 성능을 잰다.
+    이래야 "외운 것"이 아니라 "일반화(generalize)된 것"인지 알 수 있다. xG처럼 의사결정에 쓰는 모델일수록 이 검증이 생명이다.
+  </p>
+
+  <div class="chartbox">
+    <h3>로지스틱 회귀가 학습하는 모양 — "거리 → 골 확률" S자 곡선 (개념 예시)</h3>
+    <canvas id="sigChart" height="160" aria-label="슛 거리에 따른 골 확률 곡선"></canvas>
+    <p class="cap">
+      곡선은 인터넷 연결 시 표시됩니다. 숫자(개념 예시, 거리[m]→P(골)) —
+      2m≈0.62, 6m≈0.40, 10m≈0.22, 14m≈0.11, 18m≈0.05, 25m≈0.02.
+      가까울수록 가파르게 높고, 멀어지면 완만히 0으로 수렴하는 <b>S자(시그모이드)</b> 모양.
+    </p>
+  </div>
+
+  <!-- ===================================================================== -->
+  <h2>2. 공간을 점수로 — xT · VAEP · 피치 컨트롤</h2>
+  <p>
+    xG는 <b>슛</b>에만 점수를 준다. 하지만 골은 그 앞의 <b>패스·드리블·전진</b>이 만든다.
+    "골로 직접 안 이어진 행동의 가치"는 어떻게 잴까? 현대 분석의 최전선이 여기다.
+  </p>
+
+  <div class="term">
+    💬 <b>Expected Threat(xT, 기대위협)</b>란? 경기장을 격자(zone)로 나누고, <b>각 칸에 "여기서 공을 가지면 곧 골로 이어질 확률"</b>을 매긴 지도야.
+    어떤 행동(패스·드리블)이 공을 <b>가치 낮은 칸 → 높은 칸</b>으로 옮겼다면, 그 칸 점수의 <b>증가분</b>이 그 행동의 가치가 된다. 즉 "이 패스가 위협을 얼마나 키웠나".
+  </div>
+
+  <div class="term">
+    💬 <b>VAEP(Valuing Actions by Estimating Probabilities)</b>란? 모든 행동(패스·드리블·태클 등)을
+    <b>"이 행동으로 우리 득점 확률은 얼마나 오르고, 실점 확률은 얼마나 변했나"</b>로 환산해 +/− 점수를 주는 프레임워크야.
+    xT가 주로 '공 옮김'을 본다면, VAEP는 수비 행동까지 포함해 <b>모든 행동에 골 가치를 부여</b>한다. (possession value 계열의 대표격)
+  </div>
+
+  <div class="term">
+    💬 <b>피치 컨트롤(pitch control)</b>이란? <b>트래킹 데이터</b>로 "경기장 각 지점을 어느 팀이 먼저 도달·장악할 수 있나"를
+    선수 위치·속도로 계산한 <b>지배 영역 지도</b>야. "지금 저 공간이 정말 비어 있었나"를 객관적으로 보여줘서, 패스 선택의 좋고 나쁨을 따질 수 있게 한다.
+  </div>
+
+  <div class="note">
+    📌 한 줄 정리: <b>xG=슛의 가치, xT=공을 위협 지역으로 옮긴 가치, VAEP=모든 행동의 골 가치, 피치 컨트롤=공간 지배도.</b>
+    공통 사고는 하나다 — <b>"이 행동이 득점 확률을 얼마나 바꿨는가(Δ확률)"</b>로 축구의 모든 순간에 값을 매긴다.
+  </div>
+
+  <!-- ===================================================================== -->
+  <h2>3. 트래킹 데이터 파이프라인 — 현장 데이터가 '의사결정'이 되기까지</h2>
+  <p>
+    카메라가 찍은 화면이 어떻게 코치의 화이트보드 결정으로 바뀔까? 데이터가 흐르는 <b>공정(pipeline)</b>은 이렇다.
+    (아래는 인터넷 연결 시 흐름도로, 오프라인이면 그 아래 박스로 보인다.)
+  </p>
+
+  <pre class="mermaid">
+flowchart TD
+  A["🎥 다중 카메라 / 센서<br/>(경기장 곳곳)"] --> B["🖥️ 컴퓨터 비전<br/>선수·공 검출 + 추적"]
+  B --> C["📍 좌표 스트림<br/>22명+공 (x,y) @25fps"]
+  C --> D["🧮 지표 계산<br/>xG·xT·피치컨트롤·PPDA"]
+  D --> E["📊 코칭 대시보드 / 리포트"]
+  E --> F["🧠 의사결정<br/>전술·교체·영입·훈련"]
+  </pre>
+
+  <div class="term">
+    💬 <b>컴퓨터 비전(computer vision)</b>이란? 카메라 영상(픽셀)에서 "여기 선수, 저기 공"처럼
+    <b>물체를 찾아내고(검출) 프레임마다 따라가는(추적)</b> AI 기술이야. 트래킹 데이터의 원천이 바로 이 단계다.
+  </div>
+
+  <p>오프라인 대비 — 같은 흐름을 글로도:</p>
+  <div class="eco">
+    <span class="box">🎥 카메라·센서</span>
+    <span class="arr">→</span>
+    <span class="box g">🖥️ 컴퓨터 비전(검출·추적)</span>
+    <span class="arr">→</span>
+    <span class="box">📍 좌표 스트림</span>
+    <span class="arr">→</span>
+    <span class="box g">🧮 지표 계산</span>
+    <span class="arr">→</span>
+    <span class="box">📊 대시보드</span>
+    <span class="arr">→</span>
+    <span class="box r">🧠 의사결정</span>
+  </div>
+
+  <div class="tip">
+    💡 이 그림이 핵심이다. <b>원자료(픽셀) → 구조화(좌표) → 정보(지표) → 결정.</b>
+    기초편의 우리 앱(<code>결과 → standings.js → 순위</code>)과 <b>완전히 같은 골격</b>인데, 각 단계가 AI로 무거워졌을 뿐이다.
+  </div>
+
+  <!-- ===================================================================== -->
+  <h2>4. ★ 아빠의 세계와 만나는 지점 — AI 모델 × 반도체(NPU)</h2>
+  <p>
+    여기가 이 페이지의 클라이맥스다. 위 파이프라인의 <b>"빠르게, 현장에서, 끊김 없이"</b>는 결국 <b>하드웨어</b> 문제다.
+  </p>
+
+  <div class="crossbox">
+    <h3>스포츠테크 = AI 모델 × 반도체/HW의 교집합</h3>
+    <p style="margin:8px 0;">
+      반자동 오프사이드, 골라인 판독, VAR — 멋져 보이는 이 기능들의 실체는 <b>센서 + 컴퓨터 비전 + 빠른 추론</b>이다.
+      그리고 "빠른 추론"은 <b>아빠가 만드는 칩(NPU)</b>의 일이다.
+    </p>
+  </div>
+
+  <div class="term">
+    💬 <b>추론(inference)</b>이란? 이미 <b>학습이 끝난</b> 모델에 새 입력을 넣어 <b>답을 뽑아내는 실행</b> 단계야.
+    학습(training)은 한 번 무겁게 하지만, 추론은 <b>경기 내내 매 프레임 반복</b>되므로 "얼마나 빠르고 효율적으로 추론하느냐"가 현장의 승부처다.
+  </div>
+  <div class="term">
+    💬 <b>엣지/온디바이스(edge / on-device) 연산</b>이란? 데이터를 멀리 클라우드로 보내지 않고 <b>현장 장비 안에서 바로</b> 처리하는 것.
+    오프사이드 판정처럼 <b>지연(latency)이 치명적</b>인 일은, 네트워크 왕복을 없애려 경기장 가까이서 추론한다 — 전형적인 엣지 AI.
+  </div>
+  <div class="term">
+    💬 <b>하드웨어 가속(GPU/NPU)</b>이란? 신경망 추론의 핵심 연산(행렬곱·합성곱)을 <b>전용 회로</b>로 빠르고 저전력으로 처리하는 것.
+    <b>NPU(Neural Processing Unit)</b>는 바로 이 추론을 위해 설계된 칩이야. 25fps × 22명 × 여러 모델을 실시간으로 굴리려면 이런 가속이 필수다.
+  </div>
+
+  <div class="note">
+    🔗 <b>왜 너희 집 식탁에서 이게 한 화제인가:</b> 축구 영상 분석의 병목은 "모델을 얼마나 <b>빠르고 적은 전력으로</b> 추론하느냐"이고,
+    그건 <b>비디오 코덱·NPU·HW 가속</b>—아빠가 20년 해온 바로 그 분야다. 스포츠테크는 멋진 응용 사례 한 칸일 뿐,
+    그 밑바탕(실시간 비전 + 추론 가속)은 자율주행·로봇·스마트폰 카메라와 똑같은 엔진을 공유한다.
+    <a href="careers/tech.html">→ 테크/HW 커리어 로드맵에서 더 보기</a>
+  </div>
+
+  <!-- ===================================================================== -->
+  <h2>5. 직접 해보는 길 — 과장 없는 단계</h2>
+  <p>지금(고등학생) 시작할 수 있는 현실적인 경로다. 한 번에 다 하지 말고, 한 칸씩.</p>
+
+  <div class="road">
+    <div class="step">
+      <div class="dot">1</div>
+      <div class="when">기초 도구</div>
+      <ul>
+        <li>파이썬 문법</li>
+        <li><b>pandas</b>(표 데이터 다루기)</li>
+        <li>그래프: matplotlib</li>
+      </ul>
+    </div>
+    <div class="step">
+      <div class="dot">2</div>
+      <div class="when">공개 데이터</div>
+      <ul>
+        <li><b>StatsBomb open data</b>(무료 공개 이벤트 데이터)</li>
+        <li>한 경기 불러와 슛맵 그려보기</li>
+      </ul>
+    </div>
+    <div class="step">
+      <div class="dot">3</div>
+      <div class="when">첫 모델</div>
+      <ul>
+        <li><b>scikit-learn</b>으로 로지스틱 회귀</li>
+        <li>거리·각도로 나만의 xG 학습</li>
+        <li>train/test로 검증</li>
+      </ul>
+    </div>
+    <div class="step">
+      <div class="dot">4</div>
+      <div class="when">발전</div>
+      <ul>
+        <li>XGBoost로 성능 비교</li>
+        <li>특징 중요도 살펴보기</li>
+        <li>결과를 글·그림으로 공유</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="chartbox">
+    <h3>모델이 본 '특징 중요도' — 무엇이 골 확률을 가장 좌우하나 (개념 예시)</h3>
+    <ul class="feat" aria-label="특징 중요도 막대">
+      <li><span class="name">슛 거리</span><span class="bar"><i style="width:100%"></i></span><span class="num">0.41</span></li>
+      <li><span class="name">슛 각도</span><span class="bar"><i style="width:66%"></i></span><span class="num">0.27</span></li>
+      <li><span class="name">수비 압박</span><span class="bar"><i style="width:39%"></i></span><span class="num">0.16</span></li>
+      <li><span class="name">신체 부위</span><span class="bar"><i style="width:24%"></i></span><span class="num">0.10</span></li>
+      <li><span class="name">상황(역습 등)</span><span class="bar"><i style="width:15%"></i></span><span class="num">0.06</span></li>
+    </ul>
+    <canvas id="impChart" height="150" aria-label="특징 중요도 막대그래프"></canvas>
+    <p class="cap">
+      위 막대는 CSS라 오프라인에서도 보입니다. 아래 차트는 인터넷 연결 시 표시. 숫자(개념 예시) —
+      거리 0.41 · 각도 0.27 · 압박 0.16 · 신체부위 0.10 · 상황 0.06. <b>거리·각도가 xG를 지배</b>한다는 게 일반적 경향.
+    </p>
+  </div>
+
+  <!-- ===================================================================== -->
+  <h2>6. 윤리와 한계 — 숫자를 의심하는 법</h2>
+  <div class="warn">
+    ⚠️ <b>데이터도 거짓말을 할 수 있다.</b> 모델을 의사결정에 쓰기 전에 늘 의심하자.
+    <ul style="margin:8px 0 0;">
+      <li><b>편향(bias):</b> 빅리그·인기 선수 데이터가 많고 약소국·여자축구·유소년 데이터는 적다 → 모델이 잘 보던 쪽에만 정확하다.</li>
+      <li><b>맥락 상실:</b> xG는 "5분 뒤 퇴장으로 10명이 됐다", "비가 와서 공이 미끄러웠다" 같은 맥락을 모른다.</li>
+      <li><b>오용:</b> "xG 한 줄"로 선수를 영입·방출하면 위험하다. 지표는 <b>대화의 시작</b>이지 결론이 아니다.</li>
+      <li><b>상관 ≠ 인과:</b> 두 숫자가 같이 움직인다고 하나가 원인인 건 아니다.</li>
+    </ul>
+    좋은 분석가는 모델을 <b>믿되, 그 한계를 가장 잘 아는 사람</b>이다.
+  </div>
+
+  <div class="pager">
+    <a href="data-football.html">← 데이터 기초로</a>
+    <a href="careers/tech.html">🛠 테크 커리어 →</a>
+    <a href="index.html">🧭 탐구 허브 →</a>
+  </div>
+
+</div>
+
+<footer class="sitefoot">
+  2026 월드컵 앱 · 탐구 허브 · <a href="index.html">← 허브로</a>
+</footer>
+
+<!-- 그림(mermaid): startOnLoad:false + run 패턴. 오프라인이면 위 .eco 박스로 대체됨. -->
+<script type="module">
+  try {
+    const m = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
+    m.default.initialize({ startOnLoad: false, theme: 'neutral' });
+    await m.default.run({ querySelector: '.mermaid' });
+  } catch (e) { /* 오프라인이면 흐름도는 글자로, 그리고 .eco 박스로 보임 */ }
+</script>
+<!-- 차트(Chart.js): 인터넷 연결 시 동작. 없으면 .cap의 숫자/CSS 막대로 대체됨. -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script>
+  window.addEventListener('load', function () {
+    if (!window.Chart) return; // 오프라인이면 캡션/CSS 막대로 대체
+
+    // (1) 로지스틱 회귀 — 거리에 따른 골 확률 S자 곡선
+    new Chart(document.getElementById('sigChart'), {
+      type: 'line',
+      data: {
+        labels: [2, 6, 10, 14, 18, 25],
+        datasets: [{
+          label: 'P(골) = 거리에 따른 골 확률',
+          data: [0.62, 0.40, 0.22, 0.11, 0.05, 0.02],
+          borderColor: '#234e9c', backgroundColor: 'rgba(35,78,156,.12)',
+          fill: true, tension: 0.4, pointRadius: 4
+        }]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } },
+        scales: {
+          x: { title: { display: true, text: '골문까지 거리 (m)' } },
+          y: { beginAtZero: true, max: 0.7, title: { display: true, text: 'P(골)' } }
+        }
+      }
+    });
+
+    // (2) 특징 중요도 막대
+    new Chart(document.getElementById('impChart'), {
+      type: 'bar',
+      data: {
+        labels: ['슛 거리', '슛 각도', '수비 압박', '신체 부위', '상황'],
+        datasets: [{ label: '특징 중요도(개념 예시)', data: [0.41, 0.27, 0.16, 0.10, 0.06],
+          backgroundColor: ['#1a3d7c', '#234e9c', '#e0a800', '#1a7c3d', '#6d28d9'] }]
+      },
+      options: {
+        indexAxis: 'y',
+        plugins: { legend: { display: false } },
+        scales: { x: { beginAtZero: true, max: 0.5 } }
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

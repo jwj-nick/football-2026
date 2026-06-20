@@ -3,9 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>개최도시 &amp; 직관 가이드 — 2026은 북미 3국 공동개최!</title>
+<title>개최도시 지리 — 북미 3국 16개 도시 (지도·고도·도시 이야기)</title>
 <link rel="stylesheet" href="../assets/site.css">
 <link rel="stylesheet" href="../assets/explore.css">
+<!-- Leaflet: 오픈소스 지도 (인터넷 연결 시 동작) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+  /* 이 페이지 전용 소소한 스타일 (지도·고도·도시 카드) */
+  #map{height:440px;border-radius:14px;border:1px solid var(--line);box-shadow:0 1px 4px rgba(0,0,0,.06);}
+  .maphint{font-size:.78rem;color:var(--muted);margin:6px 2px 0;}
+  .citycard{background:#fff;border:1px solid var(--line);border-radius:12px;margin:10px 0;box-shadow:0 1px 4px rgba(0,0,0,.05);overflow:hidden;}
+  .citycard > summary{cursor:pointer;list-style:none;padding:13px 16px;font-weight:700;display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+  .citycard > summary::-webkit-details-marker{display:none;}
+  .citycard > summary::after{content:"＋ 자세히";margin-left:auto;font-size:.74rem;font-weight:700;color:var(--accent);}
+  .citycard[open] > summary::after{content:"－ 접기";}
+  .citycard > summary:hover{background:#f6f8fb;}
+  .citycard .flag{font-size:1.1rem;}
+  .citycard .quick{font-size:.74rem;color:var(--muted);font-weight:600;}
+  .citybody{padding:0 16px 15px;font-size:.92rem;}
+  .citybody .facts{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;}
+  .pill{font-size:.72rem;font-weight:700;background:#eef2f8;color:var(--primary);border-radius:20px;padding:3px 10px;}
+  .pill.alt{background:#efe7fb;color:#5b21b6;}
+  .pill.tz{background:#e7f0fb;color:#1a4d8f;}
+</style>
 </head>
 <body>
 
@@ -21,236 +41,190 @@
 <div class="wrap">
 
   <div class="hero gold">
-    <div class="eyebrow">EXPLORE · 개최도시 / 직관</div>
-    <h1>🗺️ 개최도시 &amp; 직관 가이드 — 2026은 북미 3국 공동개최!</h1>
-    <p>2026 월드컵은 월드컵 역사상 처음으로 <b>미국·캐나다·멕시코 3개국이 함께</b> 여는 대회야.
-       <b>48개국</b>이 참가해 <b>104경기</b>를 치르는 <b>역대 최대 규모</b>. 경기는 한 도시가 아니라
-       <b>16개 도시</b>에 흩어져서 열린다. 어디서, 몇 시에 보면 될까?</p>
+    <div class="eyebrow">EXPLORE · 개최도시 지리</div>
+    <h1>🗺️ 북미 3국, 16개 도시의 지도</h1>
+    <p>2026 월드컵은 사상 첫 <b>미국·캐나다·멕시코 3개국 공동개최</b>, 48개국 104경기로 역대 최대야.
+       경기가 <b>16개 도시</b>에 흩어져 열리지. 어디에 있고, 얼마나 높고(고도!), 어떤 도시인지 지도로 들여다보자.</p>
   </div>
 
-  <p class="lead">이 페이지는 두 가지를 도와줘. ① <b>어느 나라 어느 도시</b>에서 열리는지 한눈에,
-     ② 한국에서 볼 때 가장 헷갈리는 <b>시차</b>를 감으로 잡기. (덤으로 직접 보러 갈 때 알아둘 상식도!)</p>
+  <!-- ===================== 1. 지도 ===================== -->
+  <h2>1. 16개 도시는 어디에 있나</h2>
+  <p>아래는 진짜 지도야. 마커(📍)를 누르면 도시 이름이 뜨고, "자세히" 링크로 그 도시 설명까지 한 번에 갈 수 있어.</p>
+  <div id="map">지도는 인터넷에 연결되면 표시됩니다.</div>
+  <p class="maphint">🇺🇸 미국 11 · 🇨🇦 캐나다 2 · 🇲🇽 멕시코 3 &nbsp;|&nbsp; 지도: OpenStreetMap / Leaflet</p>
 
-  <h2>1. 나라별 개최도시 (모두 16개)</h2>
-  <p>3개국에 16개 도시. 미국이 가장 많은 11개, 캐나다 2개, 멕시코 3개야.
-     아래는 우리 앱의 <b>경기장 데이터와 똑같은 16개 도시</b> 목록이야.</p>
-
-  <!-- 나라별 개최도시: card 그리드. 도시별 한 줄 특징은 가볍게(과장 없이). -->
-  <div class="grid c3">
-
-    <div class="card">
-      <h3>🇺🇸 미국 <span class="tag gold">11개 도시</span></h3>
-      <table class="tbl">
-        <tbody>
-          <tr><td><b>애틀랜타</b></td><td>남부의 큰 도시, 대형 실내 경기장으로 유명</td></tr>
-          <tr><td><b>보스턴</b></td><td>역사·대학으로 알려진 미국 동북부 도시 (경기장은 인근 지역)</td></tr>
-          <tr><td><b>댈러스</b></td><td>텍사스의 대도시, 더운 날씨 + 대형 경기장</td></tr>
-          <tr><td><b>휴스턴</b></td><td>텍사스의 또 다른 대도시, 우주센터로 유명</td></tr>
-          <tr><td><b>캔자스시티</b></td><td>미국 중부, 바비큐로 유명한 도시</td></tr>
-          <tr><td><b>로스앤젤레스(LA)</b></td><td>서부 최대 도시, 영화·날씨 좋기로 유명</td></tr>
-          <tr><td><b>마이애미</b></td><td>남쪽 끝의 해변 도시, 덥고 습한 편</td></tr>
-          <tr><td><b>뉴욕/뉴저지</b></td><td>미국 최대 도시권, 결승전이 열리는 곳으로 알려짐</td></tr>
-          <tr><td><b>필라델피아</b></td><td>동부의 역사 도시 (미국 독립과 관련 깊음)</td></tr>
-          <tr><td><b>샌프란시스코</b></td><td>서부 IT의 중심지, 베이 지역 (경기장은 인근 지역)</td></tr>
-          <tr><td><b>시애틀</b></td><td>서북부 도시, 비 자주 오고 축구 인기 높은 편</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="card">
-      <h3>🇨🇦 캐나다 <span class="tag">2개 도시</span></h3>
-      <table class="tbl">
-        <tbody>
-          <tr><td><b>토론토</b></td><td>캐나다 최대 도시, 다양한 문화가 섞인 곳</td></tr>
-          <tr><td><b>밴쿠버</b></td><td>서부 태평양 연안 도시, 산·바다가 가까움</td></tr>
-        </tbody>
-      </table>
-      <p class="lead" style="margin-top:10px">캐나다는 두 도시지만, 두 곳 다 한국에서 인기 있는 여행지라 이름은 익숙할 거야.</p>
-    </div>
-
-    <div class="card">
-      <h3>🇲🇽 멕시코 <span class="tag red">3개 도시</span></h3>
-      <table class="tbl">
-        <tbody>
-          <tr><td><b>멕시코시티</b></td><td>멕시코 수도, 해발 약 2,200m로 매우 높은 도시</td></tr>
-          <tr><td><b>과달라하라</b></td><td>멕시코 제2의 도시, 마리아치 음악으로 유명</td></tr>
-          <tr><td><b>몬테레이</b></td><td>북부의 산업 도시, 미국 국경과 가까움</td></tr>
-        </tbody>
-      </table>
-      <p class="lead" style="margin-top:10px">멕시코는 1970·1986에 이어 <b>세 번째</b>로 월드컵을 여는, 손꼽히는 축구 열정의 나라야.</p>
-    </div>
-
+  <!-- ===================== 2. 고도 ===================== -->
+  <h2>2. 도시의 "고도(해발 높이)"가 경기를 바꾼다</h2>
+  <p>같은 월드컵이라도 <b>도시마다 높이가 천차만별</b>이야. 특히 <b>멕시코시티는 해발 약 2,240m</b> — 백두산(2,744m)에 가까운 높이에서 축구를 한다고 생각해 봐!</p>
+  <div class="term">
+    💬 <b>고도(altitude)</b>가 높으면 공기가 옅어져(산소가 적어). 그래서 ① 선수가 <b>더 빨리 지치고</b>,
+    ② 공기 저항이 줄어 <b>공이 더 멀리·빠르게</b> 날아가. 고지대 팀이 홈에서 강한 데는 이런 과학이 숨어 있어.
+  </div>
+  <div class="chartbox">
+    <h3>개최도시 해발고도 (m) — 낮음에서 높음</h3>
+    <canvas id="elevChart" height="260" aria-label="도시별 해발고도 막대그래프"></canvas>
+    <p class="cap">차트는 인터넷 연결 시 표시. 대략값(m): 멕시코시티 2240 · 과달라하라 1566 · 몬테레이 540 · 애틀랜타 320 · 캔자스시티 270 · 댈러스 130 · 토론토 76 · 시애틀 56 · LA 38 · 보스턴 30 · 휴스턴 15 · 필라델피아 12 · SF 9 · 뉴욕/뉴저지 7 · 마이애미 3 · 밴쿠버 3</p>
   </div>
 
-  <div class="note">
-    📌 경기장 이름은 대회·계약에 따라 바뀌거나 임시로 다르게 부르기도 해서, 여기선
-    <b>도시 이름 위주</b>로 적었어. 정확한 경기장과 경기 일정은 앱의 <b>일정 탭</b>에서 확인하는 게 가장 확실해.
-  </div>
-
-  <h2>2. 시차 가이드 (가장 실용적!)</h2>
-  <p>한국에서 보면 가장 헷갈리는 게 <b>시차</b>야. "현지 저녁 경기"가 한국에선 새벽일 수도, 한낮일 수도 있거든.
-     아래는 <b>6월 기준 대략적인 시차</b>야 (대부분 미국·캐나다 도시는 6월에 <span class="t" title="여름에 시계를 1시간 앞당기는 제도. 해가 긴 시기를 더 활용하려고 쓴다.">서머타임<sup>?</sup></span>을 적용 중).</p>
-
-  <div class="tip">
-    💡 <b>헷갈릴 필요 없어!</b> 우리 <b>앱의 일정 탭은 이미 전부 한국시간(KST)</b>으로 보여줘.
-    아래 표는 점수를 매기는 게 아니라, <b>"지금 그 도시는 몇 시쯤일까"</b> 감을 잡는 용도야.
-  </div>
-
-  <!-- 시차 표: 모두 "약/대략"으로 hedge. 멕시코는 별도 경고. -->
+  <!-- ===================== 3. 시차 ===================== -->
+  <h2>3. 시차 — 한국에서 몇 시에 보나</h2>
+  <p>도시들이 동→서로 넓게 퍼져 있어 <b>시간대가 4개</b>나 걸쳐 있어. 한국(KST)과의 대략 시차는 이래(6월 서머타임 기준):</p>
   <table class="tbl">
-    <thead>
-      <tr><th>시간대(구역)</th><th>해당 도시(예시)</th><th>한국과의 대략 시차</th></tr>
-    </thead>
+    <thead><tr><th>시간대</th><th>해당 도시</th><th>한국과의 시차(대략)</th></tr></thead>
     <tbody>
-      <tr>
-        <td><b>동부시간(ET)</b></td>
-        <td>보스턴 · 뉴욕/뉴저지 · 필라델피아 · 애틀랜타 · 마이애미 · 토론토</td>
-        <td>한국보다 약 <b>13시간 느림</b></td>
-      </tr>
-      <tr>
-        <td><b>중부시간(CT)</b></td>
-        <td>댈러스 · 휴스턴 · 캔자스시티</td>
-        <td>한국보다 약 <b>14시간 느림</b></td>
-      </tr>
-      <tr>
-        <td><b>태평양시간(PT)</b></td>
-        <td>LA · 샌프란시스코 · 시애틀 · 밴쿠버</td>
-        <td>한국보다 약 <b>16시간 느림</b></td>
-      </tr>
-      <tr>
-        <td><b>멕시코</b></td>
-        <td>멕시코시티 · 과달라하라 · 몬테레이</td>
-        <td>한국보다 약 <b>14~15시간 느림</b> ⚠️</td>
-      </tr>
+      <tr><td>동부(ET)</td><td>뉴욕/뉴저지, 보스턴, 필라델피아, 애틀랜타, 마이애미, 토론토</td><td>약 <b>13시간</b> 느림</td></tr>
+      <tr><td>중부(CT)</td><td>댈러스, 휴스턴, 캔자스시티</td><td>약 <b>14시간</b> 느림</td></tr>
+      <tr><td>태평양(PT)</td><td>LA, 샌프란시스코, 시애틀, 밴쿠버</td><td>약 <b>16시간</b> 느림</td></tr>
+      <tr><td>멕시코(CST)</td><td>멕시코시티, 과달라하라, 몬테레이</td><td>약 <b>15시간</b> 느림 ⚠️</td></tr>
     </tbody>
   </table>
+  <div class="warn">⚠️ <b>멕시코는 2022년부터 서머타임(DST)을 적용하지 않아</b> 다른 미국 도시와 1시간씩 차이날 수 있어. 정확한 시각은 늘 확인하자.</div>
+  <div class="tip">💡 헷갈릴 필요 없어! <b>앱의 「일정」 탭은 이미 전부 한국시간(KST)으로</b> 보여줘. 이 표는 "현지는 지금 몇 시쯤일까" 감 잡기용이야.
+    <span class="t" title="여름철에 시계를 1시간 앞당기는 제도. Daylight Saving Time. 미국·캐나다는 적용, 멕시코는 2022년 폐지.">서머타임(DST)<sup>?</sup></span></div>
 
-  <div class="warn">
-    ⚠️ <b>멕시코는 주의!</b> 멕시코는 대부분 지역에서 <b>서머타임(여름에 시계 1시간 앞당기기)을 더 이상 쓰지 않아.</b>
-    그래서 미국·캐나다와 달리, <b>도시·시기·연도에 따라 시차가 1시간쯤 달라질 수 있어.</b>
-    멕시코 경기는 "정확한 시각"이 필요하면 꼭 앱의 일정 탭(KST)으로 다시 확인하자.
-  </div>
+  <!-- ===================== 4. 도시 이야기 ===================== -->
+  <h2>4. 나라별 개최도시 — 클릭해서 자세히</h2>
+  <p>각 도시 칸을 누르면 <b>역사·특색·주경기장·고도·시간대</b>가 펼쳐져. 16개 전부 담았어.</p>
 
-  <div class="term">
-    💬 <b>시차</b>란? 지구가 둥글어서 나라마다 해가 뜨는 시각이 달라. 그 <b>시계 차이</b>가 시차야.
-    <b>서머타임(DST, Daylight Saving Time)</b>은 여름에 해가 길 때 <b>시계를 1시간 앞으로</b> 돌려 저녁을 더 밝게 쓰는 제도인데,
-    <b>나라마다 적용 여부가 달라서</b> 시차 계산을 헷갈리게 만들어. (그래서 위에 전부 "약/대략"이라고 적은 거야!)
-  </div>
+  <h3>🇺🇸 미국 — 11개 도시</h3>
 
-  <div class="tip">
-    💡 <b>빠른 계산 팁:</b> "현지 시각 + 시차 = 한국 시각"이야.
-    예를 들어 <b>뉴욕(동부, 약 13시간)</b>에서 <b>현지 저녁 6시</b> 경기는 → 한국으로 <b>다음 날 오전 7시쯤</b>.
-    <b>LA(태평양, 약 16시간)</b>에서 <b>현지 정오 12시</b> 경기는 → 한국으로 <b>다음 날 새벽 4시쯤</b>.
-    (어디까지나 대략! 정확한 건 일정 탭.)
-  </div>
-
-  <h2>3. 직관(직접 보러 가기) 가이드</h2>
-  <p>"진짜 현장에서 보고 싶다!" 하는 사람을 위한 <b>상식 수준 팁</b>이야.
-     실제 계획은 어른과 함께, 공식 정보를 보고 정해야 해. 아래는 전부 <b>대략·일반적인</b> 이야기야.</p>
-
-  <div class="grid c2">
-
-    <div class="card">
-      <h3>🛫 3개국을 오가는 이동</h3>
-      <p class="lead">한 대회가 <b>세 나라</b>에 걸쳐 있어서, 경기를 따라다니려면 나라 사이를 옮겨야 할 수도 있어.</p>
-      <ul>
-        <li>나라 안 이동은 보통 <b>국내선 비행기</b>나 차로 (미국은 도시 간 거리가 아주 멀 수 있어)</li>
-        <li>나라를 넘을 땐 <b>국경 통과</b>가 필요해 — 일반적으로 <b>여권</b>이 필수</li>
-        <li>나라·국적에 따라 <b>비자</b>나 사전 입국허가가 필요할 수 있어 (미리 확인!)</li>
-      </ul>
+  <details class="citycard" id="c-newyork">
+    <summary><span class="flag">🗽</span> 뉴욕 / 뉴저지 <span class="quick">· 결승전 개최 · 동부시간</span></summary>
+    <div class="citybody">
+      <div class="facts"><span class="pill">주경기장: MetLife Stadium</span><span class="pill alt">해발 ~7m</span><span class="pill tz">ET · 한국−13h</span></div>
+      <p>세계 금융·문화의 수도. 자유의 여신상과 마천루의 도시이며, 경기장은 강 건너 뉴저지 East Rutherford에 있어.
+         <b>2026 월드컵 결승전</b>이 바로 이곳에서 열려 — 대회의 하이라이트 도시야.</p>
     </div>
+  </details>
 
-    <div class="card">
-      <h3>🎟️ 티켓은 공식 경로로</h3>
-      <p class="lead">표는 <b>FIFA 공식 판매</b>를 통해 구하는 게 원칙이야.</p>
-      <ul>
-        <li>공식 사이트/앱에서 사면 안전하고, 가격·진위가 보장돼</li>
-        <li><span class="t" title="정가보다 비싸게 되파는 표. 가짜이거나 입장이 막힐 위험이 크다.">암표<sup>?</sup></span>는
-            <b>가짜·입장 거부 위험</b>이 커서 피해야 해</li>
-        <li>표가 진짜인지 애매하면 "공식 경로가 맞나?"부터 확인하기</li>
-      </ul>
+  <details class="citycard" id="c-la">
+    <summary><span class="flag">🌴</span> 로스앤젤레스(LA) <span class="quick">· 태평양시간 · 영화의 도시</span></summary>
+    <div class="citybody">
+      <div class="facts"><span class="pill">주경기장: SoFi Stadium</span><span class="pill alt">해발 ~38m</span><span class="pill tz">PT · 한국−16h</span></div>
+      <p>할리우드와 햇살의 도시. SoFi 스타디움은 미국에서 가장 비싸고 현대적인 경기장 중 하나로 꼽혀.
+         서부라 한국과 시차가 가장 커서(약 16시간), 한국에선 경기가 <b>아침·낮 시간대</b>에 많이 걸려.</p>
     </div>
+  </details>
 
-    <div class="card">
-      <h3>🕒 시차 적응 (시차증)</h3>
-      <p class="lead">한국과 13~16시간 차이라 <b>몸의 시계</b>가 한동안 헷갈려.</p>
-      <ul>
-        <li>도착 며칠 전부터 <b>잠자는 시간을 조금씩</b> 현지에 맞춰 보기</li>
-        <li>도착하면 <b>낮에 햇빛</b>을 많이 쬐면 적응에 도움</li>
-        <li>첫 1~2일은 무리한 일정보다 <b>가볍게</b></li>
-      </ul>
+  <details class="citycard" id="c-sf">
+    <summary><span class="flag">🌉</span> 샌프란시스코 만(灣) <span class="quick">· 실리콘밸리 · 태평양시간</span></summary>
+    <div class="citybody">
+      <div class="facts"><span class="pill">주경기장: Levi's Stadium (산타클라라)</span><span class="pill alt">해발 ~9m</span><span class="pill tz">PT · 한국−16h</span></div>
+      <p>금문교와 안개의 도시이자 <b>실리콘밸리</b>의 관문 — 구글·애플의 본거지가 바로 옆이야(아빠의 기술 분야와 가까운 동네!).
+         경기장은 남쪽 산타클라라에 있어.</p>
     </div>
+  </details>
 
-    <div class="card">
-      <h3>☀️ 더위·날씨 대비</h3>
-      <p class="lead">6~7월 북미 일부 도시는 <b>매우 덥고 습</b>할 수 있어.</p>
-      <ul>
-        <li><b>물</b>을 자주 마시고, <b>모자·자외선 차단</b> 챙기기</li>
-        <li>도시마다 날씨가 크게 달라 (마이애미는 덥고, 시애틀은 선선·비)</li>
-        <li>멕시코시티는 <b>고도가 높아</b> 숨이 차거나 햇빛이 강할 수 있어</li>
-      </ul>
+  <details class="citycard" id="c-seattle">
+    <summary><span class="flag">🌲</span> 시애틀 <span class="quick">· 비의 도시 · 태평양시간</span></summary>
+    <div class="citybody">
+      <div class="facts"><span class="pill">주경기장: Lumen Field</span><span class="pill alt">해발 ~56m</span><span class="pill tz">PT · 한국−16h</span></div>
+      <p>스타벅스·마이크로소프트·아마존의 고향. 푸른 숲과 비가 많은 항구 도시로, 축구 열기(사운더스 FC)가 미국에서 손꼽혀 응원 분위기가 뜨거워.</p>
     </div>
+  </details>
 
-  </div>
+  <details class="citycard" id="c-dallas">
+    <summary><span class="flag">🤠</span> 댈러스 <span class="quick">· 다경기 개최 · 중부시간</span></summary>
+    <div class="citybody">
+      <div class="facts"><span class="pill">주경기장: AT&amp;T Stadium (알링턴)</span><span class="pill alt">해발 ~130m</span><span class="pill tz">CT · 한국−14h</span></div>
+      <p>텍사스의 대도시. 거대한 돔형 AT&amp;T 스타디움(미식축구 카우보이스의 홈)에서 열리며, 2026 대회에서 <b>가장 많은 경기</b>를 치르는 도시 중 하나야.</p>
+    </div>
+  </details>
 
-  <div class="note">
-    📌 위 내용은 모두 <b>일반적인 상식</b>이야. 여권·비자·티켓·일정 같은 <b>실제 결정</b>은
-    반드시 <b>공식 정보</b>와 <b>어른의 확인</b>을 거쳐야 해. 규정은 자주 바뀌거든!
-  </div>
+  <details class="citycard" id="c-houston">
+    <summary><span class="flag">🚀</span> 휴스턴 <span class="quick">· 우주의 도시 · 중부시간</span></summary>
+    <div class="citybody">
+      <div class="facts"><span class="pill">주경기장: NRG Stadium</span><span class="pill alt">해발 ~15m</span><span class="pill tz">CT · 한국−14h</span></div>
+      <p>NASA 우주센터로 유명한 텍사스 항구 도시. 무덥고 습해서 개폐식 지붕 경기장에서 경기를 해. 다양한 이민 문화로 음식이 풍성해.</p>
+    </div>
+  </details>
 
-  <h2>4. 한눈에 보기 — 3개국 16도시 · 3개 시간대</h2>
-  <p>마지막으로 전체 그림을 한 장으로. (인터넷이 연결되면 도형으로, 아니면 아래 박스/표로도 충분히 보여.)</p>
+  <details class="citycard" id="c-kansas">
+    <summary><span class="flag">🎺</span> 캔자스시티 <span class="quick">· 재즈·바비큐 · 중부시간</span></summary>
+    <div class="citybody">
+      <div class="facts"><span class="pill">주경기장: Arrowhead Stadium</span><span class="pill alt">해발 ~270m</span><span class="pill tz">CT · 한국−14h</span></div>
+      <p>재즈와 바비큐의 고향. 애로헤드 스타디움은 <b>관중 함성이 세계에서 가장 시끄러운 경기장</b> 중 하나로 기네스 기록을 가진 적이 있어.</p>
+    </div>
+  </details>
 
-  <!-- 오프라인 폴백 1: eco 박스 -->
-  <div class="eco">
-    <span class="box g">🇺🇸 미국 11도시</span>
-    <span class="arr">+</span>
-    <span class="box">🇨🇦 캐나다 2도시</span>
-    <span class="arr">+</span>
-    <span class="box r">🇲🇽 멕시코 3도시</span>
-    <span class="arr">=</span>
-    <span class="box"><b>16개 개최도시</b></span>
-  </div>
+  <details class="citycard" id="c-atlanta">
+    <summary><span class="flag">🍑</span> 애틀랜타 <span class="quick">· 남부 중심 · 동부시간</span></summary>
+    <div class="citybody">
+      <div class="facts"><span class="pill">주경기장: Mercedes-Benz Stadium</span><span class="pill alt">해발 ~320m</span><span class="pill tz">ET · 한국−13h</span></div>
+      <p>코카콜라 본사와 미국 남부의 경제 중심. 개폐식 지붕이 카메라 조리개처럼 열리는 독특한 경기장으로 유명해. 개최도시 중 비교적 고도가 높은 편(~320m).</p>
+    </div>
+  </details>
 
-  <p>같은 내용을 시간대(서→동) 그림으로도 그려봤어:</p>
-  <pre class="mermaid">
-graph LR
-  PT["🌊 태평양시간(PT)<br/>한국보다 약 16h 느림<br/>LA·SF·시애틀·밴쿠버"]
-  CT["🌾 중부시간(CT)<br/>한국보다 약 14h 느림<br/>댈러스·휴스턴·캔자스시티"]
-  ET["🏙️ 동부시간(ET)<br/>한국보다 약 13h 느림<br/>뉴욕/뉴저지·보스턴·필라델피아·애틀랜타·마이애미·토론토"]
-  MX["🌮 멕시코<br/>한국보다 약 14~15h 느림 ⚠️서머타임 미적용<br/>멕시코시티·과달라하라·몬테레이"]
-  PT --> CT --> ET
-  CT -.근접.- MX
-  </pre>
+  <details class="citycard" id="c-miami">
+    <summary><span class="flag">🌴</span> 마이애미 <span class="quick">· 라틴 분위기 · 동부시간</span></summary>
+    <div class="citybody">
+      <div class="facts"><span class="pill">주경기장: Hard Rock Stadium</span><span class="pill alt">해발 ~3m</span><span class="pill tz">ET · 한국−13h</span></div>
+      <p>야자수와 해변, 라틴 아메리카 문화가 짙은 도시. 바다와 거의 같은 높이(해발 ~3m)라 덥고 습해. 메시가 뛰는 인터 마이애미의 도시이기도 해.</p>
+    </div>
+  </details>
 
-  <div class="note">
-    📌 위 그림은 <b>대략적인 위치·시차 감</b>을 위한 거야. 정확한 경기별 시각은 늘 앱의 <b>일정 탭(KST)</b>이 기준!
-  </div>
+  <details class="citycard" id="c-boston">
+    <summary><span class="flag">🎓</span> 보스턴 <span class="quick">· 대학의 도시 · 동부시간</span></summary>
+    <div class="citybody">
+      <div class="facts"><span class="pill">주경기장: Gillette Stadium (폭스버러)</span><span class="pill alt">해발 ~30m</span><span class="pill tz">ET · 한국−13h</span></div>
+      <p>하버드·MIT가 있는 미국에서 가장 오래된 대학·역사 도시. 경기장은 도시 남쪽 폭스버러에 있어. 미국 독립의 발상지로 역사 유적이 많아.</p>
+    </div>
+  </details>
 
-  <h2>5. 생각해보기 / 미션</h2>
+  <details class="citycard" id="c-philadelphia">
+    <summary><span class="flag">🔔</span> 필라델피아 <span class="quick">· 독립의 도시 · 동부시간</span></summary>
+    <div class="citybody">
+      <div class="facts"><span class="pill">주경기장: Lincoln Financial Field</span><span class="pill alt">해발 ~12m</span><span class="pill tz">ET · 한국−13h</span></div>
+      <p>미국 <b>독립선언서</b>가 서명된 건국의 도시. '자유의 종'과 영화 록키의 계단으로 유명해. 2026년은 미국 독립 250주년이라 의미가 각별해.</p>
+    </div>
+  </details>
 
-  <div class="mission">
-    <span class="lvl">미션</span>
-    <p><b>나만의 직관 코스를 짜보자!</b> 16개 도시 중 <b>3곳</b>을 골라 여행 코스를 만들어 봐.</p>
-    <ul>
-      <li>고른 3개 도시와 <b>이유</b> (가보고 싶은 이유, 가까운 도시끼리 등)</li>
-      <li>세 도시가 <b>같은 시간대</b>인지, 나라를 넘는지(여권 필요!) 확인</li>
-      <li>각 도시 경기를 <b>한국시간으로 몇 시쯤</b> 보게 될지 일정 탭에서 찾아보기</li>
-    </ul>
-  </div>
+  <h3>🇨🇦 캐나다 — 2개 도시</h3>
 
-  <div class="mission mid">
-    <span class="lvl">한 걸음 더</span>
-    <p><b>시차 계산기 연습.</b> "현지 시각 + 시차 = 한국 시각" 공식으로 직접 풀어보자.</p>
-    <p>문제: <b>시애틀(태평양, 약 16시간)</b>에서 <b>현지 오후 3시</b>에 시작하는 경기는 한국에서 <b>몇 시</b>에 볼까?
-       (힌트: 15시 + 16시간 = 31시 → 24를 빼면 다음 날 새벽 7시쯤!) 멕시코 도시로도 해보되,
-       <b>멕시코는 시차가 1시간쯤 다를 수 있다</b>는 걸 잊지 말기.</p>
-  </div>
+  <details class="citycard" id="c-toronto">
+    <summary><span class="flag">🍁</span> 토론토 <span class="quick">· 캐나다 최대 도시 · 동부시간</span></summary>
+    <div class="citybody">
+      <div class="facts"><span class="pill">주경기장: BMO Field</span><span class="pill alt">해발 ~76m</span><span class="pill tz">ET · 한국−13h</span></div>
+      <p>캐나다에서 가장 큰 도시이자 다문화의 상징. CN 타워가 상징물이고, 나이아가라 폭포가 가까워. 개최 경기장 중 비교적 아담한 축구 전용 구장이야.</p>
+    </div>
+  </details>
 
-  <div class="tip">
-    💡 다 풀었으면 가족에게 "이 경기는 한국에서 몇 시에 보면 돼"라고 설명해 줘.
-    남에게 30초로 설명할 수 있으면 <b>진짜 이해한 것</b>이야.
-  </div>
+  <details class="citycard" id="c-vancouver">
+    <summary><span class="flag">🏔️</span> 밴쿠버 <span class="quick">· 산과 바다 · 태평양시간</span></summary>
+    <div class="citybody">
+      <div class="facts"><span class="pill">주경기장: BC Place</span><span class="pill alt">해발 ~3m</span><span class="pill tz">PT · 한국−16h</span></div>
+      <p>바다와 설산이 함께 보이는 캐나다 서부의 아름다운 항구 도시. 살기 좋은 도시 순위 단골이고, 개폐식 지붕 경기장(BC Place)에서 경기를 해.</p>
+    </div>
+  </details>
+
+  <h3>🇲🇽 멕시코 — 3개 도시</h3>
+
+  <details class="citycard" id="c-mexicocity">
+    <summary><span class="flag">⛰️</span> 멕시코시티 <span class="quick">· 개막전 · 해발 2,240m!</span></summary>
+    <div class="citybody">
+      <div class="facts"><span class="pill">주경기장: Estadio Azteca</span><span class="pill alt">해발 ~2,240m ⛰️</span><span class="pill tz">CST · 한국−15h</span></div>
+      <p>멕시코의 수도이자 라틴 아메리카 최대 도시. <b>2026 월드컵 개막전</b>이 열리는 에스타디오 아스테카는
+         1970·1986 월드컵 결승까지 치른 <b>축구의 성지</b>야. 해발 약 2,240m의 고지대라 산소가 옅어 — 원정팀엔 가장 힘든 무대로 꼽혀(우리 앱에서 멕시코·체코·남아공·한국이 여기 A조!).</p>
+    </div>
+  </details>
+
+  <details class="citycard" id="c-guadalajara">
+    <summary><span class="flag">🎸</span> 과달라하라 <span class="quick">· 마리아치·테킬라 · 해발 1,566m</span></summary>
+    <div class="citybody">
+      <div class="facts"><span class="pill">주경기장: Estadio Akron</span><span class="pill alt">해발 ~1,566m</span><span class="pill tz">CST · 한국−15h</span></div>
+      <p>멕시코 제2의 도시이자 <b>마리아치 음악과 테킬라</b>의 고향 — 가장 '멕시코다운' 도시로 불려.
+         여기도 고지대(~1,566m)라 한국 대표팀의 조별리그 경기(과달라하라)에서 고도 적응이 변수야.</p>
+    </div>
+  </details>
+
+  <details class="citycard" id="c-monterrey">
+    <summary><span class="flag">🏭</span> 몬테레이 <span class="quick">· 산업 도시 · 해발 540m</span></summary>
+    <div class="citybody">
+      <div class="facts"><span class="pill">주경기장: Estadio BBVA</span><span class="pill alt">해발 ~540m</span><span class="pill tz">CST · 한국−15h</span></div>
+      <p>웅장한 세로 데 라 시야(말안장 산) 아래 자리한 멕시코 북부의 <b>산업·경제 도시</b>.
+         멕시코 개최도시 중에서는 고도가 가장 낮지만(~540m) 여름엔 무척 더워.</p>
+    </div>
+  </details>
 
   <div class="pager">
     <a href="data-football.html">📊 데이터 축구 →</a>
@@ -264,12 +238,69 @@ graph LR
   2026 월드컵 앱 · 탐구 허브 · <a href="index.html">← 허브로</a>
 </footer>
 
-<!-- 그림(mermaid): 인터넷 연결 시 도형으로, 없으면 위 박스/표로 대체됨. -->
-<script type="module">
+<!-- 지도(Leaflet) + 고도 차트(Chart.js): 인터넷 연결 시 동작, 없으면 위 표/숫자로 대체 -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script>
+  // 16개 도시 데이터 (지도 마커 + 고도 차트 공용). anchor = 상세 카드 id
+  var CITIES = [
+    { ko: "뉴욕/뉴저지", lat: 40.814, lon: -74.074, elev: 7,    anchor: "c-newyork" },
+    { ko: "로스앤젤레스", lat: 33.953, lon: -118.339, elev: 38,  anchor: "c-la" },
+    { ko: "샌프란시스코", lat: 37.403, lon: -121.969, elev: 9,   anchor: "c-sf" },
+    { ko: "시애틀",      lat: 47.595, lon: -122.332, elev: 56,  anchor: "c-seattle" },
+    { ko: "댈러스",      lat: 32.747, lon: -97.093, elev: 130,  anchor: "c-dallas" },
+    { ko: "휴스턴",      lat: 29.685, lon: -95.411, elev: 15,   anchor: "c-houston" },
+    { ko: "캔자스시티",  lat: 39.049, lon: -94.484, elev: 270,  anchor: "c-kansas" },
+    { ko: "애틀랜타",    lat: 33.755, lon: -84.401, elev: 320,  anchor: "c-atlanta" },
+    { ko: "마이애미",    lat: 25.958, lon: -80.239, elev: 3,    anchor: "c-miami" },
+    { ko: "보스턴",      lat: 42.091, lon: -71.264, elev: 30,   anchor: "c-boston" },
+    { ko: "필라델피아",  lat: 39.901, lon: -75.168, elev: 12,   anchor: "c-philadelphia" },
+    { ko: "토론토",      lat: 43.633, lon: -79.418, elev: 76,   anchor: "c-toronto" },
+    { ko: "밴쿠버",      lat: 49.277, lon: -123.112, elev: 3,   anchor: "c-vancouver" },
+    { ko: "멕시코시티",  lat: 19.303, lon: -99.150, elev: 2240, anchor: "c-mexicocity" },
+    { ko: "과달라하라",  lat: 20.681, lon: -103.463, elev: 1566, anchor: "c-guadalajara" },
+    { ko: "몬테레이",    lat: 25.669, lon: -100.244, elev: 540,  anchor: "c-monterrey" }
+  ];
+
+  // --- 지도 ---
   try {
-    const m = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
-    m.default.initialize({ startOnLoad: true, theme: 'neutral' });
-  } catch (e) { /* 오프라인이면 위 도형은 글자/박스로 보임 */ }
+    if (window.L) {
+      var map = L.map("map").setView([37.5, -96], 3); // 북미 중앙
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 18, attribution: "© OpenStreetMap"
+      }).addTo(map);
+      CITIES.forEach(function (c) {
+        L.marker([c.lat, c.lon]).addTo(map)
+          .bindPopup("<b>" + c.ko + "</b><br>해발 " + c.elev + "m<br>" +
+                     '<a href="#' + c.anchor + '" onclick="document.getElementById(\'' + c.anchor + '\').open=true">자세히 보기 →</a>');
+      });
+    }
+  } catch (e) { /* 오프라인: 위 안내문 유지 */ }
+
+  // --- 고도 차트 (낮음→높음 정렬, 가로 막대) ---
+  window.addEventListener("load", function () {
+    if (!window.Chart) return;
+    var sorted = CITIES.slice().sort(function (a, b) { return a.elev - b.elev; });
+    new Chart(document.getElementById("elevChart"), {
+      type: "bar",
+      data: {
+        labels: sorted.map(function (c) { return c.ko; }),
+        datasets: [{
+          label: "해발고도(m)",
+          data: sorted.map(function (c) { return c.elev; }),
+          backgroundColor: sorted.map(function (c) {
+            return c.elev >= 1500 ? "#6d28d9" : c.elev >= 250 ? "#e0a800" : "#1a7c3d";
+          })
+        }]
+      },
+      options: {
+        indexAxis: "y",
+        plugins: { legend: { display: false },
+          tooltip: { callbacks: { label: function (ctx) { return ctx.parsed.x + " m"; } } } },
+        scales: { x: { beginAtZero: true, title: { display: true, text: "해발고도 (m)" } } }
+      }
+    });
+  });
 </script>
 
 </body>

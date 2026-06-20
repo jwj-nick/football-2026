@@ -14,6 +14,18 @@
 
 ---
 
+## 2026-06-20  다이어그램 렌더 버그 수정 + host-cities/data-football 전면 보강
+
+- **한 일:**
+  - **mermaid 렌더 버그 전수 수정**: 6개 페이지 로더가 `startOnLoad:true`라 동적 import 후 DOM 로드가 끝나 렌더가 안 됨 → `startOnLoad:false` + 명시적 `await run({querySelector:'.mermaid'})`로 일괄 교체. (host-cities·data-football 등 "안 보이던 흐름도" 해결)
+  - **host-cities.html 전면 재작성**: "직관 가이드" 삭제, **Leaflet 인터랙티브 지도**(16개 도시 마커+팝업→상세 점프), **Chart.js 해발고도 가로막대**(멕시코시티 2240m 강조 + 고도가 경기에 주는 영향 설명), 도시별 **클릭 펼침(`<details>`) 상세**(역사·특색·주경기장·고도·시간대), 시차표 정리. 깨졌던 "서→동 시간대 그림"은 제거·대체.
+  - **data-football 전문가 수준 2페이지화**: `data-football.html`(이벤트 vs 트래킹 데이터, 지표 사다리, xG 심층/npxG·xGA, 슛맵·패스네트워크, 머니볼 문화) + 신규 `data-football-models.html`(xG 모델 지도학습·로지스틱/부스팅, xT·VAEP·pitch control, 트래킹 파이프라인, **NPU/HW 교집합=아빠 분야 연결**, 학습 로드맵, 윤리·한계).
+- **왜:** 사용자 피드백 — 다이어그램 미표시, data-football 초보적, 개최도시 빈약/지도·고도 요청.
+- **확인:** 14개 HTML 내부 링크 깨짐 0, `startOnLoad:true` 잔존 0, 신규/수정 페이지 div 균형·nav/footer·차트/지도 존재.
+- **다음:** 라이브에서 지도·차트·mermaid 실제 렌더 확인.
+
+---
+
 ## 2026-06-20  결과 자동수집(GitHub Actions) + 현재 결과 스냅샷
 
 - **한 일:**
