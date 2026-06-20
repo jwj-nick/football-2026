@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 월드컵 일정·결과·순위</title>
+<style>
+:root{--primary:#1a3d7c;--border:#e0e4e8;--kr:#c8102e;--win:#1a7c3d;}
+*{box-sizing:border-box;}
+body{font-family:'Segoe UI',Tahoma,'Apple SD Gothic Neo',sans-serif;line-height:1.5;color:#222;max-width:980px;margin:0 auto;padding:16px;background:#f4f6f9;}
+h1{text-align:center;color:#111;font-size:1.35rem;margin:6px 0 2px;}
+.sub{text-align:center;color:#777;font-size:.82rem;margin-bottom:14px;}
+.tabs{display:flex;gap:6px;margin-bottom:12px;}
+.tab{flex:1;padding:11px;text-align:center;background:#fff;border:1px solid var(--border);border-radius:10px;cursor:pointer;font-weight:600;color:#666;font-size:.92rem;}
+.tab.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+.controls{display:flex;flex-wrap:wrap;gap:8px;background:#fff;padding:12px;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);margin-bottom:12px;align-items:flex-end;}
+.controls label{font-size:.78rem;color:#555;display:flex;flex-direction:column;gap:3px;}
+select{padding:7px 9px;border:1px solid var(--border);border-radius:7px;font-size:.9rem;background:#fff;min-width:96px;}
+button{padding:7px 12px;border:1px solid var(--border);border-radius:7px;background:#fff;font-size:.85rem;cursor:pointer;}
+button:hover{background:#eef2f8;}
+button.kr{border-color:var(--kr);color:var(--kr);font-weight:600;}
+button.on{background:var(--primary);color:#fff;border-color:var(--primary);}
+.count{font-size:.8rem;color:#888;margin-left:auto;padding-bottom:4px;}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);font-size:.9rem;}
+th,td{padding:9px 8px;text-align:left;border-bottom:1px solid var(--border);}
+th{background:var(--primary);color:#fff;cursor:pointer;user-select:none;white-space:nowrap;font-size:.83rem;}
+th:hover{background:#234e9c;}
+th.nosort{cursor:default;}th.nosort:hover{background:var(--primary);}
+th .arr{font-size:.7rem;opacity:.7;}
+tr:last-child td{border-bottom:none;}
+tr.krrow td{background:#fff5f5;}
+tr.krrow td.mu{font-weight:600;color:var(--kr);}
+tr:hover td{background:#f0f4fa;}
+.grp{display:inline-block;min-width:20px;text-align:center;background:#eef2f8;border-radius:5px;padding:1px 6px;font-weight:600;font-size:.82rem;color:var(--primary);}
+.note{color:var(--kr);font-size:.72rem;margin-left:4px;}
+.vs{color:#999;font-weight:400;margin:0 4px;}
+.tbd{color:#aaa;font-style:italic;}
+.info{background:#fff8e6;border-left:4px solid #e0a800;padding:10px 14px;border-radius:6px;font-size:.82rem;margin-bottom:12px;color:#7a5d00;}
+.hidden{display:none;}
+.score{font-weight:700;color:var(--primary);white-space:nowrap;}
+.win{color:var(--win);font-weight:700;}
+.sin{width:38px;padding:5px;text-align:center;border:1px solid var(--border);border-radius:6px;font-size:.9rem;}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+.scard{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden;}
+.scard h3{margin:0;background:var(--primary);color:#fff;padding:9px 12px;font-size:.95rem;}
+.scard table{box-shadow:none;border-radius:0;font-size:.82rem;}
+.scard th{background:#eef2f8;color:#333;cursor:default;font-size:.74rem;padding:6px;}
+.scard th:hover{background:#eef2f8;}
+.scard td{padding:6px 8px;}
+.scard tr.krrow td{font-weight:700;color:var(--kr);background:#fff5f5;}
+.scard .qual td:first-child{border-left:3px solid var(--win);}
+.muted{color:#999;font-size:.78rem;text-align:center;padding:14px;}
+@media(max-width:560px){th,td{padding:7px 5px;font-size:.8rem;}select{min-width:74px;font-size:.8rem;}.sin{width:32px;}}
+</style>
+</head>
+<body>
+<h1>2026 FIFA 월드컵 일정 · 결과 · 순위</h1>
+<p class="sub">한국시간(KST) · 결과 입력 시 순위 자동 계산 · 브라우저 저장</p>
+
+<div class="tabs">
+  <div class="tab active" data-tab="gs">조별리그</div>
+  <div class="tab" data-tab="st">순위</div>
+  <div class="tab" data-tab="r32">32강</div>
+</div>
+
+<!-- GROUP STAGE -->
+<div id="gs">
+  <div class="controls">
+    <label>날짜<select id="fD"><option value="">전체</option></select></label>
+    <label>조<select id="fG"><option value="">전체</option></select></label>
+    <label>팀<select id="fT"><option value="">전체</option></select></label>
+    <label>장소<select id="fV"><option value="">전체</option></select></label>
+    <button class="kr" id="krBtn">🇰🇷 한국</button>
+    <button id="editBtn">✏️ 결과입력</button>
+    <button id="reset">필터초기화</button>
+    <span class="count" id="cntGS"></span>
+  </div>
+  <div class="controls" style="padding:8px 12px;">
+    <span style="font-size:.78rem;color:#555;">결과 데이터:</span>
+    <button id="expBtn">내보내기(JSON)</button>
+    <button id="impBtn">불러오기</button>
+    <button id="clrBtn" style="color:#c8102e;">결과 전체삭제</button>
+    <input type="file" id="impFile" accept="application/json" class="hidden">
+    <span class="count" id="savedNote"></span>
+  </div>
+  <table>
+  <thead><tr>
+    <th data-k="iso">일시 (KST) <span class="arr"></span></th>
+    <th data-k="g">조 <span class="arr"></span></th>
+    <th data-k="home" class="mu">매치업 <span class="arr"></span></th>
+    <th class="nosort">결과</th>
+    <th data-k="venue">장소 <span class="arr"></span></th>
+  </tr></thead>
+  <tbody id="tbGS"></tbody>
+  </table>
+</div>
+
+<!-- STANDINGS -->
+<div id="st" class="hidden">
+  <div class="info">입력한 경기 결과로 자동 계산됩니다. 정렬: 승점 → 골득실 → 다득점. 각 조 <b>상위 2팀</b> + 3위 상위 8팀이 32강 진출(아래 표는 조내 1·2위만 초록 표시).</div>
+  <div class="sgrid" id="stGrid"></div>
+</div>
+
+<!-- ROUND OF 32 -->
+<div id="r32" class="hidden">
+  <div class="info">32강 <b>일정·장소는 확정</b>, <b>대진 팀은 6/27 조별리그 종료 후</b> FIFA Annex C로 확정됩니다. 🇰🇷 한국이 A조 1위 시 C·E·F·H·I조 3위 중 하나와 대결.</div>
+  <div class="controls">
+    <label>날짜<select id="fD2"><option value="">전체</option></select></label>
+    <label>장소<select id="fV2"><option value="">전체</option></select></label>
+    <button id="reset2">초기화</button>
+    <span class="count" id="cntR32"></span>
+  </div>
+  <table>
+  <thead><tr>
+    <th data-k="idx">경기 <span class="arr"></span></th>
+    <th data-k="iso">일시 (KST) <span class="arr"></span></th>
+    <th data-k="venue">장소 <span class="arr"></span></th>
+    <th class="nosort">대진</th>
+  </tr></thead>
+  <tbody id="tbR32"></tbody>
+  </table>
+</div>
+
+<script>
+const D = {"GS": [{"g": "A", "iso": "2026-06-12T04:00", "date": "06.12", "dow": "금", "time": "04:00", "home": "멕시코", "away": "남아프리카공화국", "venue": "멕시코시티", "note": "개막전", "kr": false}, {"g": "A", "iso": "2026-06-12T11:00", "date": "06.12", "dow": "금", "time": "11:00", "home": "대한민국", "away": "체코", "venue": "과달라하라", "note": "", "kr": true}, {"g": "A", "iso": "2026-06-19T01:00", "date": "06.19", "dow": "금", "time": "01:00", "home": "체코", "away": "남아프리카공화국", "venue": "애틀랜타", "note": "", "kr": false}, {"g": "A", "iso": "2026-06-19T10:00", "date": "06.19", "dow": "금", "time": "10:00", "home": "멕시코", "away": "대한민국", "venue": "과달라하라", "note": "", "kr": true}, {"g": "A", "iso": "2026-06-25T10:00", "date": "06.25", "dow": "목", "time": "10:00", "home": "체코", "away": "멕시코", "venue": "멕시코시티", "note": "", "kr": false}, {"g": "A", "iso": "2026-06-25T10:00", "date": "06.25", "dow": "목", "time": "10:00", "home": "남아프리카공화국", "away": "대한민국", "venue": "몬테레이", "note": "", "kr": true}, {"g": "B", "iso": "2026-06-13T04:00", "date": "06.13", "dow": "토", "time": "04:00", "home": "캐나다", "away": "보스니아 헤르체고비나", "venue": "토론토", "note": "", "kr": false}, {"g": "B", "iso": "2026-06-14T04:00", "date": "06.14", "dow": "일", "time": "04:00", "home": "카타르", "away": "스위스", "venue": "샌프란시스코", "note": "", "kr": false}, {"g": "B", "iso": "2026-06-19T04:00", "date": "06.19", "dow": "금", "time": "04:00", "home": "스위스", "away": "보스니아 헤르체고비나", "venue": "LA", "note": "", "kr": false}, {"g": "B", "iso": "2026-06-19T07:00", "date": "06.19", "dow": "금", "time": "07:00", "home": "캐나다", "away": "카타르", "venue": "밴쿠버", "note": "", "kr": false}, {"g": "B", "iso": "2026-06-25T04:00", "date": "06.25", "dow": "목", "time": "04:00", "home": "스위스", "away": "캐나다", "venue": "밴쿠버", "note": "", "kr": false}, {"g": "B", "iso": "2026-06-25T04:00", "date": "06.25", "dow": "목", "time": "04:00", "home": "보스니아 헤르체고비나", "away": "카타르", "venue": "시애틀", "note": "", "kr": false}, {"g": "C", "iso": "2026-06-14T07:00", "date": "06.14", "dow": "일", "time": "07:00", "home": "브라질", "away": "모로코", "venue": "뉴욕/뉴저지", "note": "", "kr": false}, {"g": "C", "iso": "2026-06-14T10:00", "date": "06.14", "dow": "일", "time": "10:00", "home": "아이티", "away": "스코틀랜드", "venue": "보스턴", "note": "", "kr": false}, {"g": "C", "iso": "2026-06-20T07:00", "date": "06.20", "dow": "토", "time": "07:00", "home": "스코틀랜드", "away": "모로코", "venue": "보스턴", "note": "", "kr": false}, {"g": "C", "iso": "2026-06-20T09:30", "date": "06.20", "dow": "토", "time": "09:30", "home": "브라질", "away": "아이티", "venue": "필라델피아", "note": "", "kr": false}, {"g": "C", "iso": "2026-06-25T07:00", "date": "06.25", "dow": "목", "time": "07:00", "home": "스코틀랜드", "away": "브라질", "venue": "마이애미", "note": "", "kr": false}, {"g": "C", "iso": "2026-06-25T07:00", "date": "06.25", "dow": "목", "time": "07:00", "home": "모로코", "away": "아이티", "venue": "애틀랜타", "note": "", "kr": false}, {"g": "D", "iso": "2026-06-13T10:00", "date": "06.13", "dow": "토", "time": "10:00", "home": "미국", "away": "파라과이", "venue": "LA", "note": "", "kr": false}, {"g": "D", "iso": "2026-06-14T13:00", "date": "06.14", "dow": "일", "time": "13:00", "home": "호주", "away": "튀르키예", "venue": "밴쿠버", "note": "", "kr": false}, {"g": "D", "iso": "2026-06-20T04:00", "date": "06.20", "dow": "토", "time": "04:00", "home": "미국", "away": "호주", "venue": "시애틀", "note": "", "kr": false}, {"g": "D", "iso": "2026-06-20T12:00", "date": "06.20", "dow": "토", "time": "12:00", "home": "튀르키예", "away": "파라과이", "venue": "샌프란시스코", "note": "", "kr": false}, {"g": "D", "iso": "2026-06-26T11:00", "date": "06.26", "dow": "금", "time": "11:00", "home": "튀르키예", "away": "미국", "venue": "LA", "note": "", "kr": false}, {"g": "D", "iso": "2026-06-26T11:00", "date": "06.26", "dow": "금", "time": "11:00", "home": "파라과이", "away": "호주", "venue": "샌프란시스코", "note": "", "kr": false}, {"g": "E", "iso": "2026-06-15T02:00", "date": "06.15", "dow": "월", "time": "02:00", "home": "독일", "away": "쿠라소", "venue": "휴스턴", "note": "", "kr": false}, {"g": "E", "iso": "2026-06-15T08:00", "date": "06.15", "dow": "월", "time": "08:00", "home": "코트디부아르", "away": "에콰도르", "venue": "필라델피아", "note": "", "kr": false}, {"g": "E", "iso": "2026-06-21T05:00", "date": "06.21", "dow": "일", "time": "05:00", "home": "독일", "away": "코트디부아르", "venue": "토론토", "note": "", "kr": false}, {"g": "E", "iso": "2026-06-21T12:00", "date": "06.21", "dow": "일", "time": "12:00", "home": "에콰도르", "away": "쿠라소", "venue": "캔자스시티", "note": "", "kr": false}, {"g": "E", "iso": "2026-06-26T05:00", "date": "06.26", "dow": "금", "time": "05:00", "home": "에콰도르", "away": "독일", "venue": "뉴욕/뉴저지", "note": "", "kr": false}, {"g": "E", "iso": "2026-06-26T05:00", "date": "06.26", "dow": "금", "time": "05:00", "home": "쿠라소", "away": "코트디부아르", "venue": "필라델피아", "note": "", "kr": false}, {"g": "F", "iso": "2026-06-15T05:00", "date": "06.15", "dow": "월", "time": "05:00", "home": "네덜란드", "away": "일본", "venue": "댈러스", "note": "", "kr": false}, {"g": "F", "iso": "2026-06-15T11:00", "date": "06.15", "dow": "월", "time": "11:00", "home": "스웨덴", "away": "튀니지", "venue": "몬테레이", "note": "", "kr": false}, {"g": "F", "iso": "2026-06-21T02:00", "date": "06.21", "dow": "일", "time": "02:00", "home": "네덜란드", "away": "스웨덴", "venue": "휴스턴", "note": "", "kr": false}, {"g": "F", "iso": "2026-06-21T13:00", "date": "06.21", "dow": "일", "time": "13:00", "home": "튀니지", "away": "일본", "venue": "몬테레이", "note": "", "kr": false}, {"g": "F", "iso": "2026-06-26T08:00", "date": "06.26", "dow": "금", "time": "08:00", "home": "일본", "away": "스웨덴", "venue": "댈러스", "note": "", "kr": false}, {"g": "F", "iso": "2026-06-26T08:00", "date": "06.26", "dow": "금", "time": "08:00", "home": "튀니지", "away": "네덜란드", "venue": "캔자스시티", "note": "", "kr": false}, {"g": "G", "iso": "2026-06-16T04:00", "date": "06.16", "dow": "화", "time": "04:00", "home": "벨기에", "away": "이집트", "venue": "밴쿠버", "note": "", "kr": false}, {"g": "G", "iso": "2026-06-16T10:00", "date": "06.16", "dow": "화", "time": "10:00", "home": "이란", "away": "뉴질랜드", "venue": "LA", "note": "", "kr": false}, {"g": "G", "iso": "2026-06-22T04:00", "date": "06.22", "dow": "월", "time": "04:00", "home": "벨기에", "away": "이란", "venue": "LA", "note": "", "kr": false}, {"g": "G", "iso": "2026-06-22T10:00", "date": "06.22", "dow": "월", "time": "10:00", "home": "뉴질랜드", "away": "이집트", "venue": "밴쿠버", "note": "", "kr": false}, {"g": "G", "iso": "2026-06-27T12:00", "date": "06.27", "dow": "토", "time": "12:00", "home": "이집트", "away": "이란", "venue": "시애틀", "note": "", "kr": false}, {"g": "G", "iso": "2026-06-27T12:00", "date": "06.27", "dow": "토", "time": "12:00", "home": "뉴질랜드", "away": "벨기에", "venue": "밴쿠버", "note": "", "kr": false}, {"g": "H", "iso": "2026-06-16T01:00", "date": "06.16", "dow": "화", "time": "01:00", "home": "스페인", "away": "카보베르데", "venue": "애틀랜타", "note": "", "kr": false}, {"g": "H", "iso": "2026-06-16T07:00", "date": "06.16", "dow": "화", "time": "07:00", "home": "사우디아라비아", "away": "우루과이", "venue": "마이애미", "note": "", "kr": false}, {"g": "H", "iso": "2026-06-22T01:00", "date": "06.22", "dow": "월", "time": "01:00", "home": "스페인", "away": "사우디아라비아", "venue": "애틀랜타", "note": "", "kr": false}, {"g": "H", "iso": "2026-06-22T07:00", "date": "06.22", "dow": "월", "time": "07:00", "home": "우루과이", "away": "카보베르데", "venue": "마이애미", "note": "", "kr": false}, {"g": "H", "iso": "2026-06-27T09:00", "date": "06.27", "dow": "토", "time": "09:00", "home": "카보베르데", "away": "사우디아라비아", "venue": "휴스턴", "note": "", "kr": false}, {"g": "H", "iso": "2026-06-27T09:00", "date": "06.27", "dow": "토", "time": "09:00", "home": "우루과이", "away": "스페인", "venue": "과달라하라", "note": "", "kr": false}, {"g": "I", "iso": "2026-06-17T04:00", "date": "06.17", "dow": "수", "time": "04:00", "home": "프랑스", "away": "세네갈", "venue": "뉴욕/뉴저지", "note": "", "kr": false}, {"g": "I", "iso": "2026-06-17T07:00", "date": "06.17", "dow": "수", "time": "07:00", "home": "이라크", "away": "노르웨이", "venue": "보스턴", "note": "", "kr": false}, {"g": "I", "iso": "2026-06-23T06:00", "date": "06.23", "dow": "화", "time": "06:00", "home": "프랑스", "away": "이라크", "venue": "필라델피아", "note": "", "kr": false}, {"g": "I", "iso": "2026-06-23T09:00", "date": "06.23", "dow": "화", "time": "09:00", "home": "노르웨이", "away": "세네갈", "venue": "뉴욕/뉴저지", "note": "", "kr": false}, {"g": "I", "iso": "2026-06-27T04:00", "date": "06.27", "dow": "토", "time": "04:00", "home": "노르웨이", "away": "프랑스", "venue": "보스턴", "note": "", "kr": false}, {"g": "I", "iso": "2026-06-27T04:00", "date": "06.27", "dow": "토", "time": "04:00", "home": "세네갈", "away": "이라크", "venue": "토론토", "note": "", "kr": false}, {"g": "J", "iso": "2026-06-17T10:00", "date": "06.17", "dow": "수", "time": "10:00", "home": "아르헨티나", "away": "알제리", "venue": "캔자스시티", "note": "", "kr": false}, {"g": "J", "iso": "2026-06-17T13:00", "date": "06.17", "dow": "수", "time": "13:00", "home": "오스트리아", "away": "요르단", "venue": "샌프란시스코", "note": "", "kr": false}, {"g": "J", "iso": "2026-06-23T02:00", "date": "06.23", "dow": "화", "time": "02:00", "home": "아르헨티나", "away": "오스트리아", "venue": "댈러스", "note": "", "kr": false}, {"g": "J", "iso": "2026-06-23T12:00", "date": "06.23", "dow": "화", "time": "12:00", "home": "요르단", "away": "알제리", "venue": "샌프란시스코", "note": "", "kr": false}, {"g": "J", "iso": "2026-06-28T11:00", "date": "06.28", "dow": "일", "time": "11:00", "home": "알제리", "away": "오스트리아", "venue": "캔자스시티", "note": "", "kr": false}, {"g": "J", "iso": "2026-06-28T11:00", "date": "06.28", "dow": "일", "time": "11:00", "home": "요르단", "away": "아르헨티나", "venue": "댈러스", "note": "", "kr": false}, {"g": "K", "iso": "2026-06-18T02:00", "date": "06.18", "dow": "목", "time": "02:00", "home": "포르투갈", "away": "콩고민주공화국", "venue": "휴스턴", "note": "", "kr": false}, {"g": "K", "iso": "2026-06-18T11:00", "date": "06.18", "dow": "목", "time": "11:00", "home": "우즈베키스탄", "away": "콜롬비아", "venue": "멕시코시티", "note": "", "kr": false}, {"g": "K", "iso": "2026-06-24T02:00", "date": "06.24", "dow": "수", "time": "02:00", "home": "포르투갈", "away": "우즈베키스탄", "venue": "휴스턴", "note": "", "kr": false}, {"g": "K", "iso": "2026-06-24T11:00", "date": "06.24", "dow": "수", "time": "11:00", "home": "콜롬비아", "away": "콩고민주공화국", "venue": "과달라하라", "note": "", "kr": false}, {"g": "K", "iso": "2026-06-28T08:30", "date": "06.28", "dow": "일", "time": "08:30", "home": "콜롬비아", "away": "포르투갈", "venue": "마이애미", "note": "", "kr": false}, {"g": "K", "iso": "2026-06-28T08:30", "date": "06.28", "dow": "일", "time": "08:30", "home": "콩고민주공화국", "away": "우즈베키스탄", "venue": "애틀랜타", "note": "", "kr": false}, {"g": "L", "iso": "2026-06-18T05:00", "date": "06.18", "dow": "목", "time": "05:00", "home": "잉글랜드", "away": "크로아티아", "venue": "댈러스", "note": "", "kr": false}, {"g": "L", "iso": "2026-06-18T08:00", "date": "06.18", "dow": "목", "time": "08:00", "home": "가나", "away": "파나마", "venue": "토론토", "note": "", "kr": false}, {"g": "L", "iso": "2026-06-24T05:00", "date": "06.24", "dow": "수", "time": "05:00", "home": "잉글랜드", "away": "가나", "venue": "보스턴", "note": "", "kr": false}, {"g": "L", "iso": "2026-06-24T08:00", "date": "06.24", "dow": "수", "time": "08:00", "home": "파나마", "away": "크로아티아", "venue": "토론토", "note": "", "kr": false}, {"g": "L", "iso": "2026-06-28T06:00", "date": "06.28", "dow": "일", "time": "06:00", "home": "파나마", "away": "잉글랜드", "venue": "뉴욕/뉴저지", "note": "", "kr": false}, {"g": "L", "iso": "2026-06-28T06:00", "date": "06.28", "dow": "일", "time": "06:00", "home": "크로아티아", "away": "가나", "venue": "필라델피아", "note": "", "kr": false}], "R32": [{"idx": 1, "iso": "2026-06-29T04:00", "date": "06.29", "dow": "월", "time": "04:00", "venue": "LA"}, {"idx": 2, "iso": "2026-06-30T04:00", "date": "06.30", "dow": "화", "time": "04:00", "venue": "휴스턴"}, {"idx": 3, "iso": "2026-06-30T05:30", "date": "06.30", "dow": "화", "time": "05:30", "venue": "보스턴"}, {"idx": 4, "iso": "2026-06-30T10:00", "date": "06.30", "dow": "화", "time": "10:00", "venue": "몬테레이"}, {"idx": 5, "iso": "2026-07-01T02:00", "date": "07.01", "dow": "수", "time": "02:00", "venue": "댈러스"}, {"idx": 6, "iso": "2026-07-01T06:00", "date": "07.01", "dow": "수", "time": "06:00", "venue": "뉴욕/뉴저지"}, {"idx": 7, "iso": "2026-07-01T10:00", "date": "07.01", "dow": "수", "time": "10:00", "venue": "멕시코시티"}, {"idx": 8, "iso": "2026-07-02T01:00", "date": "07.02", "dow": "목", "time": "01:00", "venue": "애틀랜타"}, {"idx": 9, "iso": "2026-07-02T05:00", "date": "07.02", "dow": "목", "time": "05:00", "venue": "시애틀"}, {"idx": 10, "iso": "2026-07-02T05:00", "date": "07.02", "dow": "목", "time": "05:00", "venue": "샌프란시스코"}, {"idx": 11, "iso": "2026-07-03T04:00", "date": "07.03", "dow": "금", "time": "04:00", "venue": "LA"}, {"idx": 12, "iso": "2026-07-03T08:00", "date": "07.03", "dow": "금", "time": "08:00", "venue": "토론토"}, {"idx": 13, "iso": "2026-07-03T12:00", "date": "07.03", "dow": "금", "time": "12:00", "venue": "밴쿠버"}, {"idx": 14, "iso": "2026-07-04T03:00", "date": "07.04", "dow": "토", "time": "03:00", "venue": "댈러스"}, {"idx": 15, "iso": "2026-07-04T07:00", "date": "07.04", "dow": "토", "time": "07:00", "venue": "마이애미"}, {"idx": 16, "iso": "2026-07-04T10:30", "date": "07.04", "dow": "토", "time": "10:30", "venue": "캔자스시티"}]};
+const GS=D.GS, R32=D.R32;
+const KEY='wc2026_results';
+
+// ---- results store ----
+let results={};
+try{const raw=localStorage.getItem(KEY); if(raw) results=JSON.parse(raw);}catch(e){}
+function mid(d){return d.g+'|'+d.home+'|'+d.away;}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(results));note('저장됨 ✓');}catch(e){note('저장불가(미리보기): 내보내기 사용',true);}}
+function note(t,warn){const n=document.getElementById('savedNote');n.textContent=t;n.style.color=warn?'#c8102e':'#1a7c3d';setTimeout(()=>{n.textContent='';},2500);}
+
+let editMode=false;
+
+// ---- populate filters ----
+const fD=document.getElementById('fD'),fG=document.getElementById('fG'),fT=document.getElementById('fT'),fV=document.getElementById('fV');
+const fD2=document.getElementById('fD2'),fV2=document.getElementById('fV2');
+[...new Set(GS.map(d=>d.iso.slice(0,10)))].sort().forEach(iso=>{const r=GS.find(x=>x.iso.slice(0,10)===iso);fD.add(new Option(r.date+'('+r.dow+')',iso));});
+[...new Set(GS.map(d=>d.g))].sort().forEach(g=>fG.add(new Option(g+'조',g)));
+[...new Set(GS.flatMap(d=>[d.home,d.away]))].sort((a,b)=>a.localeCompare(b,'ko')).forEach(t=>fT.add(new Option(t,t)));
+[...new Set(GS.map(d=>d.venue))].sort((a,b)=>a.localeCompare(b,'ko')).forEach(v=>fV.add(new Option(v,v)));
+[...new Set(R32.map(d=>d.iso.slice(0,10)))].sort().forEach(iso=>{const r=R32.find(x=>x.iso.slice(0,10)===iso);fD2.add(new Option(r.date+'('+r.dow+')',iso));});
+[...new Set(R32.map(d=>d.venue))].sort((a,b)=>a.localeCompare(b,'ko')).forEach(v=>fV2.add(new Option(v,v)));
+
+// ---- group stage table ----
+let sk='iso',sa=true;
+function scoreCell(d){
+  const id=mid(d), r=results[id];
+  if(editMode){
+    return '<input class="sin" type="number" min="0" data-id="'+id+'" data-s="h" value="'+(r?r.h:'')+'"> : '+
+           '<input class="sin" type="number" min="0" data-id="'+id+'" data-s="a" value="'+(r?r.a:'')+'">';
+  }
+  if(r && r.h!=='' && r.a!=='' && r.h!=null && r.a!=null) return '<span class="score">'+r.h+' : '+r.a+'</span>';
+  return '<span class="tbd">예정</span>';
+}
+function muCell(d){
+  const r=results[mid(d)], note=d.note?'<span class="note">('+d.note+')</span>':'';
+  let h=d.home,a=d.away;
+  if(r&&r.h!=null&&r.a!=null&&r.h!==''&&r.a!==''){
+    if(+r.h>+r.a) h='<span class="win">'+h+'</span>';
+    else if(+r.a>+r.h) a='<span class="win">'+a+'</span>';
+  }
+  return h+'<span class="vs">vs</span>'+a+note;
+}
+function renderGS(){
+  let rows=GS.filter(d=>(!fD.value||d.iso.slice(0,10)===fD.value)&&(!fG.value||d.g===fG.value)&&(!fT.value||d.home===fT.value||d.away===fT.value)&&(!fV.value||d.venue===fV.value));
+  rows.sort((a,b)=>{let x=a[sk],y=b[sk];let c=(sk==='iso')?(x<y?-1:x>y?1:0):String(x).localeCompare(String(y),'ko');if(c===0)c=a.iso<b.iso?-1:1;return sa?c:-c;});
+  document.getElementById('tbGS').innerHTML=rows.map(d=>'<tr class="'+(d.kr?'krrow':'')+'"><td>'+d.date+'('+d.dow+') '+d.time+'</td><td><span class="grp">'+d.g+'</span></td><td class="mu">'+muCell(d)+'</td><td>'+scoreCell(d)+'</td><td>'+d.venue+'</td></tr>').join('');
+  document.getElementById('cntGS').textContent=rows.length+'경기';
+  document.querySelectorAll('#gs th[data-k] .arr').forEach(s=>s.textContent='');
+  const th=document.querySelector('#gs th[data-k="'+sk+'"] .arr');if(th)th.textContent=sa?'▲':'▼';
+  if(editMode) document.querySelectorAll('.sin').forEach(inp=>inp.onchange=onScore);
+}
+function onScore(e){
+  const id=e.target.dataset.id, s=e.target.dataset.s, v=e.target.value;
+  if(!results[id]) results[id]={h:'',a:''};
+  results[id][s]= v===''?'':Math.max(0,parseInt(v));
+  if((results[id].h===''||results[id].h==null)&&(results[id].a===''||results[id].a==null)) delete results[id];
+  save(); renderStandings();
+}
+document.querySelectorAll('#gs th[data-k]').forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(sk===k)sa=!sa;else{sk=k;sa=true;}renderGS();});
+[fD,fG,fT,fV].forEach(s=>s.onchange=renderGS);
+document.getElementById('krBtn').onclick=()=>{fT.value='대한민국';fD.value='';fG.value='';fV.value='';renderGS();};
+document.getElementById('reset').onclick=()=>{fD.value='';fG.value='';fT.value='';fV.value='';sk='iso';sa=true;renderGS();};
+document.getElementById('editBtn').onclick=function(){editMode=!editMode;this.classList.toggle('on',editMode);this.textContent=editMode?'✅ 입력완료':'✏️ 결과입력';renderGS();};
+
+// export/import/clear
+document.getElementById('expBtn').onclick=()=>{
+  const blob=new Blob([JSON.stringify(results,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='wc2026_results.json';a.click();
+};
+document.getElementById('impBtn').onclick=()=>document.getElementById('impFile').click();
+document.getElementById('impFile').onchange=(e)=>{
+  const f=e.target.files[0];if(!f)return;const rd=new FileReader();
+  rd.onload=()=>{try{results=JSON.parse(rd.result);save();renderGS();renderStandings();note('불러오기 완료 ✓');}catch(x){note('파일 오류',true);}};
+  rd.readAsText(f);
+};
+document.getElementById('clrBtn').onclick=()=>{if(confirm('입력한 모든 결과를 삭제할까요?')){results={};save();renderGS();renderStandings();}};
+
+// ---- standings ----
+function renderStandings(){
+  const grid=document.getElementById('stGrid');
+  const groups=[...new Set(GS.map(d=>d.g))].sort();
+  grid.innerHTML=groups.map(g=>{
+    const teams={};
+    GS.filter(d=>d.g===g).forEach(d=>{[d.home,d.away].forEach(t=>{if(!teams[t])teams[t]={t,P:0,W:0,D:0,L:0,GF:0,GA:0,Pts:0,kr:t==='대한민국'};});});
+    GS.filter(d=>d.g===g).forEach(d=>{
+      const r=results[mid(d)];
+      if(!r||r.h===''||r.a===''||r.h==null||r.a==null)return;
+      const h=teams[d.home],a=teams[d.away],hs=+r.h,as=+r.a;
+      h.P++;a.P++;h.GF+=hs;h.GA+=as;a.GF+=as;a.GA+=hs;
+      if(hs>as){h.W++;a.L++;h.Pts+=3;}else if(as>hs){a.W++;h.L++;a.Pts+=3;}else{h.D++;a.D++;h.Pts++;a.Pts++;}
+    });
+    const arr=Object.values(teams).map(x=>({...x,GD:x.GF-x.GA}));
+    arr.sort((x,y)=>y.Pts-x.Pts||y.GD-x.GD||y.GF-x.GF||x.t.localeCompare(y.t,'ko'));
+    const rows=arr.map((x,i)=>'<tr class="'+(x.kr?'krrow ':'')+(i<2?'qual':'')+'"><td>'+(i+1)+'. '+x.t+'</td><td>'+x.P+'</td><td>'+x.W+'</td><td>'+x.D+'</td><td>'+x.L+'</td><td>'+(x.GD>0?'+':'')+x.GD+'</td><td><b>'+x.Pts+'</b></td></tr>').join('');
+    return '<div class="scard"><h3>'+g+'조</h3><table><thead><tr><th>팀</th><th>경기</th><th>승</th><th>무</th><th>패</th><th>득실</th><th>승점</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+  }).join('');
+}
+
+// ---- round of 32 ----
+let sk2='iso',sa2=true;
+function renderR32(){
+  let rows=R32.filter(d=>(!fD2.value||d.iso.slice(0,10)===fD2.value)&&(!fV2.value||d.venue===fV2.value));
+  rows.sort((a,b)=>{let x=a[sk2],y=b[sk2];let c=(sk2==='iso'||sk2==='idx')?(x<y?-1:x>y?1:0):String(x).localeCompare(String(y),'ko');if(c===0)c=a.iso<b.iso?-1:1;return sa2?c:-c;});
+  document.getElementById('tbR32').innerHTML=rows.map(d=>'<tr><td>32강 '+d.idx+'경기</td><td>'+d.date+'('+d.dow+') '+d.time+'</td><td>'+d.venue+'</td><td class="tbd">조별리그 결과 후 확정</td></tr>').join('');
+  document.getElementById('cntR32').textContent=rows.length+'경기';
+  document.querySelectorAll('#r32 th[data-k] .arr').forEach(s=>s.textContent='');
+  const th=document.querySelector('#r32 th[data-k="'+sk2+'"] .arr');if(th)th.textContent=sa2?'▲':'▼';
+}
+document.querySelectorAll('#r32 th[data-k]').forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(sk2===k)sa2=!sa2;else{sk2=k;sa2=true;}renderR32();});
+[fD2,fV2].forEach(s=>s.onchange=renderR32);
+document.getElementById('reset2').onclick=()=>{fD2.value='';fV2.value='';sk2='iso';sa2=true;renderR32();};
+
+// ---- tabs ----
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');
+  ['gs','st','r32'].forEach(id=>document.getElementById(id).classList.toggle('hidden',id!==t.dataset.tab));
+});
+
+renderGS();renderStandings();renderR32();
+</script>
+</body>
+</html>

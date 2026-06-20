@@ -1,0 +1,14 @@
+# 비밀 키 — 절대 올리지 말 것 (미래 API 연동 시)
+.env
+.env.local
+*.key
+
+# OS / 에디터 부스러기
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# 의존성 (지금은 없지만 React 정식화하면 생김)
+node_modules/
+dist/

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>축구 산업의 직업들 — 선수가 아니어도 축구로 먹고살기</title>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/explore.css">
+</head>
+<body>
+
+<nav class="sitenav">
+  <a class="brand" href="../index.html">⚽ 월드컵 2026</a>
+  <div class="navlinks">
+    <a href="../index.html">일정·결과</a>
+    <a href="../learn/index.html">배우기</a>
+    <a class="active" href="index.html">탐구</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">EXPLORE · 직업/산업</div>
+    <h1>💼 선수가 아니어도, 축구로 먹고사는 사람들</h1>
+    <p>경기장 위 22명 뒤에는 <b>수천 명</b>이 일하고 있어. 데이터를 분석하고, 중계를 만들고,
+       계약을 협상하고, 잔디를 가꾸고, 게임을 개발하지. 축구를 좋아하는 마음을 <b>직업</b>으로 잇는 지도를 펼쳐보자.</p>
+  </div>
+
+  <p class="lead">먼저 큰 그림. <b>돈과 사람이 어떻게 도는지</b> 알면, 그 흐름의 어디에 직업이 생기는지 보인다.</p>
+
+  <h2>1. 축구 산업 생태계 지도</h2>
+  <p>축구는 거대한 <b>돈의 흐름</b> 위에서 돌아간다. 핵심 참가자는 넷이야.</p>
+
+  <div class="eco">
+    <span class="box r">팬 · 시청자</span>
+    <span class="arr">→</span>
+    <span class="box">구단 · 리그 · FIFA</span>
+    <span class="arr">→</span>
+    <span class="box g">방송 · 플랫폼</span>
+    <span class="arr">→</span>
+    <span class="box">스폰서 · 광고주</span>
+  </div>
+
+  <p>이 넷이 서로 돈을 주고받는 모습을 화살표로 그리면 이렇다 (인터넷 연결 시 그림으로 보임):</p>
+  <pre class="mermaid">
+graph LR
+  Fans["팬 / 시청자"] -->|"티켓·구독·굿즈"| Clubs["구단 / 리그 / FIFA"]
+  Sponsors["스폰서 · 광고주"] -->|"광고비"| Media["방송 · 플랫폼"]
+  Media -->|"중계권료"| Clubs
+  Clubs -->|"경기·콘텐츠"| Media
+  Media -->|"중계 화면"| Fans
+  Clubs -->|"고용"| Jobs["수많은 직업들 💼"]
+  Media -->|"고용"| Jobs
+  Sponsors -->|"고용"| Jobs
+  </pre>
+
+  <div class="term">
+    💬 <b>거버넌스(governance)</b>란? 어떤 조직(예: <b>FIFA</b>나 축구협회)을 <b>누가, 어떤 규칙으로 운영하고 결정하는지</b>에 대한 구조·체계를 말해.
+    "누가 대회를 열고, 돈을 어떻게 나누고, 규칙을 누가 정하나" 같은 것들이 다 거버넌스의 영역이야.
+  </div>
+
+  <div class="note">
+    📌 <b>핵심 통찰:</b> 돈이 흐르는 곳마다 직업이 생긴다. 중계권료가 크면 <b>방송 제작</b> 직업이,
+    스폰서 돈이 크면 <b>마케팅</b> 직업이, 구단이 이기고 싶어 할수록 <b>데이터·의학·스카우트</b> 직업이 많아져.
+  </div>
+
+  <h2>2. 분야별 직업 한눈에</h2>
+  <p>비(非)선수 직업을 네 분야로 묶었다. 각 카드의 자세한 <b>커리어 로드맵</b>은 아래 분야별 페이지에서.</p>
+
+  <div class="chartbox">
+    <h3>분야별 대표 직업 수 (이 앱에서 다루는 예시 기준)</h3>
+    <canvas id="jobsChart" height="150" aria-label="분야별 직업 수 막대그래프"></canvas>
+    <!-- 오프라인(인터넷 없음)에서도 보이는 폴백 표 -->
+    <noscript><p>테크 4 · 미디어 5 · 비즈니스 5 · 서포트 6</p></noscript>
+    <p class="cap">막대그래프는 인터넷 연결 시 표시됩니다. 숫자: 테크 4 · 미디어 5 · 비즈니스 5 · 서포트 6</p>
+  </div>
+
+  <h3>🛠️ 테크 — 데이터와 기술로 축구를 바꾸는 사람들 <span class="tag green">아빠 분야와 연결!</span></h3>
+  <div class="grid c2">
+    <div class="card"><h3>📊 스포츠 데이터 분석가</h3><p class="lead">경기·선수 데이터를 분석해 "어떻게 이길까"를 숫자로 답한다.</p><div class="tags"><span class="tag">통계</span><span class="tag">파이썬</span></div></div>
+    <div class="card"><h3>🎥 퍼포먼스 영상 분석관</h3><p class="lead">상대 전술을 영상으로 뜯어보고 코칭스태프에게 보고.</p><div class="tags"><span class="tag">영상</span><span class="tag">전술</span></div></div>
+    <div class="card"><h3>🎮 축구 게임 개발자</h3><p class="lead">EA SPORTS FC 같은 게임을 만드는 프로그래머·디자이너.</p><div class="tags"><span class="tag">코딩</span><span class="tag">게임</span></div></div>
+    <div class="card"><h3>🛰️ 스포츠테크 엔지니어 (VAR·트래킹)</h3><p class="lead">VAR, 골라인 판독, 선수 추적 센서 같은 장비·SW를 만든다.</p><div class="tags"><span class="tag">HW/SW</span><span class="tag">AI</span></div></div>
+  </div>
+  <p><a href="careers/tech.html">→ 테크 분야 커리어 로드맵 자세히 보기</a></p>
+
+  <h3>📡 미디어 — 경기를 "이야기"로 만드는 사람들</h3>
+  <div class="grid c2">
+    <div class="card"><h3>🎙️ 캐스터(중계 아나운서)</h3><p class="lead">경기를 실시간으로 생생하게 전달하는 목소리.</p><div class="tags"><span class="tag">방송</span><span class="tag">언어</span></div></div>
+    <div class="card"><h3>🎬 중계 PD / 연출</h3><p class="lead">어떤 화면을 언제 보여줄지 중계 전체를 지휘한다.</p><div class="tags"><span class="tag">연출</span><span class="tag">현장</span></div></div>
+    <div class="card"><h3>📷 카메라·그래픽·리플레이</h3><p class="lead">화면을 찍고, 점수·통계 그래픽을 띄우고, 명장면을 다시 보여준다.</p><div class="tags"><span class="tag">기술</span><span class="tag">영상</span></div></div>
+    <div class="card"><h3>📝 축구 기자 / 에디터</h3><p class="lead">취재하고 글로 정리해 신문·포털·웹에 싣는다.</p><div class="tags"><span class="tag">글쓰기</span><span class="tag">취재</span></div></div>
+    <div class="card"><h3>🎞️ 콘텐츠 크리에이터(유튜브)</h3><p class="lead">하이라이트·분석·예능을 직접 기획·편집해 올린다.</p><div class="tags"><span class="tag">편집</span><span class="tag">기획</span></div></div>
+  </div>
+  <p><a href="careers/media.html">→ 미디어 분야 커리어 로드맵 자세히 보기</a></p>
+
+  <h3>💰 비즈니스 — 축구를 "산업"으로 굴리는 사람들</h3>
+  <div class="grid c2">
+    <div class="card"><h3>📣 스포츠 마케터</h3><p class="lead">구단·대회를 알리고 팬을 모으고 돈을 만든다.</p><div class="tags"><span class="tag">마케팅</span><span class="tag">브랜드</span></div></div>
+    <div class="card"><h3>🤝 선수 에이전트</h3><p class="lead">선수의 이적·연봉·광고 계약을 협상하고 관리.</p><div class="tags"><span class="tag">협상</span><span class="tag">계약</span></div></div>
+    <div class="card"><h3>🏷️ 스폰서십 매니저</h3><p class="lead">기업과 구단을 연결해 후원 계약을 설계한다.</p><div class="tags"><span class="tag">영업</span><span class="tag">기획</span></div></div>
+    <div class="card"><h3>🏟️ 구단 프런트 / 운영</h3><p class="lead">티켓·재무·법무·경기 운영 등 구단 살림을 책임진다.</p><div class="tags"><span class="tag">경영</span><span class="tag">운영</span></div></div>
+    <div class="card"><h3>🔭 스카우트 / 단장(스포팅 디렉터)</h3><p class="lead">좋은 선수를 발굴하고 팀 구성 전략을 짠다.</p><div class="tags"><span class="tag">안목</span><span class="tag">전략</span></div></div>
+  </div>
+  <p><a href="careers/business.html">→ 비즈니스 분야 커리어 로드맵 자세히 보기</a></p>
+
+  <h3>🩺 서포트 — 선수와 경기를 떠받치는 사람들</h3>
+  <div class="grid c2">
+    <div class="card"><h3>💪 피지컬 코치 / 트레이너</h3><p class="lead">선수의 체력·근력·컨디션을 과학적으로 끌어올린다.</p><div class="tags"><span class="tag">운동과학</span></div></div>
+    <div class="card"><h3>🧑‍⚕️ 물리치료사 / 스포츠의학 의사</h3><p class="lead">부상을 치료하고 재활시켜 그라운드로 돌려보낸다.</p><div class="tags"><span class="tag">의학</span><span class="tag">재활</span></div></div>
+    <div class="card"><h3>🧠 스포츠 심리학자</h3><p class="lead">압박 속에서도 실력을 내도록 멘탈을 돕는다.</p><div class="tags"><span class="tag">심리</span></div></div>
+    <div class="card"><h3>🌱 잔디 관리 전문가(그라운즈키퍼)</h3><p class="lead">완벽한 경기장 잔디를 가꾸는 숨은 과학자.</p><div class="tags"><span class="tag">원예</span><span class="tag">과학</span></div></div>
+    <div class="card"><h3>🟨 심판 / 심판 운영</h3><p class="lead">규칙을 지키게 하고 공정한 경기를 만든다(VAR 포함).</p><div class="tags"><span class="tag">규칙</span><span class="tag">판단</span></div></div>
+    <div class="card"><h3>🗣️ 통역 / 국제 업무</h3><p class="lead">외국인 선수·감독과 구단을 잇는 다리.</p><div class="tags"><span class="tag">언어</span></div></div>
+  </div>
+  <p><a href="careers/support.html">→ 서포트 분야 커리어 로드맵 자세히 보기</a></p>
+
+  <h2>3. 어떻게 읽으면 좋을까</h2>
+  <div class="tip">
+    💡 모든 직업을 다 알 필요는 없어. <b>"오, 이건 재밌겠다" 싶은 것 1~2개</b>만 골라
+    분야별 로드맵 페이지에서 "지금(고등학생) 할 수 있는 첫걸음"을 찾아봐. 그게 진짜 시작이야.
+  </div>
+
+  <div class="pager">
+    <a href="careers/tech.html">🛠️ 테크 로드맵 →</a>
+    <a href="careers/media.html">📡 미디어 로드맵 →</a>
+    <a href="careers/business.html">💰 비즈니스 로드맵 →</a>
+    <a href="careers/support.html">🩺 서포트 로드맵 →</a>
+  </div>
+
+</div>
+
+<footer class="sitefoot">
+  2026 월드컵 앱 · 탐구 허브 · <a href="index.html">← 허브로</a>
+</footer>
+
+<!-- 그림(mermaid)·차트(Chart.js): 인터넷 연결 시 동작. 없으면 글/숫자로 대체됨. -->
+<script type="module">
+  try {
+    const m = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
+    m.default.initialize({ startOnLoad: true, theme: 'neutral' });
+  } catch (e) { /* 오프라인이면 위 도형은 글자로 보임 */ }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script>
+  window.addEventListener('load', function () {
+    if (!window.Chart) return; // 오프라인이면 표/캡션 숫자로 대체
+    new Chart(document.getElementById('jobsChart'), {
+      type: 'bar',
+      data: {
+        labels: ['테크', '미디어', '비즈니스', '서포트'],
+        datasets: [{ label: '직업 예시 수', data: [4, 5, 5, 6],
+          backgroundColor: ['#1a3d7c', '#234e9c', '#e0a800', '#1a7c3d'] }]
+      },
+      options: { plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+    });
+  });
+</script>
+
+</body>
+</html>

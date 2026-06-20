@@ -1,0 +1,31 @@
+:root{--primary:#1a3d7c;--accent:#1a7c3d;--kr:#c8102e;--border:#e0e4e8;--code:#0d1b2a;}
+*{box-sizing:border-box;}
+body{font-family:'Segoe UI',Tahoma,'Apple SD Gothic Neo',sans-serif;line-height:1.7;color:#222;max-width:820px;margin:0 auto;padding:18px;background:#f4f6f9;}
+a{color:var(--accent);}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;}
+.top a{font-weight:700;text-decoration:none;background:#fff;border:1px solid var(--border);border-radius:8px;padding:7px 12px;font-size:.85rem;color:var(--primary);}
+h1{font-size:1.5rem;margin:6px 0;}
+h2{font-size:1.2rem;color:var(--primary);margin-top:34px;border-bottom:2px solid var(--border);padding-bottom:6px;}
+h3{font-size:1rem;margin-top:22px;}
+.lead{color:#555;font-size:.95rem;}
+.card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;box-shadow:0 1px 4px rgba(0,0,0,.05);margin:14px 0;}
+.toc{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px 18px;font-size:.9rem;}
+.toc ol{margin:6px 0;padding-left:22px;}
+.toc a{text-decoration:none;}
+pre{background:var(--code);color:#e6edf3;border-radius:10px;padding:14px;overflow:auto;font-size:.82rem;line-height:1.5;}
+code{font-family:'Consolas','Courier New',monospace;}
+p code,li code{background:#eef2f8;color:#0a3d62;border-radius:5px;padding:1px 6px;font-size:.85em;}
+.mission{border-left:5px solid var(--accent);background:#f3faf4;}
+.mission .lvl{display:inline-block;font-size:.72rem;font-weight:700;color:#fff;background:var(--accent);border-radius:20px;padding:2px 10px;margin-bottom:6px;}
+.mission.hard .lvl{background:var(--kr);}
+.mission.mid .lvl{background:#e0a800;}
+.tip{background:#fff8e6;border-left:5px solid #e0a800;border-radius:8px;padding:12px 16px;font-size:.9rem;margin:14px 0;}
+.prompt{background:#eef6ff;border-left:5px solid var(--primary);border-radius:8px;padding:12px 16px;font-size:.9rem;margin:12px 0;}
+.prompt b{color:var(--primary);}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.85rem;margin:10px 0;}
+.flow .box{background:#fff;border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-weight:600;}
+.flow .arrow{color:#999;font-weight:700;}
+.files{width:100%;border-collapse:collapse;font-size:.9rem;}
+.files td{padding:8px;border-bottom:1px solid var(--border);vertical-align:top;}
+.files td:first-child{white-space:nowrap;font-family:'Consolas',monospace;color:var(--primary);font-weight:600;}
+footer{margin:40px 0 16px;color:#888;font-size:.82rem;text-align:center;}

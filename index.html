@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 월드컵 일정·결과·순위</title>
+<!--
+  [아들에게 주는 설명 — index.html 은 "뼈대"다]
+  이 파일은 화면의 뼈대(HTML)만 담는다.
+    - 꾸미기(색/모양)는  css/style.css      가 담당
+    - 데이터(경기)는     js/data.js          가 담당
+    - 계산(순위)은       js/standings.js     가 담당
+    - 움직임(클릭/입력)은 js/app.js          가 담당
+  파일 맨 아래에서 이 네 파일을 "순서대로" 불러온다. 순서가 중요하다!
+  (data → standings → app : 앞 파일이 만든 걸 뒷 파일이 가져다 쓰니까)
+-->
+<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="sitenav">
+  <a class="brand" href="index.html">⚽ 월드컵 2026</a>
+  <div class="navlinks">
+    <a class="active" href="index.html">일정·결과</a>
+    <a href="learn/index.html">배우기</a>
+    <a href="explore/index.html">탐구</a>
+  </div>
+</nav>
+
+<div style="max-width:980px;margin:0 auto;padding:16px;">
+
+<h1>2026 FIFA 월드컵 일정 · 결과 · 순위</h1>
+<p class="sub">한국시간(KST) · 결과 입력 시 순위 자동 계산 · 브라우저 저장</p>
+
+<!-- 🇰🇷 한국 첫 경기 D-day 카운트다운 (아래 script가 채움) -->
+<div id="ddayBar" class="dday"></div>
+
+<!-- 학습/탐구로 가는 안내 배너 -->
+<div class="learnbar">
+  🛠️ 이 앱이 어떻게 만들어졌는지 →
+  <a href="learn/index.html">「만든 과정 배우기」</a>
+  &nbsp;·&nbsp; 🧭 축구 게임·중계·직업이 궁금하면 →
+  <a href="explore/index.html">「탐구 허브」</a>
+</div>
+
+<div class="tabs">
+  <div class="tab active" data-tab="gs">조별리그</div>
+  <div class="tab" data-tab="st">순위</div>
+  <div class="tab" data-tab="r32">32강</div>
+</div>
+
+<!-- ============ 조별리그 ============ -->
+<div id="gs">
+  <div class="controls">
+    <label>날짜<select id="fD"><option value="">전체</option></select></label>
+    <label>조<select id="fG"><option value="">전체</option></select></label>
+    <label>팀<select id="fT"><option value="">전체</option></select></label>
+    <label>장소<select id="fV"><option value="">전체</option></select></label>
+    <button class="kr" id="krBtn">🇰🇷 한국</button>
+    <button id="editBtn">✏️ 결과입력</button>
+    <button id="reset">필터초기화</button>
+    <span class="count" id="cntGS"></span>
+  </div>
+  <div class="controls" style="padding:8px 12px;">
+    <span style="font-size:.78rem;color:#555;">결과 데이터:</span>
+    <button id="expBtn">내보내기(JSON)</button>
+    <button id="impBtn">불러오기</button>
+    <button id="clrBtn" style="color:#c8102e;">결과 전체삭제</button>
+    <input type="file" id="impFile" accept="application/json" class="hidden">
+    <span class="count" id="savedNote"></span>
+  </div>
+  <table>
+  <thead><tr>
+    <th data-k="iso">일시 (KST) <span class="arr"></span></th>
+    <th data-k="g">조 <span class="arr"></span></th>
+    <th data-k="home" class="mu">매치업 <span class="arr"></span></th>
+    <th class="nosort">결과</th>
+    <th data-k="venue">장소 <span class="arr"></span></th>
+  </tr></thead>
+  <tbody id="tbGS"></tbody>
+  </table>
+</div>
+
+<!-- ============ 순위 ============ -->
+<div id="st" class="hidden">
+  <div class="info">입력한 경기 결과로 자동 계산됩니다. 정렬: 승점 → 골득실 → 다득점. 각 조 <b>상위 2팀</b> + 3위 상위 8팀이 32강 진출(아래 표는 조내 1·2위만 초록 표시).</div>
+  <div class="sgrid" id="stGrid"></div>
+</div>
+
+<!-- ============ 32강 ============ -->
+<div id="r32" class="hidden">
+  <div class="info">32강 <b>일정·장소는 확정</b>, <b>대진 팀은 6/27 조별리그 종료 후</b> FIFA Annex C로 확정됩니다. 🇰🇷 한국이 A조 1위 시 C·E·F·H·I조 3위 중 하나와 대결.</div>
+  <div class="controls">
+    <label>날짜<select id="fD2"><option value="">전체</option></select></label>
+    <label>장소<select id="fV2"><option value="">전체</option></select></label>
+    <button id="reset2">초기화</button>
+    <span class="count" id="cntR32"></span>
+  </div>
+  <table>
+  <thead><tr>
+    <th data-k="idx">경기 <span class="arr"></span></th>
+    <th data-k="iso">일시 (KST) <span class="arr"></span></th>
+    <th data-k="venue">장소 <span class="arr"></span></th>
+    <th class="nosort">대진</th>
+  </tr></thead>
+  <tbody id="tbR32"></tbody>
+  </table>
+</div>
+
+</div><!-- /가운데 정렬 컨테이너 -->
+
+<footer class="sitefoot">
+  2026 월드컵 앱 · <a href="learn/index.html">만든 과정</a> · <a href="explore/index.html">탐구 허브</a>
+</footer>
+
+<!-- 자바스크립트는 순서대로! data → standings → app -->
+<script src="js/data.js"></script>
+<script src="js/standings.js"></script>
+<script src="js/app.js"></script>
+
+<!-- 🇰🇷 한국 첫 경기 D-day 카운트다운 (작고 독립적인 기능이라 여기 인라인) -->
+<script>
+(function () {
+  // data.js의 WC_DATA에서 한국(kr:true) 경기 중 가장 빠른 경기를 찾는다
+  var krGames = WC_DATA.GS.filter(function (d) { return d.kr; })
+                          .sort(function (a, b) { return a.iso < b.iso ? -1 : 1; });
+  var bar = document.getElementById("ddayBar");
+  if (!krGames.length || !bar) return;
+  var next = krGames[0];
+  // "2026-06-12T11:00" (KST) → 디데이 계산
+  var target = new Date(next.iso + ":00+09:00");
+  var now = new Date();
+  var diffDays = Math.ceil((target - now) / (1000 * 60 * 60 * 24));
+  var label = diffDays > 0 ? ("D-" + diffDays) : (diffDays === 0 ? "D-DAY ⚽" : "진행/종료");
+  bar.innerHTML = "🇰🇷 한국 첫 경기 <b>" + next.home + " vs " + next.away + "</b> · " +
+                  next.date + "(" + next.dow + ") " + next.time + " · " + next.venue +
+                  " &nbsp;<span class='dnum'>" + label + "</span>";
+})();
+</script>
+</body>
+</html>

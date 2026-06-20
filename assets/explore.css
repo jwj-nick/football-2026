@@ -1,0 +1,113 @@
+/* =========================================================================
+ *  explore.css  —  탐구/커리어 페이지의 "콘텐츠 부품 모음"
+ * =========================================================================
+ *  [아들에게] 카드, 타임라인(중학→고교→대학…), 직업 카드, 차트 자리 같은
+ *  '반복해서 쓰는 화면 조각'을 미리 만들어 둔 곳. 새 페이지는 이 부품을
+ *  조립하기만 하면 통일된 모양이 나온다.
+ * ========================================================================= */
+
+/* ---- 페이지 머리(히어로) --------------------------------------------- */
+.hero{background:linear-gradient(135deg,#1a3d7c,#234e9c);color:#fff;border-radius:16px;padding:26px 24px;margin:6px 0 22px;}
+.hero.green{background:linear-gradient(135deg,#15692f,#1a7c3d);}
+.hero.gold{background:linear-gradient(135deg,#b9860b,#e0a800);}
+.hero .eyebrow{font-size:.8rem;letter-spacing:1px;text-transform:uppercase;opacity:.85;font-weight:700;}
+.hero h1{margin:6px 0 8px;font-size:1.7rem;line-height:1.25;}
+.hero p{margin:0;opacity:.95;font-size:.98rem;max-width:60ch;}
+
+h2{font-size:1.3rem;color:var(--primary);margin:34px 0 6px;border-bottom:2px solid var(--line);padding-bottom:7px;}
+h3{font-size:1.06rem;margin:20px 0 6px;}
+.lead{color:#4b5563;font-size:1rem;}
+a{color:var(--accent);}
+
+/* ---- 일반 카드 + 그리드 ---------------------------------------------- */
+.grid{display:grid;gap:14px;}
+.grid.c2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));}
+.grid.c3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 1px 4px rgba(0,0,0,.05);}
+.card h3{margin-top:0;}
+.card .ico{font-size:1.5rem;}
+
+/* 허브용 큰 링크 카드 */
+.linkcard{display:block;text-decoration:none;color:inherit;transition:transform .12s,box-shadow .12s;}
+.linkcard:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,.10);}
+.linkcard .go{color:var(--accent);font-weight:700;font-size:.86rem;}
+
+/* ---- 태그/배지 ------------------------------------------------------- */
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;}
+.tag{font-size:.72rem;font-weight:700;background:#eef2f8;color:var(--primary);border-radius:20px;padding:3px 10px;}
+.tag.green{background:#e7f5ec;color:var(--accent);}
+.tag.gold{background:#fbf3d8;color:#8a6400;}
+.tag.red{background:#fdeaea;color:var(--kr);}
+
+/* 전망/난이도 막대 (순수 CSS, 오프라인에서도 보임) */
+.meter{display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--muted);margin:3px 0;}
+.meter .bar{flex:1;height:8px;background:#eceff3;border-radius:6px;overflow:hidden;}
+.meter .bar i{display:block;height:100%;background:var(--accent);}
+.meter .bar.gold i{background:var(--gold);}
+.meter .bar.red i{background:var(--kr);}
+
+/* ---- 타임라인 스텝퍼 (중학→고교→대학→사회→전문가) ------------------- */
+.road{display:flex;gap:0;flex-wrap:wrap;margin:14px 0;counter-reset:step;}
+.road .step{flex:1 1 150px;min-width:150px;position:relative;padding:0 10px;}
+.road .step .dot{width:30px;height:30px;border-radius:50%;background:var(--primary);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;margin-bottom:8px;}
+.road .step::before{content:"";position:absolute;left:25px;top:15px;right:-5px;height:3px;background:var(--line);z-index:-0;}
+.road .step:last-child::before{display:none;}
+.road .step .when{font-weight:800;color:var(--primary);font-size:.92rem;}
+.road .step ul{margin:6px 0 0;padding-left:16px;font-size:.85rem;color:#374151;}
+.road .step li{margin:3px 0;}
+
+/* 세로형 로드맵(직업 상세에서 길게) */
+.vroad{border-left:3px solid var(--line);margin:14px 0;padding-left:18px;}
+.vroad .node{position:relative;margin:0 0 18px;}
+.vroad .node::before{content:"";position:absolute;left:-25px;top:3px;width:14px;height:14px;border-radius:50%;background:var(--accent);border:3px solid #fff;box-shadow:0 0 0 2px var(--accent);}
+.vroad .node .when{font-weight:800;color:var(--accent);font-size:.9rem;}
+.vroad .node p{margin:4px 0 0;font-size:.9rem;}
+
+/* ---- 직업 상세 블록 -------------------------------------------------- */
+.job{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:16px 0;box-shadow:0 1px 4px rgba(0,0,0,.05);}
+.job > h3{margin-top:0;display:flex;align-items:center;gap:8px;font-size:1.15rem;}
+.job .oneline{color:#4b5563;font-style:italic;margin:2px 0 10px;}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:.9rem;margin:10px 0;}
+.kv dt{font-weight:700;color:var(--primary);white-space:nowrap;}
+.kv dd{margin:0;}
+
+/* ---- 생태계/관계 지도 (간단 박스+화살표) ----------------------------- */
+.eco{display:flex;flex-wrap:wrap;align-items:center;gap:8px;justify-content:center;margin:14px 0;font-size:.85rem;}
+.eco .box{background:#fff;border:2px solid var(--primary);color:var(--primary);border-radius:10px;padding:8px 12px;font-weight:700;}
+.eco .box.g{border-color:var(--accent);color:var(--accent);}
+.eco .box.r{border-color:var(--kr);color:var(--kr);}
+.eco .arr{color:var(--muted);font-weight:800;font-size:1.1rem;}
+
+/* ---- 표 ------------------------------------------------------------- */
+table.tbl{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;font-size:.88rem;box-shadow:0 1px 4px rgba(0,0,0,.05);margin:12px 0;}
+table.tbl th{background:var(--primary);color:#fff;text-align:left;padding:9px 10px;font-size:.83rem;}
+table.tbl td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+table.tbl tr:last-child td{border-bottom:none;}
+
+/* ---- 차트 자리 (CDN 차트 + 오프라인 폴백 설명) ----------------------- */
+.chartbox{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:14px 0;box-shadow:0 1px 4px rgba(0,0,0,.05);}
+.chartbox h3{margin-top:0;}
+.chartbox .cap{font-size:.78rem;color:var(--muted);margin-top:6px;}
+.mermaid{background:#fff;border:1px dashed var(--line);border-radius:10px;padding:10px;font-size:.85rem;overflow:auto;}
+
+/* 코드 박스 */
+pre{background:#0d1b2a;color:#e6edf3;border-radius:10px;padding:14px;overflow:auto;font-size:.82rem;line-height:1.5;}
+code{font-family:'Consolas','Courier New',monospace;}
+p code,li code,td code{background:#eef2f8;color:#0a3d62;border-radius:5px;padding:1px 6px;font-size:.85em;}
+
+/* 미션/생각해보기 */
+.mission{border-left:5px solid var(--accent);background:#f3faf4;border-radius:8px;padding:12px 16px;margin:12px 0;}
+.mission .lvl{display:inline-block;font-size:.7rem;font-weight:800;color:#fff;background:var(--accent);border-radius:20px;padding:2px 10px;margin-bottom:6px;}
+.mission.mid .lvl{background:var(--gold);}
+.mission.hard .lvl{background:var(--kr);}
+
+/* 페이지 사이 이동 버튼 */
+.pager{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 0;}
+.pager a{flex:1;min-width:160px;text-decoration:none;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;color:var(--primary);font-weight:700;font-size:.86rem;}
+.pager a:hover{background:#eef2f8;}
+
+@media(max-width:560px){
+  .hero h1{font-size:1.4rem;}
+  .road .step::before{display:none;}
+}
