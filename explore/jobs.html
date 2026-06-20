@@ -66,14 +66,14 @@ graph LR
   </div>
 
   <h2>2. 분야별 직업 한눈에</h2>
-  <p>비(非)선수 직업을 네 분야로 묶었다. 각 카드의 자세한 <b>커리어 로드맵</b>은 아래 분야별 페이지에서.</p>
+  <p>비(非)선수 직업을 <b>다섯 분야</b>로 묶었다. 각 카드의 자세한 <b>커리어 로드맵</b>은 아래 분야별 페이지에서.</p>
 
   <div class="chartbox">
     <h3>분야별 대표 직업 수 (이 앱에서 다루는 예시 기준)</h3>
     <canvas id="jobsChart" height="150" aria-label="분야별 직업 수 막대그래프"></canvas>
     <!-- 오프라인(인터넷 없음)에서도 보이는 폴백 표 -->
-    <noscript><p>테크 4 · 미디어 5 · 비즈니스 5 · 서포트 6</p></noscript>
-    <p class="cap">막대그래프는 인터넷 연결 시 표시됩니다. 숫자: 테크 4 · 미디어 5 · 비즈니스 5 · 서포트 6</p>
+    <noscript><p>테크 4 · 미디어 5 · 비즈니스 5 · 서포트 6 · 행정/국제 5</p></noscript>
+    <p class="cap">막대그래프는 인터넷 연결 시 표시됩니다. 숫자: 테크 4 · 미디어 5 · 비즈니스 5 · 서포트 6 · 행정/국제 5</p>
   </div>
 
   <h3>🛠️ 테크 — 데이터와 기술로 축구를 바꾸는 사람들 <span class="tag green">아빠 분야와 연결!</span></h3>
@@ -116,6 +116,17 @@ graph LR
   </div>
   <p><a href="careers/support.html">→ 서포트 분야 커리어 로드맵 자세히 보기</a></p>
 
+  <h3>🏛️ 행정 / 국제기구 — 축구의 '규칙과 운영'을 책임지는 사람들</h3>
+  <p class="lead">경기가 공정하게, 대회가 무사히 열리도록 <b>제도와 조직</b>을 굴리는 분야. 거버넌스의 본진이야.</p>
+  <div class="grid c2">
+    <div class="card"><h3>🏛️ 축구 행정가(협회·연맹)</h3><p class="lead">대한축구협회·리그 사무국에서 대회·등록·재정 등 살림을 운영.</p><div class="tags"><span class="tag">행정</span><span class="tag">정책</span></div></div>
+    <div class="card"><h3>🌐 국제기구 스태프(FIFA·AFC 등)</h3><p class="lead">세계·아시아 축구를 조율하는 국제 조직의 실무자.</p><div class="tags"><span class="tag">국제</span><span class="tag">영어</span></div></div>
+    <div class="card"><h3>🎫 대회 조직위(LOC) 운영</h3><p class="lead">월드컵 같은 큰 대회를 실제로 굴러가게 만드는 운영 본부.</p><div class="tags"><span class="tag">운영</span><span class="tag">이벤트</span></div></div>
+    <div class="card"><h3>⚖️ 스포츠 법률가 / 컴플라이언스</h3><p class="lead">규정·계약·분쟁·징계를 다루고 조직이 규칙을 지키게 한다.</p><div class="tags"><span class="tag">법</span><span class="tag">규정</span></div></div>
+    <div class="card"><h3>🧪 반도핑 · 윤리 담당</h3><p class="lead">공정성을 지키는 도핑 검사·윤리 감시의 전문가.</p><div class="tags"><span class="tag">공정성</span><span class="tag">과학</span></div></div>
+  </div>
+  <p><a href="careers/admin.html">→ 행정/국제기구 분야 커리어 로드맵 자세히 보기</a></p>
+
   <h2>3. 어떻게 읽으면 좋을까</h2>
   <div class="tip">
     💡 모든 직업을 다 알 필요는 없어. <b>"오, 이건 재밌겠다" 싶은 것 1~2개</b>만 골라
@@ -123,10 +134,11 @@ graph LR
   </div>
 
   <div class="pager">
-    <a href="careers/tech.html">🛠️ 테크 로드맵 →</a>
-    <a href="careers/media.html">📡 미디어 로드맵 →</a>
-    <a href="careers/business.html">💰 비즈니스 로드맵 →</a>
-    <a href="careers/support.html">🩺 서포트 로드맵 →</a>
+    <a href="careers/tech.html">🛠️ 테크 →</a>
+    <a href="careers/media.html">📡 미디어 →</a>
+    <a href="careers/business.html">💰 비즈니스 →</a>
+    <a href="careers/support.html">🩺 서포트 →</a>
+    <a href="careers/admin.html">🏛️ 행정/국제 →</a>
   </div>
 
 </div>
@@ -149,9 +161,9 @@ graph LR
     new Chart(document.getElementById('jobsChart'), {
       type: 'bar',
       data: {
-        labels: ['테크', '미디어', '비즈니스', '서포트'],
-        datasets: [{ label: '직업 예시 수', data: [4, 5, 5, 6],
-          backgroundColor: ['#1a3d7c', '#234e9c', '#e0a800', '#1a7c3d'] }]
+        labels: ['테크', '미디어', '비즈니스', '서포트', '행정/국제'],
+        datasets: [{ label: '직업 예시 수', data: [4, 5, 5, 6, 5],
+          backgroundColor: ['#1a3d7c', '#234e9c', '#e0a800', '#1a7c3d', '#6d28d9'] }]
       },
       options: { plugins: { legend: { display: false } },
         scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }

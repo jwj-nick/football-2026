@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>데이터로 즐기는 축구 — 숫자로 보면 경기가 다르게 보인다</title>
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/explore.css">
+</head>
+<body>
+
+<nav class="sitenav">
+  <a class="brand" href="../index.html">⚽ 월드컵 2026</a>
+  <div class="navlinks">
+    <a href="../index.html">일정·결과</a>
+    <a href="../learn/index.html">배우기</a>
+    <a class="active" href="index.html">탐구</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">EXPLORE · 데이터</div>
+    <h1>📊 데이터로 즐기는 축구</h1>
+    <p>요즘 축구는 <b>'감'</b>만으로 보지 않아. 슈팅 몇 개, 점유율 몇 %, 그리고 <b>xG(기대득점)</b>까지 —
+       숫자로 보면 같은 경기가 <b>다르게</b> 보인다. 그리고 사실, <b>이 앱이 결과를 받아 순위를 계산하는 것</b>도
+       아주 작은 데이터 분석이야. 그 이야기를 해보자.</p>
+  </div>
+
+  <p class="lead">"한 골 차로 졌지만 사실 더 잘한 건 우리였다" — 이런 말, 들어봤지?
+     예전엔 그냥 느낌이었지만, 지금은 <b>숫자로 증명</b>할 수 있어. 그 도구가 바로 데이터다.
+     이 페이지를 다 보면 <a href="../learn/index.html">직접 만들기</a>와
+     <a href="careers/tech.html">데이터 분석가 되기</a>로 자연스럽게 이어진다.</p>
+
+  <h2>1. 기본 스탯부터 — 경기가 끝나면 뭐가 남나</h2>
+  <p>중계 화면 구석이나 경기 요약에서 자주 보이는 숫자들이야. 하나씩 한 줄로 정리했어.</p>
+
+  <table class="tbl">
+    <thead>
+      <tr><th>스탯</th><th>뜻</th><th>뭘 말해주나</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><b>슈팅(Shots)</b></td><td>골을 노리고 찬 횟수</td><td>공격을 얼마나 시도했나</td></tr>
+      <tr><td><b>유효슈팅</b> <span class="t" title="골대 안쪽으로 향해서, 막지 않았다면 골이 될 수 있던 슛">(On Target)<sup>?</sup></span></td><td>골문 안쪽으로 간 슛</td><td>위협적인 슛이 몇 개였나</td></tr>
+      <tr><td><b>점유율</b> <span class="t" title="전체 경기 시간 중 우리 팀이 공을 가지고 있던 비율(%)">(Possession)<sup>?</sup></span></td><td>공을 가진 시간 비율(%)</td><td>경기를 누가 더 끌고 갔나 (단, 점유율 ≠ 승리)</td></tr>
+      <tr><td><b>패스 성공률</b></td><td>찬 패스 중 동료에게 간 비율(%)</td><td>볼을 얼마나 안정적으로 다뤘나</td></tr>
+      <tr><td><b>코너킥</b></td><td>얻은 코너의 수</td><td>상대 진영에서 얼마나 압박했나(대략)</td></tr>
+      <tr><td><b>파울 / 카드</b></td><td>반칙 횟수, 경고·퇴장</td><td>경기가 얼마나 거칠었나, 규율</td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip">
+    💡 <b>함정 주의:</b> 점유율이 높다고 항상 이기는 게 아니야. 공을 적게 가져도 <b>결정적인 순간에 효율적</b>이면 이긴다.
+    그래서 "얼마나 했나(양)"뿐 아니라 "얼마나 좋은 기회였나(질)"를 보는 스탯이 필요해. 그게 다음 주인공, xG다.
+  </div>
+
+  <h2>2. xG(기대득점)란? — 운이었나, 실력이었나</h2>
+  <p>이 페이지에서 제일 중요한 개념. 천천히 가자.</p>
+
+  <div class="term">
+    💬 <b>xG(expected goals, 기대득점)</b>란? 한 경기에서 나온 <b>모든 슛마다 "이게 골이 될 확률"을 매겨서, 그 확률을 전부 더한 값</b>이야.
+    골대 바로 앞 텅 빈 골문이면 0.9(거의 골), 하프라인 근처 무리한 슛이면 0.02(거의 안 들어감) 식으로.
+    그 확률들을 다 합치면 "이 팀은 만든 기회로 보면 <b>평균 몇 골 정도</b>를 넣었어야 한다"가 나온다.
+  </div>
+
+  <p>예를 들어 한 슛의 골 확률을 이렇게 매겼다고 하자(숫자는 <b>이해용 예시</b>야):</p>
+  <table class="tbl">
+    <thead>
+      <tr><th>슛 상황</th><th>골이 될 확률(xG)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>페널티킥</td><td>약 0.76</td></tr>
+      <tr><td>골문 바로 앞 빈 찬스</td><td>약 0.6 ~ 0.9</td></tr>
+      <tr><td>박스 안 보통 슛</td><td>약 0.1 ~ 0.2</td></tr>
+      <tr><td>먼 거리 / 각 안 좋은 슛</td><td>약 0.02 ~ 0.05</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    📌 <b>핵심 활용:</b> 한 경기에서 우리 팀 <b>xG가 2.3인데 실제로는 1골</b>만 넣었다면?
+    "좋은 기회를 충분히 만들었는데 마무리에서 조금 안 풀렸다"는 신호일 수 있어 —
+    그러면 <b>다음 경기엔 더 들어갈 가능성</b>도 있는 거지. 반대로 xG 0.4인데 3골을 넣었다면 "오늘은 운(또는 슈퍼 골)이 좋았다"에 가깝고,
+    그게 매번 반복되긴 어렵다고 본다.
+  </div>
+
+  <div class="warn">
+    ⚠️ <b>과장 금지:</b> xG는 <b>점쟁이가 아니야.</b> 슛의 위치·각도·상황을 바탕으로 한 <b>확률 추정</b>일 뿐,
+    "이 팀이 다음에 무조건 이긴다"를 말해주지 않아. 모델·데이터 회사마다 계산법이 조금씩 달라서 같은 경기 xG가 약간 다르게 나오기도 해.
+    그래서 xG는 <b>'하나의 참고 지표'</b>로 보는 게 맞아. (이런 "단정하지 않기"가 데이터를 다루는 사람의 기본 태도다.)
+  </div>
+
+  <h2>3. 이 데이터는 어떻게 모으나</h2>
+  <p>이 많은 숫자는 저절로 생기지 않아. 경기장에서 누군가(또는 무언가)가 <b>측정하고 기록</b>해.</p>
+
+  <div class="grid c3">
+    <div class="card"><div class="ico">🎥</div><h3>다중 카메라</h3><p class="lead">경기장 곳곳에 여러 대의 카메라가 모든 각도에서 경기를 찍는다.</p></div>
+    <div class="card"><div class="ico">🛰️</div><h3>선수·공 트래킹</h3><p class="lead">영상·센서로 선수 22명과 공의 위치를 초당 수십 번 기록한다(좌표 데이터).</p></div>
+    <div class="card"><div class="ico">⌨️</div><h3>데이터 입력 요원</h3><p class="lead">사람이 실시간으로 "패스·슛·태클" 같은 사건에 태그를 붙여 기록한다.</p></div>
+  </div>
+
+  <p>이렇게 모인 <b>위치 좌표 + 사건 기록</b>을 컴퓨터가 분석해서 점유율·패스성공률·xG 같은 숫자로 바꾼다.
+     바로 이걸 직업으로 하는 사람이 있어 — <b>스포츠 데이터 분석가</b>.</p>
+
+  <div class="note">
+    📌 <b>아빠 분야와 연결:</b> 카메라·센서로 <b>raw 신호를 모으고</b> → <b>의미 있는 숫자로 가공</b>하고 → <b>판단에 쓰는</b> 흐름은,
+    아빠가 일하는 <b>데이터·AI·반도체</b> 분야와 똑같은 뼈대야. 축구든 반도체든, "데이터에서 인사이트를 뽑는" 일의 원리는 닮아 있다.
+    <a href="careers/tech.html">→ 스포츠 데이터 분석가 / 테크 커리어 보러 가기</a>
+  </div>
+
+  <h2>4. 우리 앱도 데이터다 🎯</h2>
+  <p>거창한 회사 이야기 같지? 그런데 <b>이 앱</b>도 정확히 같은 일을 작게 하고 있어.
+     네가 점수를 입력하면, <code>standings.js</code>가 그걸 받아 <b>순위표</b>로 바꿔준다.</p>
+
+  <p>핵심은 딱 두 가지 규칙이야 (실제 우리 코드의 일부):</p>
+  <pre><code>if (hs > as) {        // 홈팀이 더 많이 넣으면 → 홈팀 승
+  h.W++; a.L++; h.Pts += 3;     // 이긴 팀 승점 +3
+} else if (as > hs) { // 원정팀 승
+  a.W++; h.L++; a.Pts += 3;
+} else {              // 같으면 무승부
+  h.D++; a.D++; h.Pts += 1; a.Pts += 1;   // 둘 다 +1
+}</code></pre>
+
+  <p>그리고 순위를 매길 땐 이 순서로 정렬해(이것도 실제 코드):</p>
+  <pre><code>// 승점 높은 순 → 골득실 높은 순 → 다득점 순 → 이름순
+arr.sort(function (x, y) {
+  return (y.Pts - x.Pts)
+      || (y.GD - x.GD)
+      || (y.GF - x.GF)
+      || x.t.localeCompare(y.t, "ko");
+});</code></pre>
+
+  <div class="term">
+    💬 <b>골득실(GD, Goal Difference)</b>이란? <b>득점에서 실점을 뺀 값</b>이야(예: 5골 넣고 2골 먹으면 +3).
+    승점이 같을 때 누가 위인지 가르는 첫 번째 기준이지. 우리 코드에선 <code>GD = GF - GA</code>로 계산한다.
+  </div>
+
+  <div class="note">
+    📌 <b>이게 바로 "데이터 → 정보" 변환이다.</b> 네가 입력한 건 그냥 숫자 쌍(2:1, 0:0…)인데 = <b>데이터</b>.
+    규칙(승점·골득실)을 적용해 정렬하면 "지금 1위는 누구"라는 <b>정보</b>가 된다.
+    프로 구단이 xG로 하는 일과 <b>원리는 똑같아</b> — 규모만 다를 뿐이야.
+    <a href="../learn/index.html">→ 이 계산이 어떻게 만들어졌는지 '배우기'에서 보기</a>
+  </div>
+
+  <h2>5. 눈으로 보기 (시각화)</h2>
+  <p>표의 숫자도 좋지만, <b>그림</b>으로 보면 "어느 팀이 어디서 강한지"가 한눈에 들어와.
+     가상의 두 팀을 다섯 가지 스탯으로 비교한 <b>레이더 차트</b>야 (인터넷 연결 시 그림으로 표시).</p>
+
+  <div class="chartbox">
+    <h3>가상 두 팀 스탯 비교 (예시 데이터)</h3>
+    <canvas id="radarChart" height="240" aria-label="두 팀의 다섯 가지 스탯 레이더 차트"></canvas>
+    <!-- 오프라인(인터넷 없음)에서도 보이는 폴백 표 -->
+    <noscript><p>그림 대신 아래 표를 보세요.</p></noscript>
+    <p class="cap">레이더 차트는 인터넷 연결 시 표시됩니다. 안 보이면 아래 표를 보세요. (값은 0~100으로 환산한 <b>예시</b>)</p>
+  </div>
+
+  <table class="tbl">
+    <thead>
+      <tr><th>스탯 (0~100 예시)</th><th>🔵 번개FC</th><th>🟡 천둥United</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>슈팅</td><td>80</td><td>55</td></tr>
+      <tr><td>점유율</td><td>70</td><td>50</td></tr>
+      <tr><td>패스</td><td>75</td><td>60</td></tr>
+      <tr><td>수비</td><td>50</td><td>85</td></tr>
+      <tr><td>xG</td><td>78</td><td>52</td></tr>
+    </tbody>
+  </table>
+  <p class="lead">👀 보이지? <b>번개FC는 공격형</b>(슈팅·xG·점유율 높음), <b>천둥United는 수비형</b>(수비가 압도적).
+     숫자만 봤다면 놓쳤을 "팀 성격"이 모양으로 드러나. 이게 시각화의 힘이야.</p>
+
+  <h3>전체 흐름 한 장으로</h3>
+  <p>지금까지 이야기를 한 줄로 그리면 이렇게 흐른다 (인터넷 연결 시 그림으로 표시):</p>
+  <pre class="mermaid">
+graph LR
+  Raw["원시 데이터<br/>(카메라·트래킹·기록)"] --> Calc["분석·계산<br/>(점유율·xG·승점)"]
+  Calc --> Insight["인사이트<br/>(누가 강한가 / 다음은?)"]
+  Insight --> Decision["판단<br/>(전술·순위·즐기기)"]
+  </pre>
+  <div class="term">
+    💬 <b>인사이트(insight)</b>란? 데이터를 들여다봐서 얻은 <b>'아하!' 하는 의미 있는 깨달음</b>이야.
+    예: "우리 팀은 슛은 많은데 xG가 낮네 → <b>먼 거리 슛이 많구나</b>, 더 가까이서 쏘자" 같은 결론.
+  </div>
+
+  <h2>6. 미션 — 직접 해보기 🚀</h2>
+  <p>읽기만 하면 안 남아. 둘 중 하나(또는 둘 다!)를 골라 <b>Claude에게 부탁</b>해보자.</p>
+
+  <div class="mission">
+    <span class="lvl">쉬움</span>
+    <h3>① 간단 스탯 한 개 더 보여주기</h3>
+    <p>지금 순위표엔 승/무/패·승점·골득실이 있어. 여기에 <b>"평균 득점"</b>(= 총 득점 ÷ 경기 수) 같은
+       간단한 스탯을 한 칸 더 넣어보자. 우리가 4단원에서 본 것처럼, <code>standings.js</code>는 이미
+       <code>GF</code>(득점)와 <code>P</code>(경기 수)를 알고 있으니 나누기 한 번이면 돼.</p>
+    <pre><code>🗣️ Claude에게 이렇게 부탁해봐:
+"standings.js에서 각 팀의 '평균 득점(총 득점 ÷ 경기 수)'을
+ 계산해서 순위표에 한 칸 더 보여주고 싶어. 경기를 0번 한 팀은
+ 0으로 나누지 않게 조심해서, 초보가 읽게 한글 주석도 달아줘."</code></pre>
+  </div>
+
+  <div class="mission mid">
+    <span class="lvl">보통</span>
+    <h3>② 두 팀 스탯으로 레이더 차트 그리기</h3>
+    <p>5단원의 레이더 차트를 <b>네 손으로</b> 만들어보자. 좋아하는 두 팀(또는 가상의 팀)의
+       스탯 다섯 개(슈팅·점유율·패스·수비·xG)를 0~100으로 정하고, Chart.js <code>radar</code>로 그려.
+       핵심은 이 페이지처럼 <b>오프라인 폴백(표)</b>도 꼭 같이 두는 거야.</p>
+    <pre><code>🗣️ Claude에게 이렇게 부탁해봐:
+"Chart.js radar 차트로 두 팀의 스탯 5개(슈팅·점유율·패스·수비·xG)를
+ 비교하는 작은 HTML을 만들어줘. 우리 explore 페이지처럼 인터넷이
+ 없을 때 보이는 폴백 표도 같이 넣고, 한글 주석으로 설명해줘."</code></pre>
+  </div>
+
+  <div class="tip">
+    💡 미션을 끝내면 스스로에게 물어봐: <b>"이 숫자가 정말 그 뜻이 맞을까? 예외는 없을까?"</b>
+    (예: 경기 0번 한 팀의 평균 득점은?) 이렇게 <b>의심하고 확인하는 습관</b>이 진짜 데이터 분석가의 핵심이야.
+  </div>
+
+  <div class="pager">
+    <a href="host-cities.html">🏟️ 개최도시 →</a>
+    <a href="careers/tech.html">🛠 데이터 분석가 되기 →</a>
+    <a href="../learn/index.html">🛠 직접 만들기 →</a>
+  </div>
+
+</div>
+
+<footer class="sitefoot">
+  2026 월드컵 앱 · 탐구 허브 · <a href="index.html">← 허브로</a>
+</footer>
+
+<!-- 그림(mermaid)·차트(Chart.js): 인터넷 연결 시 동작. 없으면 위의 표/숫자로 대체됨. -->
+<script type="module">
+  try {
+    const m = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
+    m.default.initialize({ startOnLoad: true, theme: 'neutral' });
+  } catch (e) { /* 오프라인이면 위 도형은 글자로 보임 */ }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script>
+  // 레이더 차트: 가상의 두 팀을 다섯 스탯으로 비교한다.
+  // 인터넷이 없으면(window.Chart 없음) 위의 표가 그대로 같은 정보를 보여준다.
+  window.addEventListener('load', function () {
+    if (!window.Chart) return; // 오프라인이면 폴백 표로 대체
+    new Chart(document.getElementById('radarChart'), {
+      type: 'radar',
+      data: {
+        labels: ['슈팅', '점유율', '패스', '수비', 'xG'],
+        datasets: [
+          { label: '🔵 번개FC',   data: [80, 70, 75, 50, 78],
+            backgroundColor: 'rgba(26,61,124,.18)', borderColor: '#1a3d7c', pointBackgroundColor: '#1a3d7c' },
+          { label: '🟡 천둥United', data: [55, 50, 60, 85, 52],
+            backgroundColor: 'rgba(224,168,0,.18)', borderColor: '#e0a800', pointBackgroundColor: '#e0a800' }
+        ]
+      },
+      options: {
+        scales: { r: { beginAtZero: true, max: 100, ticks: { stepSize: 20 } } },
+        plugins: { legend: { position: 'bottom' } }
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
