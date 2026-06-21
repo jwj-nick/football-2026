@@ -13,6 +13,20 @@
 -->
 <link rel="stylesheet" href="../assets/site.css">
 <link rel="stylesheet" href="../assets/explore.css">
+<style>
+  /* 이 페이지 전용 — 퀴즈 위젯 (바닐라 JS, 의존성 없음) */
+  .quizq{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:12px 0;box-shadow:0 1px 4px rgba(0,0,0,.05);}
+  .quizq .qn{font-weight:700;color:var(--primary);margin:0 0 8px;}
+  .qlvl{display:inline-block;font-size:.66rem;font-weight:800;color:#fff;background:#234e9c;border-radius:20px;padding:2px 8px;margin-right:6px;vertical-align:middle;}
+  .qlvl.mid{background:#e0a800;}
+  .quizopt{display:block;width:100%;text-align:left;margin:6px 0;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:#f8fafc;cursor:pointer;font-size:.9rem;font-family:inherit;color:#1f2937;}
+  .quizopt:hover{background:#eef2f8;}
+  .quizopt.correct{background:#e7f5ec;border-color:#1a7c3d;color:#13602f;font-weight:700;}
+  .quizopt.wrong{background:#fdeaea;border-color:#c8102e;color:#8a1020;}
+  .quizopt:disabled{cursor:default;}
+  .quizwhy{margin-top:8px;font-size:.86rem;background:#fff8e6;border-left:4px solid var(--gold);border-radius:6px;padding:8px 10px;display:none;}
+  #quizScore{font-weight:800;color:var(--primary);margin:12px 0;font-size:1rem;}
+</style>
 </head>
 <body>
 
@@ -41,7 +55,7 @@
   <div class="note">
     🧭 <b>이 페이지를 보는 순서</b>: ① 100년 타임라인 → ② 두 개의 '구상'(설계도) →
     ③ 리그 피라미드(승강제) → ④ 선수 양성 2-트랙 → ⑤ 지도자 자격 → ⑥ 유럽 수출 모델 →
-    ⑦ 성과와 '16강의 벽' → ⑧ 문화 인프라 → ⑨ 우리가 배울 점.
+    ⑦ 성과와 '16강의 벽' → ⑧ 문화 인프라 → ⑨ 한국과 일본(비교) → ⑩ 우리가 배울 점 → 🧩 퀴즈.
   </div>
 
   <!-- ============ 1. 타임라인 ============ -->
@@ -237,6 +251,26 @@ flowchart LR
   <!-- ============ 7. 성과 + 16강의 벽 ============ -->
   <h2>⑦ 성과 — 그리고 '16강의 벽'</h2>
 
+  <!-- 🔥 2026 튀니지전 4-0 = AFC(아시아) 최초 기록: 가장 최신·가장 화제의 성과라 맨 위에 부각 -->
+  <div class="card" style="border-left:6px solid #c8102e;background:#fff6f6;">
+    <h3 style="margin-top:0;color:#c8102e;">🔥 2026년 새 역사 — 튀니지전 <b>4-0</b> 대승 (아시아 최초 기록)</h3>
+    <p style="font-size:.95rem;">2026년 6월 21일, 일본이 튀니지를 <b>4-0</b>으로 완파했다. 이 경기로 일본은
+      <b>AFC(아시아) 팀 최초로 월드컵 한 경기에서 4골</b>을 넣었고, 동시에
+      <b>아시아 팀 월드컵 최다 점수차 승리</b> 기록을 세웠다. 마침 이 경기는 월드컵 통산 <b>1000번째 경기</b>이기도 했다.</p>
+    <table class="tbl" style="margin-top:8px;">
+      <thead><tr><th>분</th><th>득점</th><th>메모</th></tr></thead>
+      <tbody>
+        <tr><td>4'</td><td>카마다 다이치</td><td>일본의 <b>월드컵 역대 최단시간 골</b></td></tr>
+        <tr><td>~30'</td><td>우에다 아야세</td><td>이날 멀티골(2골)의 첫 골</td></tr>
+        <tr><td>69'</td><td>이토 준야</td><td>3-0</td></tr>
+        <tr><td>83'</td><td>우에다 아야세</td><td>헤더로 쐐기, 4-0</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:.9rem;margin-top:8px;">이 승리로 일본은 네덜란드와 함께 F조 공동 선두(승점 4)로 올라섰다.
+      <b>스타 한 명이 아니라 두꺼운 유럽파 선수층</b>에서 나온 결과라는 점이, 앞에서 본 '시스템'의 증거다.</p>
+    <p class="cap">출처: ESPN · FIFA · Sky Sports (2026-06-21).</p>
+  </div>
+
   <table class="tbl">
     <thead><tr><th>대회</th><th>성적</th><th>메모</th></tr></thead>
     <tbody>
@@ -288,8 +322,39 @@ flowchart LR
     </div>
   </div>
 
-  <!-- ============ 9. 우리가 배울 점 ============ -->
-  <h2>⑨ 생각해볼 점 — 무엇을 배울까</h2>
+  <!-- ============ 9. 한국 vs 일본 ============ -->
+  <h2>⑨ 한국과 일본 — 다른 길, 다른 강점</h2>
+  <p class="lead">옆 나라지만 걸어온 길이 다르다. <b>어느 쪽이 더 낫다기보다, 강점이 다르다.</b>
+    한국 팬으로서 우리 강점도 분명히 짚고, 서로에게 배울 점을 찾아보자.</p>
+
+  <table class="tbl">
+    <thead><tr><th>항목</th><th>🇰🇷 한국</th><th>🇯🇵 일본</th></tr></thead>
+    <tbody>
+      <tr><td>월드컵 최고 성적</td><td><b>2002 4강</b> — 아시아 역대 <b>최고 성적!</b></td><td>16강 (4회), 8강은 아직</td></tr>
+      <tr><td>프로리그 출범</td><td><b>K리그 1983</b> — <b>아시아 최초</b> 프로리그</td><td>J리그 1993</td></tr>
+      <tr><td>대표적 강점</td><td>개인 기량·투지·<b>빅매치 집중력</b>, 손흥민·김민재 같은 월드클래스</td><td>두꺼운 선수층·시스템·넓은 저변</td></tr>
+      <tr><td>유럽 진출</td><td>정상급 소수(손흥민·김민재 등) + 증가세</td><td>대표팀 <b>다수</b>가 유럽파</td></tr>
+      <tr><td>스타일(거칠게 말하면)</td><td>스타 중심 + 강한 정신력</td><td>조직·세밀함 + 평균치</td></tr>
+    </tbody>
+  </table>
+
+  <div class="grid c2">
+    <div class="card">
+      <h3>🇰🇷 한국의 강점(잊지 말자)</h3>
+      <p style="font-size:.92rem;">2002년 <b>4강</b>은 지금도 아시아 어느 나라도 못 넘은 기록이다.
+        K리그는 아시아 <b>최초의 프로리그</b>(1983)였고, 손흥민·김민재처럼 <b>세계 최고 무대의 핵심 선수</b>를 배출한다.
+        큰 경기에서 폭발하는 <b>근성과 집중력</b>은 분명한 한국의 자산이다.</p>
+    </div>
+    <div class="card">
+      <h3>🔄 서로 배울 점</h3>
+      <p style="font-size:.92rem;"><b>한국이 일본에서:</b> 더 두꺼운 저변과 <b>유소년·지도자 시스템의 장기 일관성</b>(한 번 실패에 안 흔들리는 100년 호흡).<br>
+        <b>일본이 한국에서:</b> 빅매치 <b>근성</b>과 2002의 4강 경험, 스타를 키워내는 개인 창의성.</p>
+      <p style="font-size:.85rem;color:#6b7280;">최근 한국도 K리그 유스·대표팀 전담 시스템을 키우는 중 — 두 나라 모두 진화하고 있다.</p>
+    </div>
+  </div>
+
+  <!-- ============ 10. 우리가 배울 점 ============ -->
+  <h2>⑩ 생각해볼 점 — 무엇을 배울까</h2>
   <p class="lead">옆 나라 이야기지만, '큰 목표를 어떻게 이루는가'라는 점에서 우리 모두에게 교훈이 된다.</p>
 
   <div class="mission">
@@ -308,6 +373,12 @@ flowchart LR
       좋은 시스템도 <b>끝까지 가는 데는 또 시간</b>이 든다. 우리 축구(한국)는 어떤 점이 강하고 어떤 점을 더 시스템화하면 좋을까?
       아빠와 토론해보자.</p>
   </div>
+
+  <!-- ============ 퀴즈 ============ -->
+  <h2>🧩 일본 축구 퀴즈 (이해 점검)</h2>
+  <p class="lead">읽은 내용을 가볍게 확인! 보기를 누르면 <b>바로 정답과 풀이</b>가 나온다. (초급 4 · 중급 2)</p>
+  <div id="quiz"></div>
+  <div id="quizScore"></div>
 
   <!-- ============ 더 알아보기 ============ -->
   <h2>🔗 더 깊이 알아보기 (공식 출처)</h2>
@@ -369,6 +440,94 @@ flowchart LR
       }
     });
   });
+</script>
+
+<!--
+  [아들에게] 퀴즈는 외부 라이브러리 없이 '데이터 + 그리기 + 클릭반응' 3단계로 만든다.
+  - QUIZ      : 문제 데이터(배열). 문제를 추가하려면 여기에 객체 하나만 더 넣으면 된다.
+  - 그리기    : 배열을 돌며 질문/보기 버튼을 화면에 만든다.
+  - 클릭반응  : 보기를 누르면 정답/오답 색을 칠하고, 풀이를 보여주고, 점수를 센다.
+-->
+<script>
+  // 1) 문제 데이터 — correct는 정답 보기의 번호(0부터 시작)
+  var QUIZ = [
+    { lvl:"초급", q:"일본 프로축구 'J리그'가 출범한 해는?",
+      a:["1965년","1993년","2002년","2011년"], correct:1,
+      why:"1993년 J리그 출범과 함께 '100년 구상'도 시작됐다. 출발점부터 100년을 본 게 핵심." },
+    { lvl:"초급", q:"2026 월드컵 2차전에서 일본은 튀니지를 몇 대 몇으로 이겼나?",
+      a:["1-0","2-1","3-2","4-0"], correct:3,
+      why:"4-0 승리! AFC(아시아) 팀이 월드컵 한 경기에서 4골을 넣은 '최초' 기록이다." },
+    { lvl:"초급", q:"'JFA 2005 선언'이 내건 2050년 최종 목표는?",
+      a:["아시안컵 우승","올림픽 금메달","월드컵 우승(과 일본 개최)","K리그 추월"], correct:2,
+      why:"숫자와 연도로 못 박은 장기 목표. 아직 남은 '진행 중'인 약속이다." },
+    { lvl:"초급", q:"일본의 선수 양성 '두 갈래 길'을 맞게 묶은 것은?",
+      a:["군대 + 회사팀","클럽 아카데미 + 학교(고교·대학) 축구","해외 유학 + 길거리 축구","방송사 + 게임"], correct:1,
+      why:"클럽 유소년과 학교 축구, 두 큰 길이 동시에 돌아가다 J리그에서 합류한다." },
+    { lvl:"중급", q:"일본 대표팀이 아직 넘지 못한 '벽'은?",
+      a:["본선 진출","조 1위","8강(16강에서 더 못 올라감)","아시안컵 우승"], correct:2,
+      why:"본선 8회 연속·16강 4회지만 8강은 0번. 그래서 2050 '우승' 목표가 여전히 도전이다." },
+    { lvl:"중급", q:"일본에서 프로(J1) 감독을 맡으려면 필요한 지도자 자격의 '최고 등급'은?",
+      a:["D급","B급","A급","S급"], correct:3,
+      why:"D→C→B→A→S 사다리의 맨 위가 S급. 지도자도 표준화해 품질을 맞춘다." }
+  ];
+
+  // 2) 그리기 + 3) 클릭반응
+  (function () {
+    var box = document.getElementById("quiz");
+    var scoreEl = document.getElementById("quizScore");
+    if (!box) return;
+    var answered = 0, correctCount = 0;
+
+    QUIZ.forEach(function (item, qi) {
+      var card = document.createElement("div");
+      card.className = "quizq";
+
+      var lvlClass = item.lvl === "중급" ? "qlvl mid" : "qlvl";
+      var head = document.createElement("p");
+      head.className = "qn";
+      head.innerHTML = '<span class="' + lvlClass + '">' + item.lvl + '</span>Q' + (qi + 1) + '. ' + item.q;
+      card.appendChild(head);
+
+      item.a.forEach(function (text, oi) {
+        var btn = document.createElement("button");
+        btn.className = "quizopt";
+        btn.type = "button";
+        btn.textContent = text;
+        btn.addEventListener("click", function () {
+          // 이미 푼 문제면 무시
+          if (card.dataset.done) return;
+          card.dataset.done = "1";
+          answered++;
+          var opts = card.querySelectorAll(".quizopt");
+          opts.forEach(function (b) { b.disabled = true; });
+          if (oi === item.correct) {
+            btn.classList.add("correct");
+            correctCount++;
+          } else {
+            btn.classList.add("wrong");
+            opts[item.correct].classList.add("correct"); // 정답도 표시
+          }
+          var why = card.querySelector(".quizwhy");
+          why.style.display = "block";
+          updateScore();
+        });
+        card.appendChild(btn);
+      });
+
+      var why = document.createElement("div");
+      why.className = "quizwhy";
+      why.innerHTML = "💡 " + item.why;
+      card.appendChild(why);
+
+      box.appendChild(card);
+    });
+
+    function updateScore() {
+      scoreEl.textContent = "점수: " + correctCount + " / " + QUIZ.length +
+        (answered === QUIZ.length ? "  — 다 풀었다! 🎉" : "");
+    }
+    updateScore();
+  })();
 </script>
 
 </body>
