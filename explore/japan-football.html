@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>일본 축구 100년 — 인프라·시스템·성과</title>
+<!--
+  [아들에게 주는 설명]
+  이 페이지는 "왜 일본은 축구를 잘하게 됐나"를 한 나라의 '시스템'으로 들여다본다.
+  스타 한 명이 아니라, 30년 넘게 쌓아 올린 구조(리그·유소년·지도자·문화)가 핵심이다.
+  - 어려운 말은 점선 단어(.t)에 마우스를 올리거나 💬 풀이 상자를 보면 한 줄 설명이 나온다.
+  - 그림은 인터넷이 되면 mermaid/Chart.js로, 안 되면 표·글·CSS 도형으로 보인다(폴백).
+-->
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/explore.css">
+</head>
+<body>
+
+<nav class="sitenav">
+  <a class="brand" href="../index.html">⚽ 월드컵 2026</a>
+  <div class="navlinks">
+    <a href="../index.html">일정·결과</a>
+    <a href="../learn/index.html">배우기</a>
+    <a class="active" href="index.html">탐구</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="hero" style="background:linear-gradient(135deg,#8b0000,#c8102e);">
+    <div class="eyebrow">EXPLORE · 특집</div>
+    <h1>🇯🇵 일본 축구 100년 — 시스템으로 만든 강팀</h1>
+    <p>일본은 1993년에야 프로리그가 생긴 '축구 후발 주자'였다. 그런데 30여 년 만에
+       독일·스페인을 꺾는 팀이 됐다. 비결은 천재 한 명이 아니라 <b>100년을 보고 설계한 구조</b>다.
+       리그·유소년·지도자·문화를 하나의 시스템으로 어떻게 쌓았는지, 그리고 무엇을 이뤘는지 깊이 들여다보자.</p>
+  </div>
+
+  <p class="lead">이 페이지는 "성적"보다 <b>"성적을 만드는 공장(시스템)"</b>에 초점을 둔다.
+    축구를 좋아하는 사람에게도, 큰 목표를 어떻게 설계하고 끈질기게 실행하는지 배우려는 사람에게도 좋은 사례다.</p>
+
+  <div class="note">
+    🧭 <b>이 페이지를 보는 순서</b>: ① 100년 타임라인 → ② 두 개의 '구상'(설계도) →
+    ③ 리그 피라미드(승강제) → ④ 선수 양성 2-트랙 → ⑤ 지도자 자격 → ⑥ 유럽 수출 모델 →
+    ⑦ 성과와 '16강의 벽' → ⑧ 문화 인프라 → ⑨ 우리가 배울 점.
+  </div>
+
+  <!-- ============ 1. 타임라인 ============ -->
+  <h2>① 한눈에 보는 100년 타임라인</h2>
+  <p class="lead">후발 주자가 어떻게 단계를 밟아 올라왔는지, 굵직한 마디만 짚어보자.</p>
+
+  <div class="vroad">
+    <div class="node"><span class="when">1921</span>
+      <p>일본축구협회(JFA) 창립. 이때부터 '협회'라는 뼈대가 생긴다.</p></div>
+    <div class="node"><span class="when">1965</span>
+      <p>일본축구리그(JSL) 출범 — 하지만 <b>아마추어</b>(회사 직원이 선수). 실력은 아시아 중하위권.</p></div>
+    <div class="node"><span class="when">1993</span>
+      <p>⭐ <b>J리그(프로리그) 출범</b>. 동시에 '<span class="t" title="J리그가 내건 장기 비전. 축구만이 아니라 동네마다 잔디 구장과 지역 스포츠 클럽을 만들어, 보고·하고·참여하는 스포츠 문화를 100년에 걸쳐 뿌리내리자는 구상.">J리그 100년 구상<sup>?</sup></span>' 선언. 출발점부터 100년을 본다.</p></div>
+    <div class="node"><span class="when">1993</span>
+      <p>'<b>도하의 비극</b>' — 1994 월드컵 본선行을 경기 종료 직전 동점골로 놓침. 아픔이 동기가 된다.</p></div>
+    <div class="node"><span class="when">1998</span>
+      <p>'조호르바루의 환희'(이란전 승리)로 <b>사상 첫 월드컵 본선</b>(프랑스) 진출. 3전 전패였지만 시작.</p></div>
+    <div class="node"><span class="when">2002</span>
+      <p>한일 <b>공동 개최</b> → 사상 첫 16강. 개최 효과로 인프라·관심이 한 단계 점프.</p></div>
+    <div class="node"><span class="when">2005</span>
+      <p>⭐ <b>JFA 2005 선언</b> 발표 — '약속 2015'와 '약속 2050'이라는 <b>국가적 목표</b>를 못 박는다.</p></div>
+    <div class="node"><span class="when">2011</span>
+      <p>여자 대표팀 <b>나데시코 재팬, 여자 월드컵 우승</b>(미국을 승부차기로). 남녀 동반 성장의 상징.</p></div>
+    <div class="node"><span class="when">2022</span>
+      <p>카타르 월드컵에서 <b>독일·스페인을 모두 격파</b>하며 조 1위로 16강. "일본이 세졌다"가 증명된 해.</p></div>
+    <div class="node"><span class="when">2026</span>
+      <p>이번 대회. 선수 대부분이 <b>유럽 빅리그 소속</b>. 목표는 사상 첫 8강(16강의 벽 넘기).</p></div>
+    <div class="node"><span class="when">2050</span>
+      <p>🎯 공식 목표: <b>"월드컵을 일본에서 열고, 일본이 우승한다."</b> 아직 25년 남은 '진행 중'인 약속.</p></div>
+  </div>
+
+  <!-- ============ 2. 두 개의 구상 ============ -->
+  <h2>② 설계도 — 두 개의 '구상'</h2>
+  <p class="lead">일본 축구의 핵심은 "되면 좋고"가 아니라, <b>숫자와 연도가 적힌 장기 설계도</b>를 공개적으로 박아둔 것이다.</p>
+
+  <div class="grid c2">
+    <div class="card">
+      <h3>🌱 J리그 100년 구상 (1993)</h3>
+      <p class="lead">초대 J리그 총재 <b>가와부치 사부로</b>가 주도. 슬로건은
+        <i>"스포츠로 더 행복한 나라로."</i></p>
+      <ul style="font-size:.9rem;color:#374151;">
+        <li><b>지역밀착형 클럽</b> — 팀 이름에서 기업명을 빼고 <b>지역 이름</b>을 넣음(예: 우라와 레즈, 감바 오사카).</li>
+        <li><b>동네마다 잔디 구장</b> — 누구나 가까이서 운동할 환경.</li>
+        <li>축구만이 아니라 <b>종합 스포츠 클럽</b> 문화. "보고·하고·참여하는" 스포츠.</li>
+      </ul>
+      <p style="font-size:.85rem;color:#6b7280;">핵심: 대표팀 성적이 아니라 <b>'풀뿌리'부터</b> 설계했다는 점.</p>
+    </div>
+
+    <div class="card">
+      <h3>📜 JFA 2005 선언</h3>
+      <p class="lead">2005년, 협회가 <b>두 개의 약속</b>을 공식 발표. 부제는 <i>"DREAM — 꿈이 있기에 강해진다."</i></p>
+      <p style="margin:6px 0 2px;font-weight:700;color:#1a3d7c;">약속 2015</p>
+      <ul style="font-size:.88rem;color:#374151;margin-top:2px;">
+        <li><span class="t" title="등록 선수·심판·지도자 등 '축구로 묶인 사람들' 전체. 단순 등록 선수만이 아니라 축구 인구 생태계를 뜻함.">축구 패밀리<sup>?</sup></span>를 <b>500만 명</b>으로</li>
+        <li>남자 대표팀이 <b>세계 톱10</b>에 드는 팀이 된다</li>
+      </ul>
+      <p style="margin:8px 0 2px;font-weight:700;color:#c8102e;">약속 2050</p>
+      <ul style="font-size:.88rem;color:#374151;margin-top:2px;">
+        <li>축구 패밀리를 <b>1,000만 명</b>으로</li>
+        <li>누구나·언제·어디서나 축구를 즐기는 환경</li>
+        <li>🏆 <b>월드컵을 일본에서 개최하고, 일본 대표가 우승</b></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="term">
+    💬 <b>'구상(Vision)'이 왜 중요할까?</b> 목표를 <b>숫자(500만/1000만)와 연도(2015/2050)</b>로 공개하면,
+    회장이 바뀌어도 방향이 안 흔들린다. 20년짜리 프로젝트를 끌고 가는 엔지니어처럼,
+    "측정 가능한 장기 목표 + 공개 약속"이 조직을 한 방향으로 묶는다.
+  </div>
+
+  <div class="warn">
+    ⚖️ <b>솔직한 평가:</b> 모든 약속이 달성된 건 아니다. '축구 패밀리 500만/1000만' 같은 인구 목표는
+    아직 미달이다. 하지만 <b>"세계 톱10 수준의 경쟁력"</b>이라는 목표는 사실상 도달했다.
+    숫자 목표가 다 맞아서가 아니라, <b>목표가 모두를 한 방향으로 끌고 갔다</b>는 점이 진짜 성과다.
+  </div>
+
+  <!-- ============ 3. 피라미드 ============ -->
+  <h2>③ 리그 피라미드와 승강제</h2>
+  <p class="lead">시스템의 등뼈는 <b>위아래로 뚫린 사다리</b>다. 잘하면 올라가고 못하면 내려간다
+    (<span class="t" title="시즌 성적에 따라 상위 리그로 승격하거나 하위 리그로 강등되는 제도. 모든 클럽에 '올라갈 길'과 '떨어질 위기'를 동시에 줘서 끝까지 경쟁하게 만든다.">승강제<sup>?</sup></span>).
+    그래서 작은 동네 클럽도 이론상 J1까지 올라갈 수 있다.</p>
+
+  <!-- 순수 CSS 피라미드 (오프라인에서도 보임) -->
+  <div style="margin:16px 0;text-align:center;">
+    <div style="background:#c8102e;color:#fff;width:34%;min-width:160px;margin:4px auto;padding:9px;border-radius:7px;font-weight:800;">🇯🇵 일본 대표팀 (피라미드의 정상)</div>
+    <div style="background:#1a3d7c;color:#fff;width:46%;min-width:200px;margin:4px auto;padding:9px;border-radius:7px;font-weight:700;">J1 리그 — 20클럽 (1부, 최상위 프로)</div>
+    <div style="background:#234e9c;color:#fff;width:58%;min-width:240px;margin:4px auto;padding:9px;border-radius:7px;font-weight:700;">J2 리그 — 20클럽 (2부 프로)</div>
+    <div style="background:#3a63b0;color:#fff;width:70%;margin:4px auto;padding:9px;border-radius:7px;font-weight:700;">J3 리그 — 20클럽 (3부 프로)</div>
+    <div style="background:#1a7c3d;color:#fff;width:82%;margin:4px auto;padding:9px;border-radius:7px;font-weight:700;">JFL · 지역 리그 (세미프로/아마추어, J리그 입회 도전)</div>
+    <div style="background:#2f9e54;color:#fff;width:94%;margin:4px auto;padding:9px;border-radius:7px;font-weight:700;">유소년 클럽 · 고교 · 대학 — 풀뿌리 토대 (가장 넓은 바닥)</div>
+    <div style="font-size:.78rem;color:#6b7280;margin-top:8px;">↑ 위로 갈수록 좁고 치열 · 아래로 갈수록 넓고 두텁다. 화살표는 '승격↑/강등↓'로 모든 층이 연결.</div>
+  </div>
+
+  <div class="note">
+    📐 J리그는 <b>J1·J2·J3 각 20클럽 = 60개 프로 클럽</b> 체제다(2025 기준).
+    또한 2026년부터 유럽처럼 <b>가을~봄(추춘제) 일정</b>으로 전환 중이다 — 아시아 챔피언스리그·여름 더위·국제 일정과
+    리듬을 맞추기 위해서다. 작은 듯 보여도, 리그 달력까지 장기 전략에 맞춰 바꾸는 것이 시스템적 사고다.
+  </div>
+
+  <div class="card">
+    <h3>💡 '클럽 라이선스'라는 보이지 않는 규칙</h3>
+    <p style="font-size:.92rem;">단지 성적만으로 1부에 있는 게 아니다. 일정 수준의 <b>재정 건전성·유소년 팀 보유·경기장 기준</b>을
+      충족해야 라이선스를 받고 상위 리그에 머문다. 즉 <b>"잘하기"뿐 아니라 "제대로 운영하기"</b>를 강제한다.
+      이게 리그 전체의 체력을 떠받친다.</p>
+  </div>
+
+  <!-- ============ 4. 선수 양성 2-트랙 ============ -->
+  <h2>④ 선수 양성 — 두 갈래 길</h2>
+  <p class="lead">일본의 독특함: 엘리트 한 줄이 아니라 <b>'클럽 아카데미'와 '학교 축구'라는 두 개의 큰 길</b>이
+    동시에 돌아간다. 어느 길로 와도 정상으로 연결된다.</p>
+
+  <div class="grid c2">
+    <div class="card">
+      <h3>🏟️ 길 A — 클럽 유소년 아카데미</h3>
+      <p style="font-size:.92rem;">J리그 각 클럽이 <b>U-12 → U-15(주니어 유스) → U-18(유스)</b> 자체 팀을 운영.
+        프로의 전술·환경을 어릴 때부터 경험. 우수 유망주는 <b>1군으로 직행</b>.</p>
+      <p style="font-size:.85rem;color:#6b7280;">엘리트 집중 + 빠른 프로화에 강함.</p>
+    </div>
+    <div class="card">
+      <h3>🏫 길 B — 학교(고교·대학) 축구</h3>
+      <p style="font-size:.92rem;">100년 넘은 <b>전국 고교 축구 선수권</b>은 전국 중계되는 겨울의 국민 행사.
+        대학 축구도 강하다. <b>대기만성형 선수</b>가 늦게 터지는 통로.</p>
+      <p style="font-size:.85rem;color:#6b7280;">저변(참여 인원)과 인생 안전망에 강함.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎓 그리고 국가 차원의 '엘리트 양성소'</h3>
+    <p style="font-size:.92rem;"><b>JFA 아카데미</b>(후쿠시마 등)와 대형 트레이닝 센터(<b>J-GREEN 사카이</b>,
+      마쿠하리의 <b>유메필드</b>)가 전국 단위 인재를 모아 키운다. 클럽·학교·국가가 <b>겹겹의 그물</b>을 이뤄,
+      재능이 어느 한 곳에서 새도 다른 곳에서 걸린다.</p>
+  </div>
+
+  <!-- 발전 파이프라인: mermaid (폴백: 바로 아래 텍스트 흐름) -->
+  <div class="chartbox">
+    <h3>선수 한 명이 대표팀까지 가는 길 (파이프라인)</h3>
+    <pre class="mermaid">
+flowchart LR
+  A["동네 축구\n(풀뿌리)"] --> B["클럽 아카데미\nU-12~U-18"]
+  A --> C["고교·대학\n축구"]
+  B --> D["J리그\n(J3→J2→J1)"]
+  C --> D
+  D --> E["일본\n대표팀"]
+  D --> F["유럽 진출\n(海外組)"]
+  F --> E
+  E --> G["🎯 2050\n월드컵 우승 목표"]
+    </pre>
+    <p class="cap">📌 (그림이 안 보이면) 흐름: 풀뿌리 → 클럽 아카데미/학교 → J리그 → 대표팀 → 유럽 진출 → 다시 대표팀 → 2050 목표.
+      두 갈래 길(클럽·학교)이 J리그에서 합류하는 것이 핵심.</p>
+  </div>
+
+  <!-- ============ 5. 지도자 자격 ============ -->
+  <h2>⑤ 지도자 자격 — '가르치는 사람'을 표준화</h2>
+  <p class="lead">선수만 키운 게 아니다. 일본은 <b>지도자 자격 제도</b>를 단계로 만들어,
+    동네 코치부터 프로 감독까지 같은 철학으로 가르치게 했다. 좋은 코치가 많아야 좋은 선수가 많아진다.</p>
+
+  <div style="margin:14px 0;text-align:center;">
+    <div style="background:#c8102e;color:#fff;width:30%;min-width:150px;margin:4px auto;padding:8px;border-radius:7px;font-weight:800;">S급 — 프로(J1) 감독 자격</div>
+    <div style="background:#1a3d7c;color:#fff;width:44%;min-width:180px;margin:4px auto;padding:8px;border-radius:7px;font-weight:700;">A급 — 상위 아마/유스 톱</div>
+    <div style="background:#234e9c;color:#fff;width:58%;margin:4px auto;padding:8px;border-radius:7px;font-weight:700;">B급 — 중·고교, 클럽 유스</div>
+    <div style="background:#1a7c3d;color:#fff;width:72%;margin:4px auto;padding:8px;border-radius:7px;font-weight:700;">C급 — 유소년·아마추어</div>
+    <div style="background:#2f9e54;color:#fff;width:88%;margin:4px auto;padding:8px;border-radius:7px;font-weight:700;">D급 — 입문(학부모·자원봉사 코치)</div>
+    <div style="font-size:.78rem;color:#6b7280;margin-top:8px;">D → C → B → A → S 로 올라가는 사다리. + 골키퍼 전문 자격 별도. 공인 지도자가 <b>수만 명</b> 규모.</div>
+  </div>
+
+  <div class="tip">
+    💡 <b>엔지니어의 눈으로:</b> 이건 '<b>표준화</b>'다. 지도자마다 제멋대로가 아니라, 같은 커리큘럼·같은 자격 기준으로
+    품질을 맞춘다. 마치 설계 규칙(design rule)을 정해두고 누가 설계해도 일정 품질이 나오게 하는 것과 같다.
+  </div>
+
+  <!-- ============ 6. 유럽 수출 모델 ============ -->
+  <h2>⑥ 유럽 수출 모델 (海外組)</h2>
+  <p class="lead">일본 시스템의 '완성 단계'는 <b>유럽 진출</b>이다. J리그에서 검증된 선수를 유럽 빅리그로 보내고,
+    그들이 최고 수준을 경험한 뒤 대표팀으로 모인다. 이걸 일본은
+    <span class="t" title="'카이가이구미' — 해외(주로 유럽) 리그에서 뛰는 일본 대표 선수들을 묶어 부르는 말. 지금은 대표팀의 다수를 차지한다.">海外組(해외파)<sup>?</sup></span>라고 부른다.</p>
+
+  <table class="tbl">
+    <thead><tr><th>선수</th><th>주 무대(예시)</th><th>특징</th></tr></thead>
+    <tbody>
+      <tr><td>미토마 카오루</td><td>잉글랜드 프리미어리그</td><td>대학 축구 출신 → 늦깎이 폭발. '길 B'의 상징</td></tr>
+      <tr><td>쿠보 타케후사</td><td>스페인 라리가</td><td>유소년 때부터 엘리트 코스. '길 A'의 상징</td></tr>
+      <tr><td>토미야스 / 엔도 / 도안 / 이토 / 우에다</td><td>EPL · 분데스리가 · 에레디비시 등</td><td>수비~공격 전 포지션이 유럽파</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    🌍 핵심은 "스타 한 명"이 아니라 <b>대표팀 거의 전원이 유럽파</b>라는 점이다.
+    선수 한 명이 아니라 <b>'유럽으로 보내는 컨베이어 벨트'</b> 자체를 만든 것이 일본 시스템의 결과다.
+    이번 2026 대회의 튀니지전 4-0 대승도 이런 두꺼운 선수층에서 나온다.
+  </div>
+
+  <!-- ============ 7. 성과 + 16강의 벽 ============ -->
+  <h2>⑦ 성과 — 그리고 '16강의 벽'</h2>
+
+  <table class="tbl">
+    <thead><tr><th>대회</th><th>성적</th><th>메모</th></tr></thead>
+    <tbody>
+      <tr><td>1998 프랑스</td><td>조별 탈락</td><td>사상 첫 본선</td></tr>
+      <tr><td>2002 한·일</td><td><b>16강</b></td><td>첫 토너먼트(공동 개최)</td></tr>
+      <tr><td>2006 독일</td><td>조별 탈락</td><td></td></tr>
+      <tr><td>2010 남아공</td><td><b>16강</b></td><td>원정 첫 16강</td></tr>
+      <tr><td>2014 브라질</td><td>조별 탈락</td><td></td></tr>
+      <tr><td>2018 러시아</td><td><b>16강</b></td><td>벨기에에 2-0 리드 후 역전패(아쉬움)</td></tr>
+      <tr><td>2022 카타르</td><td><b>16강</b></td><td>🔥 독일·스페인 격파, 조 1위. 크로아티아에 승부차기 패</td></tr>
+      <tr><td>2026</td><td>진행 중</td><td>목표 = 사상 첫 <b>8강</b></td></tr>
+    </tbody>
+  </table>
+
+  <div class="chartbox">
+    <h3>월드컵 도달 라운드 (1998–2022)</h3>
+    <canvas id="wcChart" height="150"></canvas>
+    <p class="cap">📊 1=조별리그 탈락, 2=16강. 본선엔 <b>8회 연속</b> 나갔지만, 막대가 2(16강)에서 멈춘다 —
+      이게 '16강의 벽'. 16강 4번(2002·2010·2018·2022), 8강은 아직 0번. (오프라인이면 위 표 참고)</p>
+  </div>
+
+  <div class="grid c3">
+    <div class="card"><h3>🏆 아시안컵 4회 우승</h3>
+      <p style="font-size:.9rem;">1992·2000·2004·2011 — 아시아 최다 우승 기록. 대륙에선 확실한 강자.</p></div>
+    <div class="card"><h3>👩 나데시코 2011 세계 정상</h3>
+      <p style="font-size:.9rem;">여자 대표팀이 2011 월드컵 우승(미국을 승부차기로). 남녀 동반 성장의 증거.</p></div>
+    <div class="card"><h3>⚔️ 2022, 강호 2팀 격파</h3>
+      <p style="font-size:.9rem;">한 대회에서 독일과 스페인을 모두 꺾음. "운"이 아니라 "수준"임을 증명.</p></div>
+  </div>
+
+  <div class="warn">
+    🧱 <b>'16강의 벽'</b>: 일본의 미완 과제. 본선 단골이 됐지만 <b>8강 이상은 아직 못 갔다</b>.
+    그래서 2050 '우승' 목표가 여전히 의미 있는 도전으로 남아 있다. 시스템이 좋아도 마지막 한 계단은 또 다른 싸움이다.
+  </div>
+
+  <!-- ============ 8. 문화 인프라 ============ -->
+  <h2>⑧ 보이지 않는 인프라 — 문화</h2>
+  <div class="grid c2">
+    <div class="card">
+      <h3>📺 「캡틴 츠바사」 효과</h3>
+      <p style="font-size:.92rem;">1981년 시작된 축구 만화 <b>「캡틴 츠바사」</b>(한국명 '날아라 캡틴' 등)는
+        일본 아이들에게 "축구 선수의 꿈"을 심었다. 메시·이니에스타 같은 세계적 선수도 영향을 받았다고 말한다.
+        <b>꿈을 꾸게 만드는 콘텐츠</b>도 인프라다.</p>
+    </div>
+    <div class="card">
+      <h3>⏳ '100년'이라는 인내</h3>
+      <p style="font-size:.92rem;">가장 강력한 인프라는 <b>"길게 본다"</b>는 합의다. 한두 번의 실패에 시스템을 갈아엎지 않고,
+        도하의 비극·여러 차례 조별 탈락을 겪으면서도 같은 방향으로 30년을 쌓았다. 인내가 곧 전략이다.</p>
+    </div>
+  </div>
+
+  <!-- ============ 9. 우리가 배울 점 ============ -->
+  <h2>⑨ 생각해볼 점 — 무엇을 배울까</h2>
+  <p class="lead">옆 나라 이야기지만, '큰 목표를 어떻게 이루는가'라는 점에서 우리 모두에게 교훈이 된다.</p>
+
+  <div class="mission">
+    <span class="lvl">생각 1</span>
+    <p><b>스타보다 시스템.</b> 천재 한 명을 기다리기보다, 천재가 계속 나오는 '공장'(리그·유소년·지도자)을 지었다.
+      네가 무언가를 잘하고 싶다면 — 한 번의 결과보다 <b>매번 결과가 나오는 습관·환경</b>을 먼저 만들어보자.</p>
+  </div>
+  <div class="mission mid">
+    <span class="lvl">생각 2</span>
+    <p><b>목표를 숫자와 연도로.</b> "잘하자"가 아니라 "2050년에 우승"처럼 측정 가능하게 공개했다.
+      네 공부 목표도 "열심히"가 아니라 <b>"언제까지, 무엇을, 얼마나"</b>로 적어보면 힘이 달라진다.</p>
+  </div>
+  <div class="mission hard">
+    <span class="lvl">생각 3</span>
+    <p><b>인내(긴 호흡).</b> 30년을 같은 방향으로 갔다. 그리고 아직도 '16강의 벽'이라는 미완의 과제가 있다.
+      좋은 시스템도 <b>끝까지 가는 데는 또 시간</b>이 든다. 우리 축구(한국)는 어떤 점이 강하고 어떤 점을 더 시스템화하면 좋을까?
+      아빠와 토론해보자.</p>
+  </div>
+
+  <!-- ============ 더 알아보기 ============ -->
+  <h2>🔗 더 깊이 알아보기 (공식 출처)</h2>
+  <ul style="font-size:.92rem;">
+    <li><a href="https://www.jfa.jp/eng/about_jfa/history/" target="_blank" rel="noopener">JFA 공식 — 일본축구협회 연혁(영문)</a></li>
+    <li><a href="https://www.jfa.jp/about_jfa/dream/" target="_blank" rel="noopener">JFA 2005 선언 「DREAM」 원문(일문)</a></li>
+    <li><a href="https://www.jleague.co/" target="_blank" rel="noopener">J.League 공식 사이트(영문)</a></li>
+    <li><a href="https://en.wikipedia.org/wiki/J.League" target="_blank" rel="noopener">위키백과 — J.League(구조·역사 개요)</a></li>
+  </ul>
+
+  <div class="pager">
+    <a href="index.html">← 탐구 허브</a>
+    <a href="globe.html">🌍 출전국 지구본 →</a>
+    <a href="data-football.html">📊 데이터 축구 →</a>
+    <a href="jobs.html">💼 직업 생태계 →</a>
+  </div>
+
+</div>
+
+<footer class="sitefoot">
+  2026 월드컵 앱 · 일본 축구 특집 · <a href="../learn/index.html">이 앱은 어떻게 만들었나</a>
+  <br><span style="font-size:.75rem;">출처: JFA·J.League 공식, ESPN/FIFA, 위키백과 등. 일부 수치는 시점에 따라 달라질 수 있음.</span>
+</footer>
+
+<!-- 그림(mermaid)·차트(Chart.js): 인터넷 연결 시 동작. 없으면 글/표로 대체됨. -->
+<script type="module">
+  try {
+    const m = await import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs');
+    m.default.initialize({ startOnLoad: false, theme: 'neutral' });
+    await m.default.run({ querySelector: '.mermaid' });
+  } catch (e) { /* 오프라인이면 도형은 글자로 보임 */ }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<script>
+  window.addEventListener('load', function () {
+    if (!window.Chart) return; // 오프라인이면 표/캡션으로 대체
+    var rounds = [1, 2, 1, 2, 1, 2, 2]; // 1=조별탈락, 2=16강
+    new Chart(document.getElementById('wcChart'), {
+      type: 'bar',
+      data: {
+        labels: ['1998', '2002', '2006', '2010', '2014', '2018', '2022'],
+        datasets: [{
+          label: '도달 라운드',
+          data: rounds,
+          backgroundColor: rounds.map(function (v) { return v === 2 ? '#e0a800' : '#234e9c'; })
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: function (c) { return c.parsed.y === 2 ? '16강 진출' : '조별리그 탈락'; } } }
+        },
+        scales: {
+          y: {
+            beginAtZero: true, max: 3,
+            ticks: { stepSize: 1, callback: function (v) { return v === 1 ? '조별' : v === 2 ? '16강' : v === 3 ? '8강+' : ''; } }
+          }
+        }
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
